@@ -10,37 +10,64 @@
     <p>Not a member, <input type="submit" value="Register Now"></p>
 </form>
 <div>
-    <h3>Home</h3>
+    <h3><a href="/">Home</a></h3>
     <p>
         The home page is an introduction page of our service. There will be a form for users to register or login.
         The user's informatipn will be stored in the "Users" table. Also, there will be a place for users to change their
         online usernames.
-        The attribute-user_id will be as a foreign key in other tables to associate all the quiz and simulation
+        The attribute "user_id" will be as a foreign key in other tables to associate all the quiz and simulation
         records with each user.
     </p>   
 </div>
 <div>
-    <h3>Quiz</h3>
+    <h3><a href="/quiz">Quiz</a></h3>
     <p>
-        For home page, it's a introduction page of our service. There will be a form for users to register or login
+        This page has the most interactions with our database.
+        <ul>
+            <li>
+                Every time a user starts a quiz, a new quiz record will be inserted into the QuizRecords table.
+                After the user submits the quiz, the backend will calculate the score of this quiz and update the score in the table.
+                The score will be displayed on the page. For the result, users have two options: keep or discard. If the user chooses to save the result, we 
+                do nothing. Otherwise, we will delete this record from the QuizRecords table.
+            </li>
+            <li>
+                Quiz questions are randomly selected from the Questions table for each quiz and inserted into the QuizQuestions table.
+                After users submit the quiz, the backend will compare the chosen answer by users with the right answer from the Questions table. 
+                Based on the correctness, the "result" for each question will be updated.
+                Select result from QuizQuestions where id=quiz_id and sum up the results to get the final score of each quiz. 
+            </li>
+            <li>
+                Randomly pick 10-20 questions from Questions table based on the user's choices: the state and how many questions they want to practice.
+                Questions table is our question pool. Users have no authority to change the data of this table. So in backend, we add a new question or 
+                update the details of questions if necessarily.
+            </li>
+            <li>
+                When selecting questions for a quiz, the choices for each question are selected from QuestionChoices table at the same time. QuestionChoices table
+                is an aided table of the Questions table. The insert/update/delete are synchronous with Questions table most of the time.
+            </li>
+
+        </ul>   
     </p>   
 </div>
 <div>
-    <h3>Simulation</h3>
+    <h3><a href="/sim">Simulation</a></h3>
     <p>
-        For home page, it's a introduction page of our service. There will be a form for users to register or login
+        Same as taking a quiz, users can choose one scenario and play the simulation. A new record is inserted into the Simulator table. Each simulation will have a result, Fail or Pass. 
+        Users can choose to save the result or not by clicking the “save’ button. If users don't want to save this result, the data is deleted from the Simulators table.
     </p>   
 </div>
 <div>
-    <h3>Your Record</h3>
+    <h3><a href="/records">Your Record</a></h3>
     <p>
-        Our website
+        Users can choose to show all the quiz or simulating driving results in the past 2/6/... month.
+        Then the corresponding data wll be selected from QuizRecords and Simulators table and be displayed for users.
     </p>   
 </div>
 <div>
-    <h3>Download</h3>
+    <h3><a href="/laws">Download</a></h3>
     <p>
-        Users can download handbooks here.
+        Users can download handbooks here. Since we decide to save the file in a folder, this page doesn't have interaction 
+        with our database.
     </p>   
 </div>
 {% endblock %}
