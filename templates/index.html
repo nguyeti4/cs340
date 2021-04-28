@@ -2,6 +2,46 @@
 {% block title %}Home{% endblock %}
 
 {% block content %} 
-<h1>Hi, this is home page</h1>
+<form action="#" method="POST">
+    <p>Already a member?</p>
+    <p>Name: <input type="text" name="user-name"></p>
+    <p>Password: <input type="text" name="user-name"></p>
+    <p><input type="submit" value="submit"></p>
+    <p><input type="submit" value="register"></p>
+</form>
+<div>
+    <h3>Home</h3>
+    <p>
+        The home page is an introduction page of our service. There will be a form for users to register or login.
+        The user's informatipn will be stored in the "Users" table. Also, there will be a place for users to change their
+        online usernames.
+        The attribute-user_id will be as a foreign key in other tables to associate all the quiz and simulation
+        records with each user.
+    </p>   
+</div>
+<div>
+    <h3>Quiz</h3>
+    <p>
+        For home page, it's a introduction page of our service. There will be a form for users to register or login
+    </p>   
+</div>
+<div>
+    <h3>Simulation</h3>
+    <p>
+        For home page, it's a introduction page of our service. There will be a form for users to register or login
+    </p>   
+</div>
+<div>
+    <h3>Your Record</h3>
+    <p>
+        Our website
+    </p>   
+</div>
+<div>
+    <h3>Download</h3>
+    <p>
+        Users can download handbooks here.
+    </p>   
+</div>
 {% endblock %}
 
