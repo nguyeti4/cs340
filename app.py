@@ -20,7 +20,7 @@ def simulator():
 
 @app.route("/records")
 def records():
-    return render_template("Records.html")
+    return render_template("Record.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
