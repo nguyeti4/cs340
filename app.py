@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 
 app = Flask(__name__)
@@ -9,9 +9,11 @@ app.permanent_session_lifetime = timedelta(days=1)
 def home():
     if request.method == "POST":
         session.permanent = True
-        user = request.form["user-name"] # get data from the frontend form
-        session["user"] = user  # save user info in the session
+        user_email = request.form["user-email"] # get data from the frontend form
+        session["user_email"] = user_email  # save user info in the session
         # return redirect(url_for("home"))
+        flash("You have sucessfully login")
+        return render_template("index.html")
     else:
         return render_template("index.html")
 
@@ -21,8 +23,8 @@ def laws():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
-    if "user" in session:
-        user = session["user"]
+    if "user_email" in session:
+        user_email = session["user_email"]
     if request.method == "POST":
         state = request.form["state"]
         number = request.form["number"]
