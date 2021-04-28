@@ -3,4 +3,68 @@
 
 {% block content %} 
 <h1>Hi, this is your DMV simulator page</h1>
+<p>What scenario you want to play?</p>
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="DropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Scenario</a>
+    <div class="dropdown-menu" aria-labelledby="DropdownMenuLink">
+        <a class="dropdown-item" href="#">Scenario 1</a>
+        <a class="dropdown-item" href="#">Scenario 2</a>
+        <a class="dropdown-item" href="#">Scenario 3</a>
+    </div>
+</div>
+
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+
+<body onload="startGame()">
+<script>
+var myGamePiece;
+
+function startGame() {
+  myGameArea.start();
+  myGamePiece = new component(40, 40, "red", 500, 375);
+}
+
+var myGameArea = {
+  canvas : document.createElement("canvas"),
+  start : function() {
+    this.canvas.width = 1000;
+    this.canvas.height = 500;
+    this.context = this.canvas.getContext("2d");
+    document.body.appendChild(this.canvas);
+	this.interval = setInterval(updateGameArea, 20);
+  },
+  clear : function() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+}
+
+function component(width, height, color, x, y) {
+  this.width = width;
+  this.height = height;
+  this.x = x;
+  this.y = y;
+  this.update = function(){
+  ctx = myGameArea.context;
+  ctx.fillStyle = color;
+  ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+}
+
+function updateGameArea() {
+  myGameArea.clear();
+  myGamePiece.update();
+}
+</script>
+
+<div>
+  <input class="btn btn-primary" type="submit" value="Save">
+</div>
+</body>
+
 {% endblock %}
