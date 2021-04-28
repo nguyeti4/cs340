@@ -16,7 +16,7 @@ def quiz():
 
 @app.route("/sim")
 def quiz():
-    return render_template("Simulator.html")
+    return render_template("simulator.html")
 
 @app.route("/records")
 def quiz():
