@@ -1,12 +1,19 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
+from flask_mysqldb import MySQL
+from db_connector.db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
+
 @app.route("/", methods=["POST", "GET"])
 def home():
+    db_connection = connect_to_database()
+    # query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
+    # result = execute_query(db_connection, query).fetchall()
+
     if request.method == "POST":
         session.permanent = True
         user_email = request.form["user-email"] # get data from the frontend form
