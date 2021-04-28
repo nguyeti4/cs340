@@ -7,7 +7,7 @@ def home():
     return render_template("index.html")
 
 @app.route("/laws")
-def quiz():
+def laws():
     return render_template("Laws.html")
 
 @app.route("/quiz")
@@ -15,11 +15,11 @@ def quiz():
     return render_template("quiz.html")
 
 @app.route("/sim")
-def quiz():
+def simulator():
     return render_template("simulator.html")
 
 @app.route("/records")
-def quiz():
+def records():
     return render_template("Records.html")
 
 if __name__ == "__main__":
