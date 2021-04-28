@@ -1,10 +1,19 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request, session
+from datetime import timedelta
 
 app = Flask(__name__)
+app.secret_key = "group19"
+app.permanent_session_lifetime = timedelta(days=1)
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    return render_template("index.html")
+    if request.method == "POST":
+        session.permanent = True
+        user = request.form["user-name"] # get data from the frontend form
+        session["user"] = user  # save user info in the session
+        # return redirect(url_for("home"))
+    else:
+        return render_template("index.html")
 
 @app.route("/laws")
 def laws():
@@ -12,7 +21,10 @@ def laws():
 
 @app.route("/quiz")
 def quiz():
-    return render_template("quiz.html")
+    if "user" in session:
+        user = session["user"]
+    if request.method == "GET":
+        return render_template("quiz.html")
 
 @app.route("/sim")
 def simulator():
