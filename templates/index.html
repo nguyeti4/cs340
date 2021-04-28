@@ -1,19 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 
-{% block content %} 
+{% block content %}
+
 <form action="/" method="POST">
-    <p>Already a member?</p>
-    <p>Name: <input type="text" name="user-name"></p>
-    <p>Password: <input type="text" name="user-password"></p>
-    <p><input type="submit" value="Submit"></p>
-    <p>Not a member, <input type="submit" value="Register Now"></p>
+    <div>
+        <p>Already a member?</p>
+    </div>
+    <div>
+        <label>Email Address </label> 
+        <input type="email" name="user-email">
+    </div>
+    <div>
+        <label>Password </label> 
+        <input type="password" name="user-password">
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </div>
+    <div>
+        <p>Not a member, <input class="btn btn-primary" type="submit" value="Register Now"></p>
+    </div>
 </form>
 <div>
     <h3><a href="/">Home</a></h3>
     <p>
         The home page is an introduction page of our service. There will be a form for users to register or login.
-        The user's informatipn will be stored in the "Users" table. Also, there will be a place for users to change their
+        The user's information will be stored in the "Users" table. Also, there will be a place for users to change their
         online usernames.
         The attribute "user_id" will be as a foreign key in other tables to associate all the quiz and simulation
         records with each user.

@@ -2,20 +2,25 @@
 {% block title %}Quiz{% endblock %}
 
 {% block content %} 
-<div id="app">
-    <header id="dmv-header">
-        <div id="container">
-            <nav>
-                <a>Please select</a>
-                <div>
-                    <div class="navbar-states"></div>
-                    <div class="navbar-tests"></div>
-                    <div class="navbar-types"></div>
-                    <div class="navbar-lang"></div>
-                </div>
-            </nav>
-        </div>
-    </header>
+<form action="/quiz" method="POST">
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Choose state</label>
+        <select name="state">
+          <option>California</option>
+          <option>Oregon</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">How many questions you want to practice</label>
+        <select name="number">
+          <option>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Start the quiz">
+    </div>
+</form>
 
-</div>
 {% endblock %}

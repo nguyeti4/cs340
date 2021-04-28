@@ -19,12 +19,17 @@ def home():
 def laws():
     return render_template("Laws.html")
 
-@app.route("/quiz")
+@app.route("/quiz", methods=["POST", "GET"])
 def quiz():
     if "user" in session:
         user = session["user"]
-    if request.method == "GET":
+    if request.method == "POST":
+        state = request.form["state"]
+        number = request.form["number"]
         return render_template("quiz.html")
+    else:
+        return render_template("quiz.html")
+        
 
 @app.route("/sim")
 def simulator():
