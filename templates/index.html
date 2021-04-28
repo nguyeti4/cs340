@@ -3,26 +3,24 @@
 
 {% block content %}
 
-<form action="/" method="POST">
+<form class="container" action="/" method="POST" style="margin-left: 0;">
     <div>
         <p>Already a member?</p>
     </div>
-    <div>
+    <div class="form-group">
         <label>Email Address </label> 
-        <input type="email" name="user-email">
+        <input class="form-control" type="email" name="user-email">
     </div>
-    <div>
+    <div class="form-group">
         <label>Password </label> 
-        <input type="password" name="user-password">
+        <input class="form-control" type="password" name="user-password">
     </div>
-    <div>
-        <input class="btn btn-primary" type="submit" value="Submit">
-    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
     <div>
         <p>Not a member, <input class="btn btn-primary" type="submit" value="Register Now"></p>
     </div>
 </form>
-<div>
+<div class="container" style="margin-left: 0;">
     <h3><a href="/">Home</a></h3>
     <p>
         The home page is an introduction page of our service. There will be a form for users to register or login.
@@ -32,7 +30,7 @@
         records with each user.
     </p>   
 </div>
-<div>
+<div class="container" style="margin-left: 0;">
     <h3><a href="/quiz">Quiz</a></h3>
     <p>
         This page has the most interactions with our database.
@@ -62,21 +60,21 @@
         </ul>   
     </p>   
 </div>
-<div>
+<div class="container" style="margin-left: 0;">
     <h3><a href="/sim">Simulation</a></h3>
     <p>
         Same as taking a quiz, users can choose one scenario and play the simulation. A new record is inserted into the Simulator table. Each simulation will have a result, Fail or Pass. 
         Users can choose to save the result or not by clicking the “save’ button. If users don't want to save this result, the data is deleted from the Simulators table.
     </p>   
 </div>
-<div>
+<div class="container" style="margin-left: 0;">
     <h3><a href="/records">Your Record</a></h3>
     <p>
         Users can choose to show all the quiz or simulating driving results in the past 2/6/... month.
         Then the corresponding data wll be selected from QuizRecords and Simulators table and be displayed for users.
     </p>   
 </div>
-<div>
+<div class="container" style="margin-left: 0;">
     <h3><a href="/laws">Download</a></h3>
     <p>
         Users can download handbooks here. Since we decide to save the file in a folder, this page doesn't have interaction 
