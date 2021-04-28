@@ -2,6 +2,13 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
 <form class="container" action="/" method="POST" style="margin-left: 0;">
     <div>
@@ -38,18 +45,18 @@
             <li>
                 Every time a user starts a quiz, a new quiz record will be inserted into the QuizRecords table.
                 After the user submits the quiz, the backend will calculate the score of this quiz and update the score in the table.
-                The score will be displayed on the page. For the result, users have two options: keep or discard. If the user chooses to save the result, we 
+                The score will be displayed on the page. For the score, users have two options: keep or discard. If the user chooses to save the record, we 
                 do nothing. Otherwise, we will delete this record from the QuizRecords table.
             </li>
             <li>
                 Quiz questions are randomly selected from the Questions table for each quiz and inserted into the QuizQuestions table.
                 After users submit the quiz, the backend will compare the chosen answer by users with the right answer from the Questions table. 
                 Based on the correctness, the "result" for each question will be updated.
-                Select result from QuizQuestions where id=quiz_id and sum up the results to get the final score of each quiz. 
+                Select result from QuizQuestions for a particular quiz_id and sum all the results to get the final score of each quiz. 
             </li>
             <li>
-                Randomly pick 10-20 questions from Questions table based on the user's choices: the state and how many questions they want to practice.
-                Questions table is our question pool. Users have no authority to change the data of this table. So in backend, we add a new question or 
+                Randomly select 10-20 questions from Questions table based on the user's choices: the state and how many questions they want to practice.
+                The Questions table is our question pool. Users have no authority to change the data of this table. So in the backend, we add a new question or 
                 update the details of questions if necessarily.
             </li>
             <li>
@@ -71,13 +78,13 @@
     <h3><a href="/records">Your Record</a></h3>
     <p>
         Users can choose to show all the quiz or simulating driving results in the past 2/6/... month.
-        Then the corresponding data wll be selected from QuizRecords and Simulators table and be displayed for users.
+        Then the corresponding data wll be selected from QuizRecords and Simulators table and displayed for users.
     </p>   
 </div>
 <div class="container" style="margin-left: 0;">
     <h3><a href="/laws">Download</a></h3>
     <p>
-        Users can download handbooks here. Since we decide to save the file in a folder, this page doesn't have interaction 
+        Users can download handbooks here. Since we decide to save files in a folder in our server, this page doesn't have any interaction 
         with our database.
     </p>   
 </div>
