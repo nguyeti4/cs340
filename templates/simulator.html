@@ -2,20 +2,21 @@
 {% block title %}Sim{% endblock %}
 
 {% block content %} 
+<form action="#" method="post">
 <h1>Hi, this is your DMV simulator page</h1>
 <p>What scenario you want to play?</p>
 <div class="scenario_dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="DropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Scenario</a>
-    <div class="dropdown-menu" aria-labelledby="DropdownMenuLink">
-        <a class="dropdown-item" href="#">Scenario 1</a>
-        <a class="dropdown-item" href="#">Scenario 2</a>
-        <a class="dropdown-item" href="#">Scenario 3</a>
-    </div>
+    <label for="exampleFormControlSelect1">Choose scenario</label>
+        <select name="scenario">
+          <option>Scenario 1</option>
+          <option>Scenario 2</option>
+          <option>Scenario 3</option>
+        </select>
 </div>
 <div>
   <input class="btn btn-primary" type="submit" value="Save">
 </div>
+</form>
 
 
 
