@@ -43,9 +43,14 @@ def quiz():
 def simulator():
     return render_template("simulator.html")
 
-@app.route("/records")
+@app.route("/records", methods=["POST", "GET"])
 def records():
-    return render_template("Record.html")
+    if request.method == "POST":
+        day = request.form["day"]
+        month = request.form["month"]
+        return render_template("Record.html")
+    else:
+        return render_template("Record.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
