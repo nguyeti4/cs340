@@ -39,9 +39,13 @@ def quiz():
         return render_template("quiz.html")
         
 
-@app.route("/sim")
+@app.route("/sim",methods=["POST","GET])
 def simulator():
-    return render_template("simulator.html")
+    if request.method == "POST":
+        scenario = request.form["scenario"]
+        return render_template("simulator.html")
+    else:
+        return render_template("simulator.html")
 
 @app.route("/records", methods=["POST", "GET"])
 def records():
