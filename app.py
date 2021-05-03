@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
-from db_connector import connect_to_database, execute_query
+# from db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app.secret_key = "group19"
@@ -9,7 +9,7 @@ app.permanent_session_lifetime = timedelta(days=1)
 
 @app.route("/", methods=["POST", "GET"])
 def home():
-    db_connection = connect_to_database()
+    # db_connection = connect_to_database()
     # query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
     # result = execute_query(db_connection, query).fetchall()
 
@@ -27,6 +27,10 @@ def home():
 def laws():
     return render_template("Laws.html")
 
+@app.route("/admin", methods=["POST", "GET"])
+def admin():
+    return render_template("admin.html")
+
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
     if "user_email" in session:
@@ -39,7 +43,7 @@ def quiz():
         return render_template("quiz.html")
         
 
-@app.route("/sim",methods=["POST","GET])
+@app.route("/sim",methods=["POST","GET"])
 def simulator():
     if request.method == "POST":
         scenario = request.form["scenario"]

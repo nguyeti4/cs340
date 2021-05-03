@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %} 
+<form class="container" action="/admin" method="POST">
+    <div class="form-group">
+        <label>Question Description</label> 
+        <input class="form-control" type="password" name="question_desc">
+    </div>
+    <div class="form-group">
+        <label>Question choice1</label> 
+        <input class="form-control" type="password" name="question_choice1">
+    </div>
+    <div class="form-group">
+        <label>Question choice2</label> 
+        <input class="form-control" type="password" name="question_choice2">
+    </div>
+    <div class="form-group">
+        <label>Question choice3</label> 
+        <input class="form-control" type="password" name="question_choice3">
+    </div>
+    <div class="form-group">
+        <label>Question choice4</label> 
+        <input class="form-control" type="password" name="question_choice4">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add">
+
+</form>
+<!--  search bar to find the related questions -->
+
+<!-- populate the searching result as a list here -->
+<!-- form on the right side of each row, there will be two buttons, update or delete -->
+
+{% endblock %}
