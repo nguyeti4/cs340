@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
-from db_connector import connect_to_database, execute_query
+# from db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app.secret_key = "group19"
@@ -8,57 +8,29 @@ app.permanent_session_lifetime = timedelta(days=1)
 
 
 @app.route("/", methods=["POST", "GET"])
-def home():
+def users():
     # db_connection = connect_to_database()
     # query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
     # result = execute_query(db_connection, query).fetchall()
+    return render_template("users.html")
 
-    if request.method == "POST":
-        session.permanent = True
-        user_email = request.form["user-email"] # get data from the frontend form
-        session["user_email"] = user_email  # save user info in the session
-        # return redirect(url_for("home"))
-        flash("You have sucessfully login")
-        return render_template("index.html")
-    else:
-        return render_template("index.html")
+@app.route("/sim_user",methods=["POST","GET"])
+def sim_user():
+    return render_template("simulators.html")
 
-@app.route("/laws")
-def laws():
-    return render_template("Laws.html")
+@app.route("/quiz_user", methods=["POST", "GET"])
+def quiz_user():
+    return render_template("quizRecords.html")
 
-@app.route("/admin", methods=["POST", "GET"])
-def admin():
-    return render_template("admin.html")
+@app.route("/quiz_detail", methods=["POST", "GET"])
+def quiz_detail():
+    return render_template("quizQuestions.html")
 
-@app.route("/quiz", methods=["POST", "GET"])
-def quiz():
-    if "user_email" in session:
-        user_email = session["user_email"]
-    if request.method == "POST":
-        state = request.form["state"]
-        number = request.form["number"]
-        return render_template("quiz.html")
-    else:
-        return render_template("quiz.html")
-        
+@app.route("/ques", methods=["POST", "GET"])
+def questions():
+    return render_template("questions.html")
 
-@app.route("/sim",methods=["POST","GET"])
-def simulator():
-    if request.method == "POST":
-        scenario = request.form["scenario"]
-        return render_template("simulator.html")
-    else:
-        return render_template("simulator.html")
 
-@app.route("/records", methods=["POST", "GET"])
-def records():
-    if request.method == "POST":
-        day = request.form["day"]
-        month = request.form["month"]
-        return render_template("Record.html")
-    else:
-        return render_template("Record.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

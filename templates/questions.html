@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %} 
+<div class="container" style="margin-left: 0;">
+  <h3><a href="/ques">Questions</a></h3>
+  <p>
+    This page is used to manage the Questions and QuestionChoices table. The QuestionChoices is an aided table for the questions
+    table based on 1NF principle. In this page, there is a form to insert a new question. Also, admin can search questions with
+    keywords. The table will display the searching result. For each row of data, admin can update/delete that question.
+  </p>   
+</div>
+<br>
+<form class="container" action="/admin" method="POST" style="margin-left: 0;">
+  <div>
+    <h4>Add a New Question</h4>
+  </div>
+  <div class="form-group">
+      <label>Question Description</label> 
+      <input class="form-control" type="text" name="question_desc">
+  </div>
+  <div class="form-group">
+    <label>State</label> 
+    <select name="state">
+      <option>Universal</option>
+      <option>California</option>
+      <option>Oregon</option>
+    </select>
+  </div>
+  <div class="form-group">
+      <label>Choice1</label> 
+      <input class="form-control" type="text" name="choice1">
+  </div>
+  <div class="form-group">
+      <label>Choice2</label> 
+      <input class="form-control" type="text" name="choice2">
+  </div>
+  <div class="form-group">
+      <label>Choice3</label> 
+      <input class="form-control" type="text" name="choice3">
+  </div>
+  <div class="form-group">
+      <label>Choice4</label> 
+      <input class="form-control" type="text" name="choice4">
+  </div>
+  <div class="form-group">
+    <label>Right Answer</label> 
+    <input class="form-control" type="text" name="answer">
+  </div>
+  <input class="btn btn-primary" type="submit" value="Add">
+</form>
+<br>
+<!--  search bar to find the related questions -->
+<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Search Question</h4>
+  </div>
+  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<br>
+<!-- populate the searching result as a table here -->
+<!-- on the right side of each row, there will be two buttons, update or delete -->
+<table class="container" class="table table-striped" style="margin-left: 0;">
+  <div>
+    <h4>Update/Delete Questions</h4>
+  </div>
+  <thead>
+    <tr>
+      <th scope="col">Question ID#</th>
+      <th scope="col">State</th>
+      <th scope="col">Question Description</th>
+      <th scope="col">Choice1</th>
+      <th scope="col">Choice2</th>
+      <th scope="col">Choice3</th>
+      <th scope="col">Choice4</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1220</th>
+      <td>Universal</td>
+      <td>You may cross double yellow lines to pass another vehicle if the:</td>
+      <td>Vehicle in front of you moves to the right to let you pass</td>
+      <td>Yellow line next to your side of the road is broken</td>
+      <td>Yellow line next to your opposite side of the road is broken</td>
+      <td>Never</td>
+      <td><input class="btn btn-primary" type="submit" value="Update"></td>
+      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
