@@ -5,15 +5,19 @@
 <div class="container" style="margin-left: 0;">
   <h3><a href="/quiz_detail">QuizQuestions</a></h3>
   <p>
-      This page is used to manage the QuizQuestions table. Normally, the information of this table should come from the customer
-      facing website. Each time a user took a quiz, questions of that quiz will be inserted into this table.
-      On this page, the admin staff can check the detail of a particular quiz.
-      Also, for the purpose of statistic, they can calculate the accuracy of each question.
+      This page is used to manage the QuizQuestions table. 
+      <ul>
+        <li>Normally, the data of this table comes from the customer facing website. Each time a user took a quiz, questions of that quiz will be inserted into this table.</li>
+        <li>On this page, the admin staff can check the detail of a particular quiz.</li>
+        <li>Also, for the purpose of statistic, they can calculate the accuracy of each question.</li>
+        <li>This table contains the data collected from each quiz. The data should not be updated for the authenticity.</li>
+        <li>The admin staff have the right to delete data.</li>
+      </ul>   
   </p>   
 </div>
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Look Up a Quiz detail</h4>
+    <h4>Look Up a Quiz Detail</h4>
   </div>
   <div>
     <label>Quiz_ID: <input class="form-control" type="text" name="quiz_id"></label>
@@ -34,8 +38,19 @@
     <label>Select All Questions: 
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Select All</button>
     </label>  
+  </div>  
+</form>
+<br>
+
+<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Delete Data from the Database</h4>
   </div>
-  
+  <div>
+    <label>Select time from: <input class="form-control" type="date" name="start_date"></label>
+    <label>to: <input class="form-control" type="date" name="end_date"></label>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+  </div>  
 </form>
 <br>
 
