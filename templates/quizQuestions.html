@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Record{% endblock %}
+{% block title %}Quiz Detail{% endblock %}
 
 {% block content %} 
 <div class="container" style="margin-left: 0;">
   <h3><a href="/quiz_detail">QuizQuestions</a></h3>
   <p>
       This page is used to manage the QuizQuestions table. Normally, the information of this table should come from the customer
-      facing website. Each time a user took a quiz, all the questions of that quiz will be inserted into this table.
-      For using this page, admin can check the detail of a particular quiz if something went wrong.
-      Also, for the purpose of statistic, the admin staff can calculate the rate of correctness for each question.
+      facing website. Each time a user took a quiz, questions of that quiz will be inserted into this table.
+      On this page, the admin staff can check the detail of a particular quiz.
+      Also, for the purpose of statistic, they can calculate the accuracy of each question.
   </p>   
 </div>
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
@@ -24,7 +24,7 @@
 
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Calculate the Correctness of Questions</h4>
+    <h4>Calculate Accuracy of Questions</h4>
   </div>
   <div>
     <label>Select Question #: <input class="form-control" type="text" name="ques_id"></label>

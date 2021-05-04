@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Admin{% endblock %}
+{% block title %}Questions{% endblock %}
 
 {% block content %} 
 <div class="container" style="margin-left: 0;">
   <h3><a href="/ques">Questions</a></h3>
   <p>
-    This page is used to manage the Questions and QuestionChoices table. The QuestionChoices is an aided table for the questions
-    table based on 1NF principle. In this page, there is a form to insert a new question. Also, admin can search questions with
-    keywords. The table will display the searching result. For each row of data, admin can update/delete that question.
+    This page is used to manage the Questions and QuestionChoices table. The QuestionChoices is an aided table for the Questions
+    table based on 1NF principle. On this page, there is a form to insert a new question. Also, the admin staff can search questions with
+    keywords. The result table will display the searching result. For each row of data, the admin staff can update/delete that question.
   </p>   
 </div>
 <br>
-<form class="container" action="/admin" method="POST" style="margin-left: 0;">
+<form class="container" action="/ques" method="POST" style="margin-left: 0;">
   <div>
     <h4>Add a New Question</h4>
   </div>

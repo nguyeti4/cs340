@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Users{% endblock %}
 
 {% block content %}
     {% with messages = get_flashed_messages() %}
@@ -13,10 +13,10 @@
 <div class="container" style="margin-left: 0;">
     <h3><a href="/">Users</a></h3>
     <p>
-        This page is used to manage the Users table. Normally, user's information should come from the customer
-        facing website. But still, the admin staff can help to insert/update user's information for emergency.
-        Also they can select all users from the table to monitor the growth of website users.
-        To maintain the website, the admin staff also can freeze and close/delete some unusual users' account.
+        This page is used to manage the Users table. Normally, users' information should come from the customer
+        facing website. But still, the admin staff can insert/update a user's information manually.
+        Also they can select all from the table to monitor the growth of new users.
+        To maintain the website, the admin staff can also freeze or close(delete) unusual users' accounts.
     </p>   
 </div>
 
