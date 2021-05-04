@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
-# from db_connector import connect_to_database, execute_query
+from db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app.secret_key = "group19"
