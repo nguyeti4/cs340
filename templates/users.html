@@ -13,10 +13,12 @@
 <div class="container" style="margin-left: 0;">
     <h3><a href="/">Users</a></h3>
     <p>
-        This page is used to manage the Users table. Normally, users' information should come from the customer
-        facing website. But still, the admin staff can insert/update a user's information manually.
-        Also they can select all from the table to monitor the growth of new users.
-        To maintain the website, the admin staff can also freeze or close(delete) unusual users' accounts.
+        This page is used to manage the Users table. 
+        <ul>
+            <li>Normally, users' information should come from the customer facing website. But still, the admin staff can insert/update a user's information manually.</li>
+            <li>Also they can select all from the table to monitor the growth of new users.</li>
+            <li>To maintain the website, the admin staff can also freeze or close(delete) unusual users' accounts.</li>
+        </ul>   
     </p>   
 </div>
 
@@ -50,7 +52,8 @@
         <h4>User Data</h4>
     </div>
     <div class="form-group">
-        <label>From: <input class="form-control" type="date" name="select_date"></label> 
+        <label>From: <input class="form-control" type="date" name="start_date"></label> 
+        <label>To: <input class="form-control" type="date" name="end_date"></label>
     </div>
     <input class="btn btn-primary" type="submit" value="Choose">
 </form>
@@ -61,7 +64,7 @@
         <h4>Freeze/Close User Account</h4>
     </div>
     <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" placeholder="email">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </form>
@@ -85,8 +88,8 @@
         <th scope="row">1220</th>
         <td>Otto</td>
         <td>@mdo1234</td>
-        <td>2021-1-1</td>
         <td>otto@sample.com</td>
+        <td>2021-1-1</td>
         <td>True</td>
         <td><input class="btn btn-primary" type="submit" value="Deactivate"></td>
         <td><input class="btn btn-primary" type="submit" value="Close"></td>
