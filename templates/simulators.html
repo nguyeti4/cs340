@@ -2,64 +2,75 @@
 {% block title %}Sim_User{% endblock %}
 
 {% block content %} 
-<form action="#" method="post">
-<h1>Hi, this is your DMV simulator page</h1>
-<p>What scenario you want to play?</p>
-<div class="scenario_dropdown">
-    <label for="exampleFormControlSelect1">Choose scenario</label>
-        <select name="scenario">
-          <option>Scenario 1</option>
-          <option>Scenario 2</option>
-          <option>Scenario 3</option>
-        </select>
+<div class="container" style="margin-left: 0;">
+  <h3><a href="/sim_user">Simulators</a></h3>
+  <p>
+      This page is used to manage the Simulators table. Normally, the information of this table should come from the customer
+      facing website. Each time a user plays the simulator, information on that simulator playthrough will be inserted into this table.
+      On this page, the admin staff can add scenarios to be played, they can search for the result of a particular 
+	  simulator playthrough, and they can remove a record of the playthrough.
+  </p>   
 </div>
-<div>
-  <input class="btn btn-primary" type="submit" value="Save">
-</div>
+
+<form class="container" action="/sim_user" method="POST" style="margin-left: 0;">
+  <div>
+    <h4>Add a Scenario</h4>
+  </div>
+  <div class="form-group">
+      <label>Scenario Description</label> 
+      <input class="form-control" type="text" name="scenario_desc">
+  </div>
+  
+  <input class="btn btn-primary" type="submit" value="Add">
 </form>
 
+<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Search for a scenario record</h4>
+  </div>
+  <div>
+    <label>Result_ID: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+    <div>
+    <label>User_ID: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+    <div>
+    <label>Grading: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+    <div>
+    <label>Play Date: <input class="form-control" type="date" name="regis_date"></label>
+  </div> 
+    <div>
+    <label>Scenario Name: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
 
+<!-- populate the searching result as a table here -->
+<!-- on the right side of each row, there will be two buttons, update or delete -->
+<table class="container" class="table table-striped" style="margin-left: 0;">
+  <div>
+    <h4>Update/Delete scenario record</h4>
+  </div>
+  <thead>
+    <tr>
+      <th scope="col">Result ID#</th>
+      <th scope="col">User ID#</th>
+      <th scope="col">Grading</th>
+      <th scope="col">Play date</th>
+      <th scope="col">Scenario Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">911</th>
+      <td>119</td>
+      <td>1</td>
+      <td>04/27/2021</td>
+      <td>Freeway</td>
 
-<script>
-var myGamePiece;
-
-function startGame() {
-  myGameArea.start();
-  myGamePiece = new component(40, 40, "red", 500, 375);
-}
-
-var myGameArea = {
-  canvas : document.createElement("canvas"),
-  start : function() {
-    this.canvas.width = 1000;
-    this.canvas.height = 500;
-    this.context = this.canvas.getContext("2d");
-    document.body.insertBefore(this.canvas, document.body.childNodes[9]);
-	this.interval = setInterval(updateGameArea, 20);
-  },
-  clear : function() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-}
-
-function component(width, height, color, x, y) {
-  this.width = width;
-  this.height = height;
-  this.x = x;
-  this.y = y;
-  this.update = function(){
-  ctx = myGameArea.context;
-  ctx.fillStyle = color;
-  ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-}
-
-function updateGameArea() {
-  myGameArea.clear();
-  myGamePiece.update();
-}
-</script>
-
-
-
+      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}

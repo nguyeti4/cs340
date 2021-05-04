@@ -2,25 +2,68 @@
 {% block title %}Quiz_User{% endblock %}
 
 {% block content %} 
-<form action="/quiz" method="POST">
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">Choose state</label>
-        <select name="state">
-          <option>California</option>
-          <option>Oregon</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">How many questions you want to practice</label>
-        <select name="number">
-          <option>10</option>
-          <option>15</option>
-          <option>20</option>
-        </select>
-    </div>
+<div class="container" style="margin-left: 0;">
+  <h3><a href="/quiz_user">QuizRecords</a></h3>
+  <p>
+      This page is used to manage the QuizRecords table. Normally, the information of this table should come from the customer
+      facing website. Each time a user took a quiz, results of that quiz will be inserted into this table.
+      On this page, the admin staff can check the detail of a particular quiz result as well as remove it from the table .
+  
+  </p>   
+</div>
+
+<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Search for a Quiz detail</h4>
+  </div>
+  <div>
+    <label>Quiz_ID: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
     <div>
-        <input class="btn btn-primary" type="submit" value="Start the quiz">
-    </div>
+    <label>User_ID: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+    <div>
+    <label>Quiz_Date: <input class="form-control" type="date" name="regis_date"></label>
+  </div> 
+    <div>
+    <label>Quiz_State: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+    <div>
+    <label>Quiz_Score: <input class="form-control" type="text" name="quiz_id"></label>
+  </div> 
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
+
+
+
+<!-- populate the searching result as a table here -->
+<!-- on the right side of each row, there will be two buttons, update or delete -->
+<table class="container" class="table table-striped" style="margin-left: 0;">
+  <div>
+    <h4>Update/Delete quiz record</h4>
+  </div>
+  <thead>
+    <tr>
+      <th scope="col">Quiz ID#</th>
+      <th scope="col">User ID#</th>
+      <th scope="col">Quiz Date</th>
+      <th scope="col">Quiz State</th>
+      <th scope="col">Quiz Score</th>
+ 
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">101</th>
+      <td>122</td>
+      <td>03/28/2021</td>
+      <td>California</td>
+	  <td>75</td>
+ 
+      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+    </tr>
+  </tbody>
+</table>
 
 {% endblock %}
