@@ -5,31 +5,57 @@
 <div class="container" style="margin-left: 0;">
   <h3><a href="/quiz_user">QuizRecords</a></h3>
   <p>
-      This page is used to manage the QuizRecords table. Normally, the information of this table should come from the customer
-      facing website. Each time a user took a quiz, results of that quiz will be inserted into this table.
-      On this page, the admin staff can check the detail of a particular quiz result as well as remove it from the table .
-  
+      This page is used to manage the QuizRecords table. 
+	<ul>
+	  <li>Normally, the information of this table should come from the customer facing website, but admins can manually insert the result of a quiz. </li>
+	  <li>Each time a user took a quiz, results of that quiz will be inserted into this table.</li>
+      <li>On this page, the admin staff can insert a quiz record into the table, search for a particular quiz result as well, and delete a record from the table. </li>
+	</ul>
   </p>   
 </div>
 
+<form class="container" action="quiz_user" method="POST" style="margin-left: 0;">
+    <div>
+        <h4>Add a Quiz record Manually</h4>
+    </div>
+    <div class="form-group">
+        <label>User ID</label> 
+        <input class="form-control" type="number" name="user_id">
+    </div>
+    <div class="form-group">
+        <label>Quiz Date</label> 
+        <input class="form-control" type="date" name="quiz_date">
+    </div>
+    <div class="form-group">
+        <label>Quiz State</label> 
+        <input class="form-control" type="text" name="quiz_state">
+    </div>
+    <div class="form-group">
+        <label>Quiz Score</label> 
+        <input class="form-control" type="number" name="quiz_score">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add">
+</form>
+
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Search for a Quiz detail</h4>
+    <h4>Search for a Quiz record</h4>
+	<p>(If you leave all the search fields empty, all records from the table will be displayed in the section below.)</p>
   </div>
   <div>
-    <label>Quiz_ID: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Quiz_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
     <div>
-    <label>User_ID: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>User_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
     <div>
-    <label>Quiz_Date: <input class="form-control" type="date" name="regis_date"></label>
+    <label>Quiz_Date (Optional): <input class="form-control" type="date" name="regis_date"></label>
   </div> 
     <div>
-    <label>Quiz_State: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Quiz_State (Optional): <input class="form-control" type="text" name="quiz_id"></label>
   </div> 
     <div>
-    <label>Quiz_Score: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Quiz_Score (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>

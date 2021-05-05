@@ -5,43 +5,58 @@
 <div class="container" style="margin-left: 0;">
   <h3><a href="/sim_user">Simulators</a></h3>
   <p>
-      This page is used to manage the Simulators table. Normally, the information of this table should come from the customer
-      facing website. Each time a user plays the simulator, information on that simulator playthrough will be inserted into this table.
-      On this page, the admin staff can add scenarios to be played, they can search for the result of a particular 
-	  simulator playthrough, and they can remove a record of the playthrough.
+      This page is used to manage the Simulators table.
+	<ul>  
+	  <li>Normally, the information of this table should come from the customer facing website, but admins can manually insert user play info. </li>
+	  <li>Each time a user plays the simulator, information on that simulator playthrough will be inserted into this table.</li>
+      <li>On this page, the admin staff can insert playthrough info into the table, they can search for the result of a particular 
+	  simulator playthrough, and they can remove a record of the playthrough.</li>
+	</ul>
   </p>   
 </div>
 
 <form class="container" action="/sim_user" method="POST" style="margin-left: 0;">
-  <div>
-    <h4>Add a Scenario</h4>
-  </div>
-  <div class="form-group">
-      <label>Scenario Description</label> 
-      <input class="form-control" type="text" name="scenario_desc">
-  </div>
-  
-  <input class="btn btn-primary" type="submit" value="Add">
+    <div>
+        <h4>Add scenario result Manually</h4>
+    </div>
+    <div class="form-group">
+        <label>User ID</label> 
+        <input class="form-control" type="number" name="user_id">
+    </div>
+    <div class="form-group">
+        <label>Grade</label> 
+        <input class="form-control" type="number" name="grade">
+    </div>
+    <div class="form-group">
+        <label>Play date</label> 
+        <input class="form-control" type="date" name="play_date">
+    </div>
+    <div class="form-group">
+        <label>Scenario</label> 
+        <input class="form-control" type="text" name="scenario">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add">
 </form>
 
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Search for a scenario record</h4>
+	<p>(If you leave all the search fields empty, all records from the table will be displayed in the section below)</p>
   </div>
   <div>
-    <label>Result_ID: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Result_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
     <div>
-    <label>User_ID: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>User_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
     <div>
-    <label>Grading: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Grading (Optional): <input class="form-control" type="number" name="quiz_id"></label>
   </div> 
     <div>
-    <label>Play Date: <input class="form-control" type="date" name="regis_date"></label>
+    <label>Play Date (Optional): <input class="form-control" type="date" name="regis_date"></label>
   </div> 
     <div>
-    <label>Scenario Name: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Scenario Name (Optional): <input class="form-control" type="text" name="quiz_id"></label>
   </div> 
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
