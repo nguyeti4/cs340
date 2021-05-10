@@ -40,8 +40,7 @@ CREATE TABLE `Users` (
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `bsg_cert` DISABLE KEYS */;
 INSERT INTO `Users` 
-VALUES 
-(1,'Raptor'),(2,'Viper'),(3,'Mechanic'),(4,'Command');
+VALUES (1,'Jing','ABC','zhenjing@oregonstate.edu',09-05-2021,0),(2,'Tim','ACK','nguyeti4@oregonstate.edu',06-09-2021,0),(3,'Dave','PASS','darnie@oregonstate.edu',11-01-2021,0);
 /*!40000 ALTER TABLE `bsg_cert` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +68,8 @@ CREATE TABLE `Simulators` (
 
 LOCK TABLES `Simulators` WRITE;
 /*!40000 ALTER TABLE `bsg_cert_people` DISABLE KEYS */;
+INSERT INTO `Simulators`
+VALUES (1,1,1,09-05-2021,'Freeway'),(2,2,1,06-09-2021,'Intersection'),(3,3,1,11-01-2021,'Parking');
 /*!40000 ALTER TABLE `bsg_cert_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +97,7 @@ CREATE TABLE `Quiz_Records` (
 
 LOCK TABLES `Quiz_Records` WRITE;
 /*!40000 ALTER TABLE `bsg_people` DISABLE KEYS */;
-INSERT INTO `Quiz_Records` VALUES (6,'Saul','Tigh',NULL,71,'Human'),(9,'Callandra','Henderson',NULL,NULL,'Human'),(121,'harry','goober',18,23,'Human'),(156,'','',1,0,'Human'),(157,'','',3,0,'Human'),(158,'The','Man',16,22,'Human');
+INSERT INTO `Quiz_Records` VALUES (1,1,09-05-2021,'California',100),(2,2,06-09-2021,'Oregon',90),(3,3,11-01-2021,'California',85);
 /*!40000 ALTER TABLE `bsg_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
