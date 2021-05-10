@@ -57,10 +57,9 @@ CREATE TABLE `Simulators` (
   `user_id` int(11) NOT NULL,
   `grading` bool NOT NULL,
   `play_date` date NOT NULL,
-  scenario_name varchar(20),
+  `scenario_name` varchar(20),
   PRIMARY KEY (`result_id`),
   CONSTRAINT `ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
-  --CONSTRAINT `bsg_cert_people_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `bsg_people` (`character_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
