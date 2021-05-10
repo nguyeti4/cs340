@@ -59,7 +59,7 @@ CREATE TABLE `Simulators` (
   `play_date` date NOT NULL,
   `scenario_name` varchar(20),
   PRIMARY KEY (`result_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+  FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
