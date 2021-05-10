@@ -27,8 +27,8 @@ CREATE TABLE `Users` (
 `user_name` varchar(20) NOT NULL,
 `user_password` varchar(20) NOT NULL,
 `user_email` varchar(20) NOT NULL,
-`regis_date` date NOT NULL
-`active` bool 
+`regis_date` date NOT NULL,
+`active` bool, 
  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
