@@ -59,7 +59,7 @@ CREATE TABLE `Simulators` (
   `play_date` date NOT NULL,
   scenario_name varchar(20)
   PRIMARY KEY (`result_id`),
-  --CONSTRAINT `bsg_cert_people_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `bsg_cert` (`certification_id`),
+  CONSTRAINT `ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   --CONSTRAINT `bsg_cert_people_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `bsg_people` (`character_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -87,7 +87,7 @@ CREATE TABLE `Quiz_Records` (
   `quiz_state` varchar(20) NOT NULL,
   `quiz_score` int(11) NOT NULL,
   PRIMARY KEY (`quiz_id`),
-  --CONSTRAINT `bsg_people_ibfk_1` FOREIGN KEY (`homeworld`) REFERENCES `bsg_planets` (`planet_id`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -114,6 +114,8 @@ CREATE TABLE `QuizQuestions` (
   `question_id` int(11) DEFAULT NULL,
   `result` bool NOT NULL,
   PRIMARY KEY (`id`),
+  CONSTRAINT `ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_Records` (`quiz_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,7 +167,8 @@ CREATE TABLE `QuestionChoices` (
   `choice_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
   `choice_desc` TEXT(255) NOT NULL,
-  PRIMARY KEY (`choice_id`)
+  PRIMARY KEY (`choice_id`),
+  CONSTRAINT `ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
