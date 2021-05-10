@@ -110,7 +110,7 @@ DROP TABLE IF EXISTS `QuizQuestions`;
 CREATE TABLE `QuizQuestions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quiz_id` int(11) NOT NULL,
-  `question_id` int(11) DEFAULT NULL,
+  `question_id` int(11) NOT NULL,
   `result` bool NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_Records` (`quiz_id`),
