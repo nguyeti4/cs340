@@ -23,9 +23,13 @@ DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Users` (
-  `certification_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY (`certification_id`)
+`user_id` int(11) NOT NULL AUTO_INCREMENT,
+`user_name` varchar(20) NOT NULL,
+`user_password` varchar(20) NOT NULL,
+`user_email` varchar(20) NOT NULL,
+`regis_date` date NOT NULL
+`active` bool 
+ PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,113 +46,136 @@ VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `bsg_cert_people`
+-- Table structure for table `Simulators`
 --
 
-DROP TABLE IF EXISTS `bsg_cert_people`;
+DROP TABLE IF EXISTS `Simulators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bsg_cert_people` (
-  `cid` int(11) NOT NULL DEFAULT '0',
-  `pid` int(11) NOT NULL DEFAULT '0',
-  `certification_date` date NOT NULL,
-  PRIMARY KEY (`cid`,`pid`),
-  KEY `pid` (`pid`),
-  CONSTRAINT `bsg_cert_people_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `bsg_cert` (`certification_id`),
-  CONSTRAINT `bsg_cert_people_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `bsg_people` (`character_id`)
+CREATE TABLE `Simulators` (
+  `result_id` int(11) NOT AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `grading` bool NOT NULL,
+  `play_date` date NOT NULL,
+  scenario_name varchar(20)
+  PRIMARY KEY (`result_id`),
+  --CONSTRAINT `bsg_cert_people_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `bsg_cert` (`certification_id`),
+  --CONSTRAINT `bsg_cert_people_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `bsg_people` (`character_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bsg_cert_people`
+-- Dumping data for table `Simulators`
 --
 
-LOCK TABLES `bsg_cert_people` WRITE;
+LOCK TABLES `Simulators` WRITE;
 /*!40000 ALTER TABLE `bsg_cert_people` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bsg_cert_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bsg_people`
+-- Table structure for table `Quiz_Records`
 --
 
-DROP TABLE IF EXISTS `bsg_people`;
+DROP TABLE IF EXISTS `Quiz_Records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bsg_people` (
-  `character_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(255) NOT NULL,
-  `lname` varchar(255) DEFAULT NULL,
-  `homeworld` int(11) DEFAULT NULL,
-  `age` int(11) DEFAULT NULL,
-  `race` varchar(5) NOT NULL DEFAULT 'Human',
-  PRIMARY KEY (`character_id`),
-  KEY `homeworld` (`homeworld`),
-  CONSTRAINT `bsg_people_ibfk_1` FOREIGN KEY (`homeworld`) REFERENCES `bsg_planets` (`planet_id`) ON DELETE SET NULL ON UPDATE CASCADE
+CREATE TABLE `Quiz_Records` (
+  `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `quiz_date` date NOT NULL,
+  `quiz_state` varchar(20) NOT NULL,
+  `quiz_score` int(11) NOT NULL,
+  PRIMARY KEY (`quiz_id`),
+  --CONSTRAINT `bsg_people_ibfk_1` FOREIGN KEY (`homeworld`) REFERENCES `bsg_planets` (`planet_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bsg_people`
+-- Dumping data for table `Quiz_Records`
 --
 
-LOCK TABLES `bsg_people` WRITE;
+LOCK TABLES `Quiz_Records` WRITE;
 /*!40000 ALTER TABLE `bsg_people` DISABLE KEYS */;
-INSERT INTO `bsg_people` VALUES (6,'Saul','Tigh',NULL,71,'Human'),(9,'Callandra','Henderson',NULL,NULL,'Human'),(121,'harry','goober',18,23,'Human'),(156,'','',1,0,'Human'),(157,'','',3,0,'Human'),(158,'The','Man',16,22,'Human');
+INSERT INTO `Quiz_Records` VALUES (6,'Saul','Tigh',NULL,71,'Human'),(9,'Callandra','Henderson',NULL,NULL,'Human'),(121,'harry','goober',18,23,'Human'),(156,'','',1,0,'Human'),(157,'','',3,0,'Human'),(158,'The','Man',16,22,'Human');
 /*!40000 ALTER TABLE `bsg_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bsg_planets`
+-- Table structure for table `QuizQuestions`
 --
 
-DROP TABLE IF EXISTS `bsg_planets`;
+DROP TABLE IF EXISTS `QuizQuestions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bsg_planets` (
-  `planet_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `population` bigint(20) DEFAULT NULL,
-  `language` varchar(255) DEFAULT NULL,
-  `capital` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`planet_id`),
-  UNIQUE KEY `name` (`name`)
+CREATE TABLE `QuizQuestions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `result` bool NOT NULL,
+  PRIMARY KEY (`id`),
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bsg_planets`
+-- Dumping data for table `QuizQuestions`
 --
 
-LOCK TABLES `bsg_planets` WRITE;
+LOCK TABLES `QuizQuestions` WRITE;
 /*!40000 ALTER TABLE `bsg_planets` DISABLE KEYS */;
-INSERT INTO `bsg_planets` VALUES (1,'Gemenon',2800000000,'Old Gemenese','Oranu'),(2,'Leonis',2600000000,'Leonese','Luminere'),(3,'Caprica',4900000000,'Caprican','Caprica City'),(7,'Sagittaron',1700000000,NULL,'Tawa'),(16,'Aquaria',25000,NULL,NULL),(17,'Canceron',6700000000,NULL,'Hades'),(18,'Libran',2100000,NULL,NULL),(19,'Picon',1400000000,NULL,'Queestown'),(20,'Scorpia',450000000,NULL,'Celeste'),(21,'Tauron',2500000000,'Tauron','Hypatia'),(22,'Virgon',4300000000,NULL,'Boskirk');
+INSERT INTO `QuizQuestions` VALUES (1,'Gemenon',2800000000,'Old Gemenese','Oranu'),(2,'Leonis',2600000000,'Leonese','Luminere'),(3,'Caprica',4900000000,'Caprican','Caprica City'),(7,'Sagittaron',1700000000,NULL,'Tawa'),(16,'Aquaria',25000,NULL,NULL),(17,'Canceron',6700000000,NULL,'Hades'),(18,'Libran',2100000,NULL,NULL),(19,'Picon',1400000000,NULL,'Queestown'),(20,'Scorpia',450000000,NULL,'Celeste'),(21,'Tauron',2500000000,'Tauron','Hypatia'),(22,'Virgon',4300000000,NULL,'Boskirk');
 /*!40000 ALTER TABLE `bsg_planets` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bsg_spaceship`
+-- Table structure for table `Questions`
 --
 
-DROP TABLE IF EXISTS `bsg_spaceship`;
+DROP TABLE IF EXISTS `Questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bsg_spaceship` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `seperate_saucer_section` bit(1) DEFAULT b'0',
-  `length` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `Questions` (
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `state` int(11) NOT NULL,
+  `question_desc` TEXT(255),
+  `question_right_answer` TEXT(255) NOT NULL,
+  PRIMARY KEY (`question_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bsg_spaceship`
+-- Dumping data for table `Questions`
 --
 
-LOCK TABLES `bsg_spaceship` WRITE;
+LOCK TABLES `Questions` WRITE;
 /*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
-INSERT INTO `bsg_spaceship` VALUES (1,'t1','',0),(2,'t2','',0),(3,'t2','',0),(4,'t3','',0),(5,'t4','\0',0),(6,'t5','',0);
+INSERT INTO `Questions` VALUES (1,'t1','',0),(2,'t2','',0),(3,'t2','',0),(4,'t3','',0),(5,'t4','\0',0),(6,'t5','',0);
+/*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `QuestionChoices`
+--
+
+DROP TABLE IF EXISTS `QuestionChoices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `QuestionChoices` (
+  `choice_id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
+  `choice_desc` TEXT(255) NOT NULL,
+  PRIMARY KEY (`choice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `QuizChoices`
+--
+
+LOCK TABLES `QuestionChoices` WRITE;
+/*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
+INSERT INTO `QuestionChoices` VALUES (1,'t1','',0),(2,'t2','',0),(3,'t2','',0),(4,'t3','',0),(5,'t4','\0',0),(6,'t5','',0);
 /*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
