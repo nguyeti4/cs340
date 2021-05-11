@@ -1,15 +1,19 @@
 -- ":" used to denote variables that will be input by the user
 
 /********************************************************
-Certifications
+Simulators Page
 ********************************************************/
 -- used in the certification page to display all Certifications
 -- used in the people page to populate the certs in the people filter
 -- and the form to add new people
-SELECT * FROM bsg_cert;
 
 -- used in the certification page to add new Certifications
-INSERT INTO bsg_cert(title) values (:certname);
+INSERT INTO Simulators(user_id,grade,play_date,scenario) values
+(:id, :score, :date, :scenario);
+
+SELECT * FROM Simulators WHERE result_id = (:res_id) OR user_id = (:user_id) OR grade = (:grading) OR play_date = (:p_date) OR scenario_name = (:scene)
+
+
 
 /********************************************************
 People Page
