@@ -40,7 +40,10 @@ CREATE TABLE `Users` (
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `bsg_cert` DISABLE KEYS */;
 INSERT INTO `Users` 
-VALUES (1,'Jing','ABC','zhenjing@oregonstate.edu',09-05-2021,0),(2,'Tim','ACK','nguyeti4@oregonstate.edu',06-09-2021,0),(3,'Dave','PASS','darnie@oregonstate.edu',11-01-2021,0);
+VALUES 
+(1,'Jing','ABC','zhenjing@oregonstate.edu',09-05-2021,0),
+(2,'Tim','ACK','nguyeti4@oregonstate.edu',06-09-2021,0),
+(3,'Dave','PASS','darnie@oregonstate.edu',11-01-2021,0);
 /*!40000 ALTER TABLE `bsg_cert` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +72,9 @@ CREATE TABLE `Simulators` (
 LOCK TABLES `Simulators` WRITE;
 /*!40000 ALTER TABLE `bsg_cert_people` DISABLE KEYS */;
 INSERT INTO `Simulators`
-VALUES (1,1,1,09-05-2021,'Freeway'),(2,2,1,06-09-2021,'Intersection'),(3,3,1,11-01-2021,'Parking');
+VALUES (1,1,1,09-05-2021,'Freeway'),
+(2,2,1,06-09-2021,'Intersection'),
+(3,3,1,11-01-2021,'Parking');
 /*!40000 ALTER TABLE `bsg_cert_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,36 +102,12 @@ CREATE TABLE `Quiz_Records` (
 
 LOCK TABLES `Quiz_Records` WRITE;
 /*!40000 ALTER TABLE `bsg_people` DISABLE KEYS */;
-INSERT INTO `Quiz_Records` VALUES (1,1,09-05-2021,'California',100),(2,2,06-09-2021,'Oregon',90),(3,3,11-01-2021,'California',85);
+INSERT INTO `Quiz_Records` 
+VALUES 
+(1,1,09-05-2021,'California',100),
+(2,2,06-09-2021,'Oregon',90),
+(3,3,11-01-2021,'California',85);
 /*!40000 ALTER TABLE `bsg_people` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `QuizQuestions`
---
-
-DROP TABLE IF EXISTS `QuizQuestions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `QuizQuestions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `quiz_id` int(11) NOT NULL,
-  `question_id` int(11) NOT NULL,
-  `result` bool NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_Records` (`quiz_id`),
-  FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) 
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `QuizQuestions`
---
-
-LOCK TABLES `QuizQuestions` WRITE;
-/*!40000 ALTER TABLE `bsg_planets` DISABLE KEYS */;
-INSERT INTO `QuizQuestions` VALUES (1,'Gemenon',2800000000,'Old Gemenese','Oranu'),(2,'Leonis',2600000000,'Leonese','Luminere'),(3,'Caprica',4900000000,'Caprican','Caprica City'),(7,'Sagittaron',1700000000,NULL,'Tawa'),(16,'Aquaria',25000,NULL,NULL),(17,'Canceron',6700000000,NULL,'Hades'),(18,'Libran',2100000,NULL,NULL),(19,'Picon',1400000000,NULL,'Queestown'),(20,'Scorpia',450000000,NULL,'Celeste'),(21,'Tauron',2500000000,'Tauron','Hypatia'),(22,'Virgon',4300000000,NULL,'Boskirk');
-/*!40000 ALTER TABLE `bsg_planets` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -138,7 +119,7 @@ DROP TABLE IF EXISTS `Questions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Questions` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
-  `state` int(11) NOT NULL,
+  `state` varchar(100) NOT NULL,
   `question_desc` TEXT(255),
   `question_right_answer` TEXT(255) NOT NULL,
   PRIMARY KEY (`question_id`)
@@ -151,7 +132,11 @@ CREATE TABLE `Questions` (
 
 LOCK TABLES `Questions` WRITE;
 /*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
-INSERT INTO `Questions` VALUES (1,'t1','',0),(2,'t2','',0),(3,'t2','',0),(4,'t3','',0),(5,'t4','\0',0),(6,'t5','',0);
+INSERT INTO Questions (state, question_desc, question_right_answer)
+VALUES
+('Universal','You may cross double yellow lines to pass another vehicle if the:', 'Yellow line next to your side of the road is broken.'),
+('California','Any amount of alcohol in the blood may affect a driver:', 'Judgment and physical coordination.'),
+('Oregon','Backing your vehicle is:','Always dangerous.');
 /*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -178,10 +163,54 @@ CREATE TABLE `QuestionChoices` (
 
 LOCK TABLES `QuestionChoices` WRITE;
 /*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
-INSERT INTO `QuestionChoices` VALUES (1,'t1','',0),(2,'t2','',0),(3,'t2','',0),(4,'t3','',0),(5,'t4','\0',0),(6,'t5','',0);
+INSERT INTO `QuestionChoices` (question_id, choice_desc)
+VALUES (7, 'Vehicle in front of you moves to the right to let you pass.'),
+(7, 'Yellow line next to your side of the road is broken.'),
+(7, 'Yellow line next to the opposite side of the road is broken.'),
+(8, 'Right-of-way privileges.'),
+(8, 'Judgment and physical coordination.'),
+(8, 'Knowledge.'),
+(9, 'Always dangerous.'),
+(9, 'Dangerous if you have a helper.'),
+(9, 'Only dangerous in large vehicles.');
 /*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+--
+-- Table structure for table `QuizQuestions`
+--
+
+DROP TABLE IF EXISTS `QuizQuestions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `QuizQuestions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `result` bool NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_Records` (`quiz_id`),
+  FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) 
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `QuizQuestions`
+--
+
+LOCK TABLES `QuizQuestions` WRITE;
+/*!40000 ALTER TABLE `bsg_planets` DISABLE KEYS */;
+INSERT INTO `QuizQuestions` (quiz_id, question_id, result)
+VALUES (1, 7, 1),
+(1, 8, 1),
+(2, 7, 1),
+(2, 8, 0),
+(3, 7, 0),
+(3, 9, 1);
+/*!40000 ALTER TABLE `bsg_planets` ENABLE KEYS */;
+UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
