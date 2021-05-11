@@ -7,12 +7,17 @@ Simulators Page
 -- used in the people page to populate the certs in the people filter
 -- and the form to add new people
 
--- used in the certification page to add new Certifications
+-- used in the simulator page to add new sim records
 INSERT INTO Simulators(user_id,grade,play_date,scenario) values
-(:id, :score, :date, :scenario);
+(:id, :score, :date, :scenario)
 
-SELECT * FROM Simulators WHERE result_id = (:res_id) OR user_id = (:user_id) OR grade = (:grading) OR play_date = (:p_date) OR scenario_name = (:scene)
+--used to display the search results for a sim record
+SELECT * FROM Simulators WHERE result_id = (:res_id) AND user_id = (:user_id) AND grade = (:grading) AND play_date = (:p_date) AND scenario_name = (:scene)
 
+--D(elete)
+--used to delete a sim record that was searched from the previous query
+DELETE FROM Simulators WHERE result_id IN 
+(SELECT result_id FROM Simulators WHERE result_id = (:res_id) AND user_id = (:user_id) AND grade = (:grading) AND play_date = (:p_date) AND scenario_name = (:scene))
 
 
 /********************************************************
