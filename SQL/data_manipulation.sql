@@ -28,6 +28,39 @@ where user_id in (
     where user_email=:emailInput;
 );
 
+--Simulator Page
+--add a new Record
+Insert into Simulators (user_id, grade, play_date, scenario)
+Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
+
+--Lookup Simulator record
+Select * from Simulators
+where result_id = :resultInput AND user_id = :userInput AND grading = :gradingInput AND play_date = :playInput AND Scenario = :scenInput;
+
+--Delete the Seacrhed Record
+Delete * from Users 
+where result_id in (
+    Select result_id from Simulators
+    where result_id = :resultInput AND user_id = :userInput AND grading = :gradingInput AND play_date = :playInput AND Scenario = :scenInput;
+)
+
+--QuizRecords Page
+--add a new Record
+Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
+Values (:useInput, :quizInput, :stateInput, :scoreInput);
+
+--Lookup Quiz record
+Select * from QuizRecords
+where quiz_id = :qInput AND user_id = :uInput AND grading = :gInput AND play_date = :pInput AND Scenario = :sInput;
+
+--Delete the Searched Record
+Delete * from Users 
+where quiz_id in (
+    Select * from QuizRecords
+    where quiz_id = :qInput AND user_id = :uInput AND grading = :gInput AND play_date = :pInput AND Scenario = :sInput;
+)
+
+
 -- get all Planet IDs and Names to populate the Homeworld dropdown
 SELECT planet_id, name FROM bsg_planets
 
