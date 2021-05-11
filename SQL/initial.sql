@@ -1,6 +1,6 @@
 -- MySQL dump 10.16  Distrib 10.1.37-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: bsg
+-- Host: classmysql.engr.oregonstate.edu    Database: cs340_
 -- ------------------------------------------------------
 -- Server version	10.1.37-MariaDB
 
@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `User`
+-- Table structure for table `Users`
 --
 
 DROP TABLE IF EXISTS `Users`;
@@ -30,7 +30,7 @@ CREATE TABLE `Users` (
 `regis_date` date NOT NULL,
 `active` bool, 
  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,11 +41,15 @@ LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `bsg_cert` DISABLE KEYS */;
 INSERT INTO `Users` 
 VALUES 
-(1,'Jing','ABC','zhenjing@oregonstate.edu',09-05-2021,0),
-(2,'Tim','ACK','nguyeti4@oregonstate.edu',06-09-2021,0),
-(3,'Dave','PASS','darnie@oregonstate.edu',11-01-2021,0);
+(1,'Jing','ABC','zhenjing@oregonstate.edu',2020-05-09,1),
+(2,'Tim','ACK','nguyeti4@oregonstate.edu',2020-12-09,1),
+(3,'Dave','PASS','darnie@oregonstate.edu',2021-01-01,1);
 /*!40000 ALTER TABLE `bsg_cert` ENABLE KEYS */;
 UNLOCK TABLES;
+-- DATE - format YYYY-MM-DD
+UPDATE Users 
+Set regis_date = '2020-05-09'
+where user_id = 1;
 
 --
 -- Table structure for table `Simulators`
@@ -62,8 +66,9 @@ CREATE TABLE `Simulators` (
   `scenario_name` varchar(20),
   PRIMARY KEY (`result_id`),
   FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+-- Bool 1-True, 0-False
 
 --
 -- Dumping data for table `Simulators`
@@ -72,9 +77,9 @@ CREATE TABLE `Simulators` (
 LOCK TABLES `Simulators` WRITE;
 /*!40000 ALTER TABLE `bsg_cert_people` DISABLE KEYS */;
 INSERT INTO `Simulators`
-VALUES (1,1,1,09-05-2021,'Freeway'),
-(2,2,1,06-09-2021,'Intersection'),
-(3,3,1,11-01-2021,'Parking');
+VALUES (1,1,1,2020-09-05,'Freeway'),
+(2,2,1,2020-06-09,'Intersection'),
+(3,3,1,2019-11-01,'Parking');
 /*!40000 ALTER TABLE `bsg_cert_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,10 +87,11 @@ UNLOCK TABLES;
 -- Table structure for table `Quiz_Records`
 --
 
-DROP TABLE IF EXISTS `Quiz_Records`;
+-- changed the table name to match our schema.
+DROP TABLE IF EXISTS `QuizRecords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Quiz_Records` (
+CREATE TABLE `QuizRecords` (
   `quiz_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `quiz_date` date NOT NULL,
@@ -93,20 +99,20 @@ CREATE TABLE `Quiz_Records` (
   `quiz_score` int(11) NOT NULL,
   PRIMARY KEY (`quiz_id`),
   FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) 
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Quiz_Records`
 --
 
-LOCK TABLES `Quiz_Records` WRITE;
+LOCK TABLES `QuizRecords` WRITE;
 /*!40000 ALTER TABLE `bsg_people` DISABLE KEYS */;
-INSERT INTO `Quiz_Records` 
+INSERT INTO `QuizRecords` (quiz_id, user_id, quiz_date, quiz_state, quiz_score)
 VALUES 
-(1,1,09-05-2021,'California',100),
-(2,2,06-09-2021,'Oregon',90),
-(3,3,11-01-2021,'California',85);
+(1,1,2019-09-05,'California',100),
+(2,2,2012-06-09,'Oregon',90),
+(3,3,2018-11-01,'California',85);
 /*!40000 ALTER TABLE `bsg_people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +129,7 @@ CREATE TABLE `Questions` (
   `question_desc` TEXT(255),
   `question_right_answer` TEXT(255) NOT NULL,
   PRIMARY KEY (`question_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +160,7 @@ CREATE TABLE `QuestionChoices` (
   `choice_desc` TEXT(255) NOT NULL,
   PRIMARY KEY (`choice_id`),
   FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) 
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,9 +197,9 @@ CREATE TABLE `QuizQuestions` (
   `question_id` int(11) NOT NULL,
   `result` bool NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_Records` (`quiz_id`),
+  FOREIGN KEY (`quiz_id`) REFERENCES `QuizRecords` (`quiz_id`),
   FOREIGN KEY (`question_id`) REFERENCES `Questions` (`question_id`) 
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
