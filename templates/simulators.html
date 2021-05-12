@@ -40,23 +40,20 @@
 
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Search for a scenario record</h4>
-	<p>(If you leave all the search fields empty, all records from the table will be displayed in the section below)</p>
-  </div>
+    <h4>Search for scenario records with the specified scenario name</h4>
+  </div> 
   <div>
-    <label>Result_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
+    <label>Scenario name: <input class="form-control" type="date" name="regis_date"></label>
   </div> 
-    <div>
-    <label>User_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+<form class="container2" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Search for scenario record(s) you want to delete that are older than the date you specify</h4>
   </div> 
-    <div>
-    <label>Grading (Optional): <input class="form-control" type="number" name="quiz_id"></label>
-  </div> 
-    <div>
+  <div>
     <label>Play Date (Optional): <input class="form-control" type="date" name="regis_date"></label>
-  </div> 
-    <div>
-    <label>Scenario Name (Optional): <input class="form-control" type="text" name="quiz_id"></label>
   </div> 
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
@@ -65,7 +62,7 @@
 <!-- on the right side of each row, there will be two buttons, update or delete -->
 <table class="container" class="table table-striped" style="margin-left: 0;">
   <div>
-    <h4>Update/Delete scenario record</h4>
+    <h4>Delete scenario record(s)</h4>
   </div>
   <thead>
     <tr>
@@ -83,9 +80,8 @@
       <td>1</td>
       <td>04/27/2021</td>
       <td>Freeway</td>
-
-      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
     </tr>
   </tbody>
+  <input class="btn btn-primary" type="submit" value="Delete All">	
 </table>
 {% endblock %}
