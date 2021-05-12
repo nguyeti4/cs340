@@ -121,29 +121,7 @@ where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
 
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- -- get all Planet IDs and Names to populate the Homeworld dropdown
--- SELECT planet_id, name FROM bsg_planets
+ 
 
 --Simulator Page
 --add a new Record
@@ -156,11 +134,11 @@ where Scenario = :scenInput;
 
 --Lookup Simulator records you want to delete
 Select * from Simulators
-where playdate = :play_from_update;
+where play_date <= :play_from_update;
 
---Delete the Searched Record
+--Delete the Searched quiz records that are older than play_date
 Delete * from Simulators 
-where playdate < :play_from_update
+where play_date < :play_from_update
 
 --QuizRecords Page
 --add a new Record
@@ -171,9 +149,10 @@ Values (:useInput, :quizInput, :stateInput, :scoreInput);
 Select * from QuizRecords where quiz_state = :State_input
 
 --Lookup all Quiz records by date
-Select * from QuizRecords where quiz_date < :quiz_delete_input
+Select * from QuizRecords 
+where quiz_date <= :quiz_delete_input
 
---Delete the Searched records that are older than specified date
+--Delete the Searched records that are older than quiz_date
 Delete * from QuizRecords
 where quiz_date < :quiz_delete_input
 
