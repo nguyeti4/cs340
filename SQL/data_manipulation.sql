@@ -9,7 +9,7 @@
 Insert into Users (user_name, user_password, user_email, regis_date)
 Values (:nameInput, :passInput, :emailInput, :dateInput);
 
--- Select user's information
+-- Select user's information  '2001-01-01', '2021-12-31' 
 -- test case: replace :startdateInput with '2001-01-01', :enddateInput with '2021-12-31'
 Select regis_date, COUNT(user_id) as new_customers
 from Users
@@ -33,7 +33,7 @@ WHERE user_id = :userid_from_update
 Delete from Users
 where user_id = (
     Select user_id from Users
-    where user_email=:email_from_update;
+    where user_email=:email_from_update
 );
 
 -- Quiz Detail Page
@@ -45,8 +45,8 @@ Values (:quiz_idInput, :ques_idInput, :resultInput);
 Select quiz_id, question_id, result from QuizQuestions
 where quiz_id=:quiz_idInput;
 
--- Calculate a particular question's accuracy
--- test case: replace :question_idInput with 7
+-- Calculate a particular question's accuracy 
+-- test case: replace :question_idInput with 1
 Select q.question_id, sum(qzqs.result) as total_score, COUNT(qzqs.question_id) as frequency, ( sum(qzqs.result) / COUNT(qzqs.question_id) ) as accuracy
 from QuizQuestions qzqs
 RIGHT JOIN Questions q on qzqs.question_id = q.question_id 
@@ -73,21 +73,36 @@ Begin transaction
     DECLARE @questionID int;
     insert into Questions (state, question_desc, question_right_answer)
     values (:stateInput, :descInput, :ansInput);
-    SELECT @questionID = ();
-    Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice1Input);
-    Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice2Input);
-    Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice3Input);
-    Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice4Input);
+    @questionID = (select max(question_id) from Questions);
+    IF (:choice1Input is not null)
+    Begin
+    True Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice1Input);
+    end
+    IF (:choice2Input is not null)
+    Begin
+    True Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice2Input);
+    end
+    IF (:choice3Input is not null)
+    Begin
+    True Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice3Input);
+    end
+    IF (:choice4Input is not null)
+    Begin
+    True Insert into QuestionChoices (question_id, choice_desc) VALUES (@questionID, :choice4Input);
+    end
 COMMIT
+
+
 
 -- Search questions by keywords
 Begin transaction
-    SELECT q.question_id, q.question_desc, q.question_right_answer from Questions q
-        where q.question_desc like '%keyword%';
+    SELECT * from Questions q
+        inner join QuestionChoices qc on q.question_id = qc.question_id
+        where q.question_desc like '%alcohol%';
     SELECT c.choice_id, c.question_id, c.choice_desc from QuestionChoices c
         where c.question_id in (
             SELECT q.question_id from Questions q
-            where q.question_desc like '%keyword%'
+            where q.question_desc like '%alcohol%'
         );
 COMMIT
 
