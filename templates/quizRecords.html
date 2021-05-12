@@ -39,34 +39,30 @@
 
 <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Search for a Quiz record</h4>
-	<p>(If you leave all the search fields empty, all records from the table will be displayed in the section below.)</p>
+    <h4>Search for a Quiz record</h4>	
   </div>
   <div>
-    <label>Quiz_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
-  </div> 
-    <div>
-    <label>User_ID (Optional): <input class="form-control" type="number" name="quiz_id"></label>
-  </div> 
-    <div>
-    <label>Quiz_Date (Optional): <input class="form-control" type="date" name="regis_date"></label>
-  </div> 
-    <div>
-    <label>Quiz_State (Optional): <input class="form-control" type="text" name="quiz_id"></label>
-  </div> 
-    <div>
-    <label>Quiz_Score (Optional): <input class="form-control" type="number" name="quiz_id"></label>
-  </div> 
+    <label>Quiz_State: <input class="form-control" type="text" name="quiz_id"></label>
+  </div>    
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 
+<form class="container2" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+  <div>
+    <h4>Search for Quiz records you want to delete that are older than the date specified</h4>	
+  </div>
+  <div>
+    <label>Quiz_Date: <input class="form-control" type="date" name="quiz_date"></label>
+  </div>    
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
 
 
 <!-- populate the searching result as a table here -->
 <!-- on the right side of each row, there will be two buttons, update or delete -->
 <table class="container" class="table table-striped" style="margin-left: 0;">
   <div>
-    <h4>Update/Delete quiz record</h4>
+    <h4>Delete quiz record</h4>
   </div>
   <thead>
     <tr>
@@ -75,8 +71,6 @@
       <th scope="col">Quiz Date</th>
       <th scope="col">Quiz State</th>
       <th scope="col">Quiz Score</th>
- 
-      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -85,11 +79,9 @@
       <td>122</td>
       <td>03/28/2021</td>
       <td>California</td>
-	  <td>75</td>
- 
-      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+      <td>75</td>    
     </tr>
   </tbody>
 </table>
-
+<input class="btn btn-primary" type="submit" value="Delete All">
 {% endblock %}
