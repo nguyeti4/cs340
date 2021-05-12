@@ -129,6 +129,7 @@ where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
 -- -- get all Planet IDs and Names to populate the Homeworld dropdown
 -- SELECT planet_id, name FROM bsg_planets
+
 --Simulator Page
 --add a new Record
 Insert into Simulators (user_id, grade, play_date, scenario)
@@ -136,14 +137,14 @@ Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
 
 --Lookup Simulator record
 Select * from Simulators
-where result_id = :resultInput AND user_id = :userInput AND grading = :gradingInput AND play_date = :playInput AND Scenario = :scenInput;
+where result_id = :resultInput OR user_id = :userInput OR grading = :gradingInput OR play_date = :playInput OR Scenario = :scenInput;
 
---Delete the Seacrhed Record
+--Lokokup all Simulator records if none of input fields are filled
+Select * from Simulators
+
+--Delete the Searched Record
 Delete * from Users 
-where result_id in (
-    Select result_id from Simulators
-    where result_id = :resultInput AND user_id = :userInput AND grading = :gradingInput AND play_date = :playInput AND Scenario = :scenInput;
-)
+where result_id = :result_from_update
 
 --QuizRecords Page
 --add a new Record
@@ -152,14 +153,14 @@ Values (:useInput, :quizInput, :stateInput, :scoreInput);
 
 --Lookup Quiz record
 Select * from QuizRecords
-where quiz_id = :qInput AND user_id = :uInput AND grading = :gInput AND play_date = :pInput AND Scenario = :sInput;
+where quiz_id = :qInput OR user_id = :uInput OR grading = :gInput OR play_date = :pInput OR Scenario = :sInput;
+
+--Lookup all Quiz records if none of input fields are filled
+Select * from QuizRecords
 
 --Delete the Searched Record
 Delete * from Users 
-where quiz_id in (
-    Select * from QuizRecords
-    where quiz_id = :qInput AND user_id = :uInput AND grading = :gInput AND play_date = :pInput AND Scenario = :sInput;
-)
+where quiz_id = :quiz_from_update
 
 
 -- get all Planet IDs and Names to populate the Homeworld dropdown
