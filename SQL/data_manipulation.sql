@@ -16,7 +16,7 @@ from Users
 where regis_date >= :startdateInput and regis_date <= :enddateInput
 group by regis_date;
 
--- Look up a particular user's information
+-- Look up a particular user's information by user_email
 Select * from Users
 where user_email=:emailInput;
 
@@ -31,10 +31,7 @@ WHERE user_id = :userid_from_update
 
 ---For Delete button
 Delete from Users
-where user_id = (
-    Select user_id from Users
-    where user_email=:email_from_update
-);
+where user_id = :userID_from_update;
 
 -- Quiz Detail Page
 -- Add a Question from a Quiz Manually 
@@ -92,19 +89,16 @@ Begin transaction
     end
 COMMIT
 
+-- Search questions by keywords: testcase - 'alcohol'
+SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1,
+qc2.choice_desc as choice2, qc3.choice_desc as choice3
+from Questions q 
+join QuestionChoices qc1 on q.question_id = qc1.question_id
+join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id)
+join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id)
+where (q.question_desc like '%alcohol%')
+group by q.question_id;
 
-
--- Search questions by keywords
-Begin transaction
-    SELECT * from Questions q
-        inner join QuestionChoices qc on q.question_id = qc.question_id
-        where q.question_desc like '%alcohol%';
-    SELECT c.choice_id, c.question_id, c.choice_desc from QuestionChoices c
-        where c.question_id in (
-            SELECT q.question_id from Questions q
-            where q.question_desc like '%alcohol%'
-        );
-COMMIT
 
 -- Delete a question
 Delete from Questions where question_id = :questionID_from_update;
@@ -119,31 +113,6 @@ Update QuestionChoices
 set choice_desc = :choice_des_from_update
 where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- -- get all Planet IDs and Names to populate the Homeworld dropdown
--- SELECT planet_id, name FROM bsg_planets
 
 --Simulator Page
 --add a new Record
