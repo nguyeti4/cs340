@@ -23,33 +23,32 @@ DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Users` (
-`user_id` int(11) NOT NULL AUTO_INCREMENT,
-`user_name` varchar(20) NOT NULL,
-`user_password` varchar(20) NOT NULL,
-`user_email` varchar(20) NOT NULL,
-`regis_date` date NOT NULL,
-`active` bool, 
- PRIMARY KEY (`user_id`)
+  `user_id` int(11) AUTO_INCREMENT,
+  `user_name` varchar(255) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `regis_date` date NOT NULL,
+  `active` bool DEFAULT 0, 
+  PRIMARY KEY (`user_id`),
+  UNIQUE (`user_email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+-- One email address can only register once.
 
 --
 -- Dumping data for table `Users`
 --
 
 LOCK TABLES `Users` WRITE;
-/*!40000 ALTER TABLE `bsg_cert` DISABLE KEYS */;
-INSERT INTO `Users` 
+/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` (user_name, user_password, user_email, regis_date, active)
 VALUES 
-(1,'Jing','ABC','zhenjing@oregonstate.edu',2020-05-09,1),
-(2,'Tim','ACK','nguyeti4@oregonstate.edu',2020-12-09,1),
-(3,'Dave','PASS','darnie@oregonstate.edu',2021-01-01,1);
-/*!40000 ALTER TABLE `bsg_cert` ENABLE KEYS */;
+('Jing','ABC','zhenjing@oregonstate.edu','2020-05-09',1),
+('Tim','ACK','nguyeti4@oregonstate.edu','2020-12-09',1),
+('Dave','PASS','darnie@oregonstate.edu','2021-01-01',1);
+/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 -- DATE - format YYYY-MM-DD
-UPDATE Users 
-Set regis_date = '2020-05-09'
-where user_id = 1;
 
 --
 -- Table structure for table `Simulators`
@@ -75,12 +74,12 @@ CREATE TABLE `Simulators` (
 --
 
 LOCK TABLES `Simulators` WRITE;
-/*!40000 ALTER TABLE `bsg_cert_people` DISABLE KEYS */;
-INSERT INTO `Simulators`
-VALUES (1,1,1,2020-09-05,'Freeway'),
-(2,2,1,2020-06-09,'Intersection'),
-(3,3,1,2019-11-01,'Parking');
-/*!40000 ALTER TABLE `bsg_cert_people` ENABLE KEYS */;
+/*!40000 ALTER TABLE `Simulators` DISABLE KEYS */;
+INSERT INTO `Simulators` (user_id, grading, play_date, scenario_name)
+VALUES (1,1,'2020-09-05','Freeway'),
+(2,1,'2020-06-09','Intersection'),
+(3,1,'2019-11-01','Parking');
+/*!40000 ALTER TABLE `Simulators` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -103,17 +102,17 @@ CREATE TABLE `QuizRecords` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Quiz_Records`
+-- Dumping data for table `QuizRecords`
 --
 
 LOCK TABLES `QuizRecords` WRITE;
-/*!40000 ALTER TABLE `bsg_people` DISABLE KEYS */;
-INSERT INTO `QuizRecords` (quiz_id, user_id, quiz_date, quiz_state, quiz_score)
+/*!40000 ALTER TABLE `QuizRecords` DISABLE KEYS */;
+INSERT INTO `QuizRecords` (user_id, quiz_date, quiz_state, quiz_score)
 VALUES 
-(1,1,2019-09-05,'California',100),
-(2,2,2012-06-09,'Oregon',90),
-(3,3,2018-11-01,'California',85);
-/*!40000 ALTER TABLE `bsg_people` ENABLE KEYS */;
+(1,'2019-09-05','California',100),
+(2,'2012-06-09','Oregon',90),
+(3,'2018-11-01','California',85);
+/*!40000 ALTER TABLE `QuizRecords` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -137,13 +136,13 @@ CREATE TABLE `Questions` (
 --
 
 LOCK TABLES `Questions` WRITE;
-/*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Questions` DISABLE KEYS */;
 INSERT INTO Questions (state, question_desc, question_right_answer)
 VALUES
 ('Universal','You may cross double yellow lines to pass another vehicle if the:', 'Yellow line next to your side of the road is broken.'),
 ('California','Any amount of alcohol in the blood may affect a driver:', 'Judgment and physical coordination.'),
 ('Oregon','Backing your vehicle is:','Always dangerous.');
-/*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
+/*!40000 ALTER TABLE `Questions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -168,18 +167,18 @@ CREATE TABLE `QuestionChoices` (
 --
 
 LOCK TABLES `QuestionChoices` WRITE;
-/*!40000 ALTER TABLE `bsg_spaceship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `QuizChoices` DISABLE KEYS */;
 INSERT INTO `QuestionChoices` (question_id, choice_desc)
-VALUES (7, 'Vehicle in front of you moves to the right to let you pass.'),
-(7, 'Yellow line next to your side of the road is broken.'),
-(7, 'Yellow line next to the opposite side of the road is broken.'),
-(8, 'Right-of-way privileges.'),
-(8, 'Judgment and physical coordination.'),
-(8, 'Knowledge.'),
-(9, 'Always dangerous.'),
-(9, 'Dangerous if you have a helper.'),
-(9, 'Only dangerous in large vehicles.');
-/*!40000 ALTER TABLE `bsg_spaceship` ENABLE KEYS */;
+VALUES (1, 'Vehicle in front of you moves to the right to let you pass.'),
+(1, 'Yellow line next to your side of the road is broken.'),
+(1, 'Yellow line next to the opposite side of the road is broken.'),
+(2, 'Right-of-way privileges.'),
+(2, 'Judgment and physical coordination.'),
+(2, 'Knowledge.'),
+(3, 'Always dangerous.'),
+(3, 'Dangerous if you have a helper.'),
+(3, 'Only dangerous in large vehicles.');
+/*!40000 ALTER TABLE `QuizChoices` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -207,15 +206,15 @@ CREATE TABLE `QuizQuestions` (
 --
 
 LOCK TABLES `QuizQuestions` WRITE;
-/*!40000 ALTER TABLE `bsg_planets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `QuizQuestions` DISABLE KEYS */;
 INSERT INTO `QuizQuestions` (quiz_id, question_id, result)
-VALUES (1, 7, 1),
-(1, 8, 1),
-(2, 7, 1),
-(2, 8, 0),
-(3, 7, 0),
-(3, 9, 1);
-/*!40000 ALTER TABLE `bsg_planets` ENABLE KEYS */;
+VALUES (1, 1, 1),
+(1, 2, 1),
+(2, 1, 1),
+(2, 2, 0),
+(3, 1, 0),
+(3, 3, 1);
+/*!40000 ALTER TABLE `QuizQuestions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

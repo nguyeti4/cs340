@@ -8,7 +8,7 @@
     <p>
         This page is used to manage the Users table. 
         <ul>
-            <li>Normally, users' information should come from the customer facing website. But still, the admin staff can insert/update a user's information manually.</li>
+            <li>Normally, users' information should come from the customer facing website. But still, the admin staff can insert a user's information manually.</li>
             <li>Also they can select all from the table to monitor the growth of new users.</li>
             <li>To maintain the website, the admin staff can also freeze or close(delete) unusual users' accounts.</li>
         </ul>   
@@ -36,7 +36,6 @@
         <input class="form-control" type="date" name="regis_date">
     </div>
     <input class="btn btn-primary" type="submit" value="Add">
-    <input class="btn btn-primary" type="submit" value="Update">
 </form>
 <br>
 
@@ -54,7 +53,7 @@
 
 <form class="container" action="/" method="POST" style="margin-left: 0;">
     <div>
-        <h4>Freeze/Close User Account</h4>
+        <h4>Update/Close User Account</h4>
     </div>
     <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
         <input class="form-control mr-sm-2" type="search" placeholder="email">
@@ -72,7 +71,7 @@
         <th scope="col">Email</th>
         <th scope="col">Register Date</th>
         <th scope="col">Active</th>
-        <th scope="col">Freeze</th>
+        <th scope="col">Update</th>
         <th scope="col">Close</th>
       </tr>
     </thead>
@@ -84,8 +83,8 @@
         <td>otto@sample.com</td>
         <td>2021-1-1</td>
         <td>True</td>
-        <td><input class="btn btn-primary" type="submit" value="Deactivate"></td>
-        <td><input class="btn btn-primary" type="submit" value="Close"></td>
+        <td><input class="btn btn-primary" type="submit" value="Update"></td>
+        <td><input class="btn btn-primary" type="submit" value="Delete"></td>
       </tr>
     </tbody>
 </table>
