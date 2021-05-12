@@ -113,10 +113,6 @@ Update QuestionChoices
 set choice_desc = :choice_des_from_update
 where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
-
-
- 
-
 --Simulator Page
 --add a new Record
 Insert into Simulators (user_id, grade, play_date, scenario)
@@ -127,12 +123,11 @@ Select * from Simulators
 where Scenario = :scenInput;
 
 --Lookup Simulator records you want to delete
-Select * from Simulators
-where play_date <= :play_from_update;
+Select * from Simulators where play_date <= :play_from_update;
 
 --Delete the Searched quiz records that are older than play_date
 Delete * from Simulators 
-where play_date < :play_from_update
+where play_date < :play_from_update;
 
 --QuizRecords Page
 --add a new Record
@@ -140,14 +135,14 @@ Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
 Values (:useInput, :quizInput, :stateInput, :scoreInput);
 
 --Lookup all Quiz records by state
-Select * from QuizRecords where quiz_state = :State_input
+Select * from QuizRecords where quiz_state = :State_input;
 
 --Lookup all Quiz records by date
 Select * from QuizRecords 
-where quiz_date <= :quiz_delete_input
+where quiz_date <= :quiz_delete_input;
 
 --Delete the Searched records that are older than quiz_date
 Delete * from QuizRecords
-where quiz_date < :quiz_delete_input
+where quiz_date < :quiz_delete_input;
 
 
