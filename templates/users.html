@@ -39,6 +39,9 @@
 </form>
 <br>
 
+<!-- <table id="UserDataTable"></table>
+<script src="{{url_for('static', filename='user.js')}}"></script> -->
+
 <form class="container" action="/" method="POST" style="margin-left: 0;">
     <div>
         <h4>User Data</h4>
@@ -76,16 +79,19 @@
       </tr>
     </thead>
     <tbody>
+        {% for data in data_result %}
       <tr>
-        <th scope="row">1220</th>
-        <td>Otto</td>
-        <td>@mdo1234</td>
-        <td>otto@sample.com</td>
-        <td>2021-1-1</td>
-        <td>True</td>
+       
+        <th scope="row">{{data.user_id}}</th>
+        <td>{{data.user_name}}</td>
+        <td>{{data.user_password}}</td>
+        <td>{{data.user_email}}</td>
+        <td>{{data.regis_date}}</td>
+        <td>{{data.active}}</td>
         <td><input class="btn btn-primary" type="submit" value="Update"></td>
         <td><input class="btn btn-primary" type="submit" value="Delete"></td>
       </tr>
+      {% endfor %}
     </tbody>
 </table>
 
