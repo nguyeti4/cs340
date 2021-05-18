@@ -48,41 +48,38 @@ def display_data():
 
 @app.route("/sim_user",methods=["POST","GET"])
 def sim_user():
-    db_connection = connect_to_database()
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template("simulators.html")
+    elif request.method == 'POST':
         print("Add new simulator record!")
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
-
+        db_connection = connect_to_database()
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         print(data)
         execute_query(db_connection, query, data)
-        flash('sim record added!')
-        query = "SELECT * from Simulators;"
-        result = execute_query(db_connection, query).fetchall()
-        return render_template("simulators.html", values=result)
-    else:
+        print('sim record added!')
         return render_template("simulators.html")
 
 @app.route("/quiz_user", methods=["POST", "GET"])
 def quiz_user():
-    db_connection = connect_to_database()
     if request.method == 'POST':
+        return render_template("quizRecords.html")
+    elif request.method == 'POST':
         print("Add new Quiz record!")
         user_id = request.form['user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
-
+        db_connection = connect_to_database()
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
-        return ('Quiz record added!')
-    else:
-         return render_template("quizRecords.html")
+        print('Quiz record added!')
+        return render_template("quizRecords.html")
 
 @app.route("/quiz_detail", methods=["POST", "GET"])
 def quiz_detail():
