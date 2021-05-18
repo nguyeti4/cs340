@@ -28,7 +28,6 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         return ('sim record added!')
-        return render_template("simulators.html")
     else:
         return render_template("simulators.html")
 
@@ -46,7 +45,6 @@ def quiz_user():
         data = (user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         return ('Quiz record added!')
-        return render_template("quizRecords.html")
     else:
          return render_template("quizRecords.html")
 
