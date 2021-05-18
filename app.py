@@ -34,7 +34,6 @@ def sim_user():
     if request.method == 'GET':
         return render_template("simulators.html")
     elif request.method == 'POST':
-        if request.method == 'POST':
         print("Add new simulator record!")
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -51,8 +50,7 @@ def sim_user():
 def quiz_user():
     if request.method == 'POST':
         return render_template("quizRecords.html")
-    else:
-        if request.method == 'POST':
+    elif request.method == 'POST':
         print("Add new Quiz record!")
         user_id = request.form['user_id']
         quiz_date = request.form['quiz_date']
