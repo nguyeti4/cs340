@@ -17,9 +17,7 @@ def users():
 @app.route("/sim_user",methods=["POST","GET"])
 def sim_user():
     db_connection = connect_to_database()
-    if request.method == 'GET':
-        return render_template("simulators.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         print("Add new simulator record!")
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -30,13 +28,14 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         return ('sim record added!')
+        return render_template("simulators.html")
+    else:
+        return render_template("simulators.html")
 
 @app.route("/quiz_user", methods=["POST", "GET"])
 def quiz_user():
     db_connection = connect_to_database()
-    if request.method == 'GET':
-        return render_template("quizRecords.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         print("Add new Quiz record!")
         user_id = request.form['user_id']
         quiz_date = request.form['quiz_date']
@@ -47,6 +46,9 @@ def quiz_user():
         data = (user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         return ('Quiz record added!')
+        return render_template("quizRecords.html")
+    else:
+         return render_template("quizRecords.html")
 
 @app.route("/quiz_detail", methods=["POST", "GET"])
 def quiz_detail():
