@@ -115,7 +115,7 @@ where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
 --Simulator Page
 --add a new Record
-Insert into Simulators (user_id, grade, play_date, scenario)
+Insert into Simulators (user_id, grading, play_date, scenario_name)
 Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
 
 --Lookup Simulator record by scenario name
