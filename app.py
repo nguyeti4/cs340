@@ -67,12 +67,12 @@ def quiz_user():
         return render_template("quizRecords.html")
     elif request.method == 'POST':
         print("Add new Quiz record!")
-        user_id = request.form['user_id']
+        quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
         db_connection = connect_to_database()
-        query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+        query = 'INSERT INTO QuizRecords (quiz_user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
