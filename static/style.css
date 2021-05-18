@@ -1,0 +1,10 @@
+#add-account {
+    float: left;
+    border: 1px solid black;
+}
+
+#search-account {
+    float: left;
+    clear: right;
+    margin-right: 100px;
+}
