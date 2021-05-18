@@ -33,7 +33,20 @@ def sim_user():
 
 @app.route("/quiz_user", methods=["POST", "GET"])
 def quiz_user():
-    return render_template("quizRecords.html")
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        return render_template("quizRecords.html")
+    elif request.method == 'POST':
+        print("Add new Quiz record!")
+        user_id = request.form['user_id']
+        quiz_date = request.form['quiz_date']
+        quiz_state = request.form['quiz_state']
+        quiz_score = request.form['quiz_score']
+
+        query = 'INSERT INTO Simulators (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+        data = (user_id, quiz_date, quiz_state, quiz_score)
+        execute_query(db_connection, query, data)
+        return ('Quiz record added!')
 
 @app.route("/quiz_detail", methods=["POST", "GET"])
 def quiz_detail():
