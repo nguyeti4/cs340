@@ -63,7 +63,7 @@ def sim_user():
 
 @app.route("/quiz_user", methods=["POST", "GET"])
 def quiz_user():
-    if request.method == 'POST':
+    if request.method == 'GET':
         return render_template("quizRecords.html")
     elif request.method == 'POST':
         print("Add new Quiz record!")
