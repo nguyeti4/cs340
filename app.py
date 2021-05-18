@@ -1,5 +1,4 @@
-from _typeshed import OpenBinaryModeUpdating
-from flask import Flask, redirect, url_for, render_template, request, Response, session, flash, jsonify
+from flask import Flask, redirect, url_for, render_template, request, session, flash, jsonify
 from datetime import timedelta
 from db_connector import connect_to_database, execute_query
 
@@ -7,8 +6,6 @@ app = Flask(__name__)
 app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
-# To generate URLs for static files, use the special 'static' endpoint name:
-url_for('static', filename='user.js')
 
 
 @app.route("/", methods=["POST", "GET"])
