@@ -56,7 +56,6 @@ def sim_user():
         db_connection = connect_to_database()
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
-        print(data)
         execute_query(db_connection, query, data)
         print('sim record added!')
         return render_template("simulators.html")
