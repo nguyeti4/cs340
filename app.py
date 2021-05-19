@@ -17,21 +17,6 @@ def users():
     if request.method == 'GET':
         return render_template('users.html')
     elif request.method == 'POST':
-<<<<<<< HEAD
-        name = request.form['user_name']
-        password = request.form['user_password']
-        email = request.form['user_email']
-        regis = request.form['regis_date']
-	db_connection = connect_to_database()
-        query = 'Insert into Users (user_name, user_password, user_email, regis_date) Values (%s,%s,%s,%s)'
-        user_details = (name,password,email,regis)
-	execute_query(db_connection, query, user_details)
-        print(user_details)
-        query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-    	data_result = execute_query(db_connection, query).fetchall()
-    	print(data_result)
-	return render_template('users.html', data_result=data_result)  
-=======
         name = request.form['user_name'],
         password = request.form['user_password'],
         email = request.form['user_email'],
@@ -46,8 +31,6 @@ def users():
         data_result = execute_query(db_connection, query).fetchall()
         print(data_result)
         return render_template('users.html', data_result=data_result)
-  
->>>>>>> 1c7dd557ac2d682023d8a43f30e7d2a9ba956aa0
 
 @app.route("/sim_user",methods=["POST","GET"])
 def sim_user():
