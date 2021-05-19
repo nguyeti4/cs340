@@ -16,7 +16,7 @@ def users():
     # result = execute_query(db_connection, query).fetchall()
     if request.method == 'GET':
         return render_template('users.html')
-    else:
+    elif request.method == 'POST':
         user_details = (
             request.form['user_name'],
             request.form['user_password'],
