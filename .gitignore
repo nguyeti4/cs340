@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 __pycache__/*
+=======
+_pyache_/*
+venv/*
+>>>>>>> 83d2ab5596a2f89e0c0f7aaa47db5a7e6d56d55e
