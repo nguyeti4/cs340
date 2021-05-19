@@ -40,7 +40,7 @@ def query_result():
 
 def display_data():
     data_result = query_result()
-    return render_template('User.html', data_result=data_result)
+    return render_template('users.html', data_result=data_result)
   
 
 @app.route("/sim_user",methods=["POST","GET"])
