@@ -122,39 +122,7 @@
 </div>
 <br>
 <br>
-<<<<<<< HEAD
-=======
 
-<table class="container" class="table table-striped" style="margin-left: 0;">
-    <thead>
-      <tr>
-        <th scope="col">User ID#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Password</th>
-        <th scope="col">Email</th>
-        <th scope="col">Register Date</th>
-        <th scope="col">Active</th>
-        <th scope="col">Update</th>
-        <th scope="col">Close</th>
-      </tr>
-    </thead>
-    <tbody>
-        {% for data in data_result %}
-      <tr>
-       
-        <th scope="row">{{data[0]}}</th>  #{{data.user_id}}
-        <td>{{data[1]}}</td> #{{data.user_name}}
-        <td>{{data[2]}}</td> #{{data.user_password}}
-        <td>{{data[3]}}</td> #{{data.user_email}}
-        <td>{{data[4]}}</td> #{{data.regis_date}}
-        <td>{{data[5]}}</td> #{{data.active}}
-        <td><input class="btn btn-primary" type="submit" value="Update"></td>
-        <td><input class="btn btn-primary" type="submit" value="Delete"></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-</table>
->>>>>>> 83d2ab5596a2f89e0c0f7aaa47db5a7e6d56d55e
 
 {% endblock %}
 
