@@ -6,20 +6,6 @@ app = Flask(__name__)
 app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
-<<<<<<< HEAD
-def insert_new_row(query, user_details):
-    db_connection = connect_to_database()
-    execute_query(db_connection, query, user_details)
-    print(user_details)
-    return 'inserted OK'
-=======
->>>>>>> 83d2ab5596a2f89e0c0f7aaa47db5a7e6d56d55e
-
-def select_result(query):
-    db_connection = connect_to_database()
-    user_data_db = execute_query(db_connection, query).fetchall()
-    print(user_data_db)
-    return user_data_db
 
 @app.route("/")
 def home():
@@ -33,7 +19,6 @@ def add_account():
     # result = execute_query(db_connection, query).fetchall()
     if request.method == 'GET':
         return render_template('users.html')
-<<<<<<< HEAD
     else:
         # insert a new row to the Users table
         print('Add a new user account')
@@ -108,23 +93,6 @@ def delete_account(id):
     result = execute_query(db_connection, query, data)
     return (str(result.rowcount) + "row deleted")
   
-=======
-    elif request.method == 'POST':
-        name = request.form['user_name'],
-        password = request.form['user_password'],
-        email = request.form['user_email'],
-        regis = request.form['regis_date']
-        db_connection = connect_to_database()
-        query = 'Insert into Users (user_name, user_password, user_email, regis_date) Values (%s,%s,%s,%s)'
-        user_details = (name,password,email,regis)
-        execute_query(db_connection, query, user_details)
-        print(user_details)
-        # this is query to display all info on the newly inserted user
-        query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-        data_result = execute_query(db_connection, query).fetchall()
-        print(data_result)
-        return render_template('users.html', data_result=data_result)
->>>>>>> 83d2ab5596a2f89e0c0f7aaa47db5a7e6d56d55e
 
 @app.route("/sim_user",methods=["POST","GET"])
 def sim_user():
