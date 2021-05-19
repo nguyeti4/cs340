@@ -17,31 +17,20 @@ def users():
     if request.method == 'GET':
         return render_template('users.html')
     elif request.method == 'POST':
-        user_details = (
-            request.form['user_name'],
-            request.form['user_password'],
-            request.form['user_email'],
-            request.form['regis_date']
-        )
-        insertNewUser(user_details)
-        display_data()
-
-def insertNewUser(user_details):
-    db_connection = connect_to_database()
-    query = 'Insert into Users (user_name, user_password, user_email, regis_date) Values (%s,%s,%s,%s)'
-    execute_query(db_connection, query, user_details)
-    print(user_details)
-
-def query_result():
-    db_connection = connect_to_database()
-    query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-    user_data_db = execute_query(db_connection, query).fetchall()
-    print(user_data_db)
-    return user_data_db
-
-def display_data():
-    data_result = query_result()
-    return render_template('users.html', data_result=data_result)
+        name = request.form['user_name'],
+        password = request.form['user_password'],
+        email = request.form['user_email'],
+        regis = request.form['regis_date']
+        db_connection = connect_to_database()
+        query = 'Insert into Users (user_name, user_password, user_email, regis_date) Values (%s,%s,%s,%s)'
+        user_details = (name,password,email,regis)
+        execute_query(db_connection, query, user_details)
+        print(user_details)
+        # this is query to display all info on the newly inserted user
+        query = 'Select * from Users where user_id = (select max(user_id) from Users);'
+        data_result = execute_query(db_connection, query).fetchall()
+        print(data_result)
+        return render_template('users.html', data_result=data_result)
   
 
 @app.route("/sim_user",methods=["POST","GET"])
