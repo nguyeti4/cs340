@@ -24,6 +24,7 @@ def users():
             request.form['regis_date']
         )
         insertNewUser(user_details)
+        display_data()
 
 def insertNewUser(user_details):
     db_connection = connect_to_database()
