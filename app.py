@@ -1,4 +1,3 @@
-# from _typeshed import OpenBinaryModeUpdating
 from flask import Flask, redirect, url_for, render_template, request, session, flash, jsonify
 from datetime import timedelta
 from db_connector import connect_to_database, execute_query
@@ -7,12 +6,24 @@ app = Flask(__name__)
 app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
-# To generate URLs for static files, use the special 'static' endpoint name:
+def insert_new_row(query, user_details):
+    db_connection = connect_to_database()
+    execute_query(db_connection, query, user_details)
+    print(user_details)
+    return 'inserted OK'
 
+def select_result(query):
+    db_connection = connect_to_database()
+    user_data_db = execute_query(db_connection, query).fetchall()
+    print(user_data_db)
+    return user_data_db
 
+@app.route("/")
+def home():
+    return render_template('users.html')
 
-@app.route("/", methods=["POST", "GET"])
-def users():
+@app.route("/api/users", methods=["POST", "GET"])
+def add_account():
 
     # db_connection = connect_to_database()
     # query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
@@ -20,33 +31,78 @@ def users():
     if request.method == 'GET':
         return render_template('users.html')
     else:
+        # insert a new row to the Users table
+        print('Add a new user account')
+        # check if the email address already exist
+        user_email = request.form['user_email']
+        query = 'Select user_email from Users;'
+        emails = select_result(query)
+        if user_email in emails:
+            return 'This email already exist!'
+
         user_details = (
             request.form['user_name'],
             request.form['user_password'],
             request.form['user_email'],
-            request.form['regis_date']
+            request.form['regis_date'],
+            request.form['active']
         )
-        insertNewUser(user_details)
-        user_data_db = query_result()
+        
 
-        return render_template('users.html', values=user_data_db)
+        query = 'Insert into Users (user_name, user_password, user_email, regis_date, active) Values (%s,%s,%s,%s,%s)'
+        status_info = insert_new_row(query, user_details)
+        if status_info == 'inserted OK':
+            # select the last inserted row from the Users table
+            query = 'Select * from Users where user_id = (select max(user_id) from Users);'
+            user_data_db = select_result(query)
 
-def insertNewUser(user_details):
+            # send data back to populate the result table
+            return render_template('users.html', values=user_data_db)
+
+@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
+def update_account(id):
     db_connection = connect_to_database()
-    query = 'Insert into Users (user_name, user_password, user_email, regis_date) Values (%s,%s,%s,%s)'
-    execute_query(db_connection, query, user_details)
-    print(user_details)
+    # Delete account
+    if request.method == 'GET':
+        print('Delete account')
+        db_connection = connect_to_database()
+        query = "DELETE FROM Users WHERE user_id = %s"
+        data = (id,)
+        result = execute_query(db_connection, query, data)
+        return (str(result.rowcount) + "row deleted")
+        # search_query = 'SELECT * from Users WHERE user_id = %s' % (id)
+        # search_result = execute_query(db_connection, search_query).fetchone()
 
-def query_result():
+        # if search_result == None:
+        #     return "No such account found!"
+
+        # return render_template('users.html', values= search_result)
+    # update account
+    elif request.method == 'PUT':
+        print("Update account!")
+        update_details = (
+            request.form['user_name'],
+            request.form['user_password'],
+            request.form['regis_date'],
+            request.form['active'],
+            request.form['user_id']
+        )
+        print(request.form)
+
+        query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
+        result = execute_query(db_connection, query, update_details)
+        print(str(result.rowcount) + " row(s) updated")
+
+        return redirect(url_for('home'))
+
+@app.route('/delete_account/<int:id>')
+def delete_account(id):
+    '''deletes a account with the given id'''
     db_connection = connect_to_database()
-    query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-    user_data_db = execute_query(db_connection, query).fetchall()
-    print(user_data_db)
-    return user_data_db
-
-# def display_data():
-#     data_result = jsonify(query_result())
-#     return render_template('users.html', data_result=data_result)
+    query = "DELETE FROM Users WHERE user_id = %s"
+    data = (id,)
+    result = execute_query(db_connection, query, data)
+    return (str(result.rowcount) + "row deleted")
   
 
 @app.route("/sim_user",methods=["POST","GET"])
