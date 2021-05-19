@@ -7,5 +7,5 @@
 
 host = 'classmysql.engr.oregonstate.edu'  #DON'T CHANGE ME UNLESS THE INSTRUCTIONS SAY SO
 user = 'cs340_nguyeti4' #CHANGE ME
-passwd = '7904' #CHANGE ME
+passwd = '7940' #CHANGE ME
 db = 'cs340_nguyeti4' #CHANGE ME

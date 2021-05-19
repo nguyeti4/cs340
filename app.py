@@ -72,7 +72,7 @@ def quiz_user():
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
         db_connection = connect_to_database()
-        query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+        query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
