@@ -89,24 +89,19 @@ def new_customers():
     num_new_customers = execute_query(db_connection, query, dates).fetchall()
     return render_template('users.html', numbers=num_new_customers)
 
-@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
-def update_account(id):
+@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
+def change_account(id):
     db_connection = connect_to_database()
     # Delete account
-    if request.method == 'GET':
+    if request.method == 'DELETE':
         print('Delete account')
         db_connection = connect_to_database()
         query = "DELETE FROM Users WHERE user_id = %s"
         data = (id,)
         result = execute_query(db_connection, query, data)
-        return (str(result.rowcount) + "row deleted")
-        # search_query = 'SELECT * from Users WHERE user_id = %s' % (id)
-        # search_result = execute_query(db_connection, search_query).fetchone()
-
-        # if search_result == None:
-        #     return "No such account found!"
-
-        # return render_template('users.html', values= search_result)
+        print (str(result.rowcount) + "row deleted")
+        return render_template('users.html')
+ 
     # update account
     elif request.method == 'PUT':
         print("Update account!")
@@ -118,21 +113,14 @@ def update_account(id):
             request.form['user_id']
         )
         print(request.form)
+        user_id = request.form['user_id']
 
         query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
         result = execute_query(db_connection, query, update_details)
         print(str(result.rowcount) + " row(s) updated")
-
-        return redirect(url_for('home'))
-
-@app.route('/delete_account/<int:id>')
-def delete_account(id):
-    '''deletes a account with the given id'''
-    db_connection = connect_to_database()
-    query = "DELETE FROM Users WHERE user_id = %s"
-    data = (id,)
-    result = execute_query(db_connection, query, data)
-    return (str(result.rowcount) + "row deleted")
+        query = 'Select * from Users where user_id=%s'
+        updated_user = execute_query(db_connection, query, (user_id,)).fetchall()
+        return render_template('users.html', updated_user)
   
 # ----------------------------------------------------
 # ----------------------------------------------------
@@ -161,11 +149,7 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-     #   sim_scene = request.form['sim_scenario']
-     #   sim_dates = request.form['sim_dates']
-        
-     #   query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
-     #  result = execute_query(db_connection, query2)  
+
         query = 'Select * from Simulators where result_id = (select max(result_id) from Simulators);'
         sim_data_db = execute_query(db_connection, query).fetchall()
         return render_template("simulators.html",result=sim_data_db)
@@ -173,7 +157,8 @@ def sim_user():
      #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
      #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
      #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
-     if request.method == 'GET':
+
+    if request.method == 'GET':
         db_connection = connect_to_database()
         oldest_date = request.args.get('sim_dates')
         query2 = 'Select * from Simulators where play_date < %s;'  
@@ -277,6 +262,39 @@ def quiz_questions():
             return 'This quiz_id does not exist!'
         else:
             return render_template('quizQuestions.html', values=quiz_info)
+
+@app.route("/api/question_accuracy", methods=["POST", "GET"])
+def question_accuracy():
+    db_connection = connect_to_database()
+    question_id = request.args.get('ques_id')
+    print(question_id)
+    # if there is no parameter in the request, it means it requests all
+    if question_id is None:
+        query = (
+            f'Select q.question_id, sum(ifnull(qzqs.result,0)) as total_score, ifnull(COUNT(qzqs.question_id),0) as frequency, '
+            f'( ifnull(sum(qzqs.result) / COUNT(qzqs.question_id),0) ) as accuracy from QuizQuestions qzqs '
+            f'RIGHT JOIN Questions q on qzqs.question_id = q.question_id '
+            f'group by q.question_id;',
+        )
+        accuracy_all = execute_query(db_connection, query[0]).fetchall()
+        print(accuracy_all)
+        return render_template('quizQuestions.html', accuracy=accuracy_all)
+    
+    # question_id is sent along with the request
+    query = 'Select * from Questions where question_id=%s'
+    find_ques = execute_query(db_connection, query, (question_id,)).fetchall()
+    print(find_ques)
+    if find_ques is None:
+        return 'This question id does not exsit!'
+    query = (
+        f'Select q.question_id, sum(ifnull(qzqs.result,0)) as total_score, ifnull(COUNT(qzqs.question_id),0) as frequency, '
+        f'( ifnull(sum(qzqs.result) / COUNT(qzqs.question_id),0) ) as accuracy from QuizQuestions qzqs '
+        f'RIGHT JOIN Questions q on qzqs.question_id = q.question_id '
+        f'where q.question_id=%s '
+        f'group by q.question_id;',
+    )
+    accuracy_one = execute_query(db_connection, query[0], (question_id,)).fetchall()
+    return render_template('quizQuestions.html', accuracy=accuracy_one)
 
 
 # ----------------------------------------------------
