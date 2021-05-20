@@ -126,7 +126,7 @@ def sim_user():
     elif request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        input_id = request.form['user_id']
+        input_id = (request.form['user_id'],)
         query = 'Select user_id from Users;'
         ids = execute_query(db_connection, query).fetchall()
         print(ids)
