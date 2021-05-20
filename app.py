@@ -112,15 +112,15 @@ def sim_user():
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
-    	sim_scene = request.form['sim_scenario']
-    	sim_dates = request.form['sim_dates']
         db_connection = connect_to_database()
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-	select_query = 'SELECT * FROM Simulators WHERE scenario_name = %s'
-        result = execute_query(db_connection, select_query, sim_scene)         
+	sim_scene = request.form['sim_scenario']
+    	sim_dates = request.form['sim_dates']
+	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
+        result = execute_query(db_connection, query2, sim_scene)         
 	return render_template("simulators.html",result=result)
 
 @app.route("/quiz_user", methods=["POST", "GET"])
