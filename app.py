@@ -117,11 +117,11 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-	sim_scene = request.form['sim_scenario']
-    	sim_dates = request.form['sim_dates']
-	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
-        result = execute_query(db_connection, query2, sim_scene)         
-	return render_template("simulators.html",result=result)
+	#sim_scene = request.form['sim_scenario']
+    	#sim_dates = request.form['sim_dates']
+	#query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
+        #result = execute_query(db_connection, query2, sim_scene)         
+	return render_template("simulators.html")
 
 @app.route("/quiz_user", methods=["POST", "GET"])
 def quiz_user():
