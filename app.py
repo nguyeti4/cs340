@@ -113,6 +113,11 @@ def delete_account(id):
     result = execute_query(db_connection, query, data)
     return (str(result.rowcount) + "row deleted")
   
+# ----------------------------------------------------
+# ----------------------------------------------------
+#      Simulator Page
+# ----------------------------------------------------
+# ----------------------------------------------------
 
 @app.route("/simulators",methods=["POST","GET"])
 def sim_user():
@@ -136,6 +141,12 @@ def sim_user():
 	query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
 	result2 = execute_query(db_connection, query3, sim_dates) 
 	return render_template("simulators.html",result=result,delete_dates=result2)
+
+# ----------------------------------------------------
+# ----------------------------------------------------
+#      Quiz_Records Page
+# ----------------------------------------------------
+# ----------------------------------------------------
 
 @app.route("/quiz_records", methods=["POST", "GET"])
 def quiz_user():
