@@ -165,11 +165,15 @@ def sim_user():
         print('sim record added!')
         sim_scene = request.form['sim_scenario']
         sim_dates = request.form['sim_dates']
-        query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
-        result = execute_query(db_connection, query2)  
-        query3 = 'SELECT * FROM Simulators WHERE play_date < %s' % (sim_dates)
-        result2 = execute_query(db_connection, query3) 
-        return render_template("simulators.html",result=result,delete_dates=result2)
+        
+     #   query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
+     #  result = execute_query(db_connection, query2)  
+        query = 'Select * from Simulators where result_id = (select max(result_id) from Simulators);'
+        sim_data_db = execute_query(db_connection, query).fetchall()
+        return render_template("simulators.html",result=sim_data_db)
+      #  query3 = 'SELECT * FROM Simulators WHERE play_date < %s' % (sim_dates)
+      #  result2 = execute_query(db_connection, query3) 
+      #  return render_template("simulators.html",result=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
