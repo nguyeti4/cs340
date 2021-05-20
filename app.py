@@ -12,30 +12,29 @@ def insert_new_row(query, user_details):
     print(user_details)
     return 'inserted OK'
 
-def select_result(query):
-    db_connection = connect_to_database()
-    user_data_db = execute_query(db_connection, query).fetchall()
-    print(user_data_db)
-    return user_data_db
-
 @app.route("/")
 def home():
     return render_template('users.html')
 
-@app.route("/api/users", methods=["POST", "GET"])
-def add_account():
+# ----------------------------------------------------
+# ----------------------------------------------------
+#      User Page
+# ----------------------------------------------------
+# ----------------------------------------------------
+@app.route("/users")
+def users_page():
+    return render_template('users.html')
 
-    # db_connection = connect_to_database()
-    # query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
-    # result = execute_query(db_connection, query).fetchall()
-    if request.method == 'GET':
-        return render_template('users.html')
-    else:
+@app.route("/api/users", methods=["POST", "GET"])
+def users():
+    db_connection = connect_to_database()
+    # add a new user account
+    if request.method == 'POST':
         # check if the email address already exist
-        user_email = request.form['user_email']
+        input_email = request.form['user_email']
         query = 'Select user_email from Users;'
-        emails = select_result(query)
-        if user_email in emails:
+        emails = execute_query(db_connection, query).fetchall()
+        if input_email in emails:
             return 'This email already exist!'
         # insert a new row to the Users table
         print('Add a new user account')
@@ -51,10 +50,23 @@ def add_account():
         if status_info == 'inserted OK':
             # select the last inserted row from the Users table
             query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-            user_data_db = select_result(query)
-
+            user_data_db = execute_query(db_connection, query).fetchall()
             # send data back to populate the result table
             return render_template('users.html', values=user_data_db)
+    
+    # search function: search account by email  
+    if request.method == 'GET':
+        # check whether the email address exists
+        user_email = request.args.get('user_email')
+        print(user_email)
+        query = 'Select * from Users WHERE user_email=%s'
+        data = (user_email,)
+        user_info = execute_query(db_connection, query, data).fetchall()
+        print(user_info)
+        if user_info is None:
+            return 'This email does not exist!'
+        else:
+            return render_template('users.html', values=user_info)
 
 @app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
 def update_account(id):
@@ -102,7 +114,7 @@ def delete_account(id):
     return (str(result.rowcount) + "row deleted")
   
 
-@app.route("/sim_user",methods=["POST","GET"])
+@app.route("/simulators",methods=["POST","GET"])
 def sim_user():
     if request.method == 'GET':
         return render_template("simulators.html")
@@ -119,7 +131,7 @@ def sim_user():
         print('sim record added!')
         return render_template("simulators.html")
 
-@app.route("/quiz_user", methods=["POST", "GET"])
+@app.route("/quiz_records", methods=["POST", "GET"])
 def quiz_user():
     if request.method == 'GET':
         return render_template("quizRecords.html")
@@ -136,13 +148,171 @@ def quiz_user():
         print('Quiz record added!')
         return render_template("quizRecords.html")
 
-@app.route("/quiz_detail", methods=["POST", "GET"])
-def quiz_detail():
+# ----------------------------------------------------
+# ----------------------------------------------------
+#      QuizQuestions Page
+# ----------------------------------------------------
+# ----------------------------------------------------
+
+@app.route("/quiz_questions")
+def quiz_question_page():
     return render_template("quizQuestions.html")
 
-@app.route("/ques", methods=["POST", "GET"])
-def questions():
+@app.route("/api/quiz_questions", methods=["POST", "GET"])
+def quiz_questions():
+    db_connection = connect_to_database()
+    # add the result of a question in a quiz
+    if request.method == 'POST':
+        # check whether quiz_id exist
+        quiz_id = request.form['quiz_id']
+        quiz_query = 'Select * from QuizRecords WHERE quiz_id=%s'
+        quiz_result = execute_query(db_connection, quiz_query, (quiz_id,)).fetchall()
+        if quiz_result is None:
+            return 'No such quiz_id exist!'
+        # check whether question_id exist
+        question_id = request.form['question_id']
+        question_query = 'Select * from Questions WHERE question_id=%s'
+        question_result = execute_query(db_connection, question_query, (question_id,)).fetchall()
+        if question_result is None:
+            return 'No such question_id exist!'
+        # insert a new row to the QuizQuestions table
+        print('Add a row to the QuizQuestions table')
+        quizQues_details = (
+            request.form['quiz_id'],
+            request.form['question_id'],
+            request.form['result']
+        )
+        query = 'Insert into QuizQuestions (quiz_id, question_id, result) Values (%s,%s,%s)'
+        status_info = insert_new_row(query, quizQues_details)
+        if status_info == 'inserted OK':
+            # select the last inserted row from the QuizQuestions table
+            query = 'Select * from QuizQuestions where id = (select max(id) from QuizQuestions);'
+            data_db = execute_query(db_connection, query).fetchall()
+            # send data back to populate the result table
+            return render_template('quizQuestions.html', values=data_db)
+    
+    # search function: search quiz_info by quiz_id 
+    if request.method == 'GET':
+        # check whether the email address exists
+        quiz_id = request.args.get('quiz_id')
+        print(quiz_id)
+        query = 'Select * from QuizQuestions WHERE quiz_id=%s'
+        data = (quiz_id,)
+        quiz_info = execute_query(db_connection, query, data).fetchall()
+        print(quiz_info)
+        if quiz_info is None:
+            return 'This quiz_id does not exist!'
+        else:
+            return render_template('quizQuestions.html', values=quiz_info)
+
+
+# ----------------------------------------------------
+# ----------------------------------------------------
+#      Questions Page
+# ----------------------------------------------------
+# ----------------------------------------------------
+
+@app.route("/questions", methods=["POST", "GET"])
+def questions_page():
     return render_template("questions.html")
+
+@app.route("/api/questions", methods=["POST", "GET"])
+def questions():
+    db_connection = connect_to_database()
+
+    # add a new question into a database
+    if request.method == 'POST':
+        # insert a new row to the Questions table
+        print('Add a row to the Questions table')
+        question_details = (
+            request.form['state'],
+            request.form['question_desc'],
+            request.form['right_answer']
+        )
+        query = 'Insert into Questions (state, question_desc, question_right_answer) Values (%s,%s,%s)'
+        status_info = insert_new_row(query, question_details)
+        if status_info == 'inserted OK':
+            # select the last inserted row from the Questions table
+            query = 'Select * from Questions where question_id = (select max(question_id) from Questions);'
+            data_db = execute_query(db_connection, query).fetchone()
+            question_id = data_db[0]
+            print(question_id)
+
+        choices =[]
+        if len(request.form['choice1']) != 0:
+            choices.append(request.form['choice1'])
+        if len(request.form['choice2']) != 0:
+            choices.append(request.form['choice2'])
+        if len(request.form['choice3']) != 0:
+            choices.append(request.form['choice3'])
+        print(choices)
+        
+        for choice in choices:
+            query = 'Insert into QuestionChoices (question_id, choice_desc) Values (%s,%s)'
+            data = (question_id, choice)
+            status_info = insert_new_row(query, data)
+        print(choices)
+        print(len(choices))
+        # send data back to populate the result table
+        if len(choices) == 3:
+            query = (
+                f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
+                f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
+                f'from Questions q '
+                f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
+                f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+                f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
+                f'where q.question_id= %s',
+            )
+            question_db = execute_query(db_connection, query[0], (question_id,)).fetchall()
+            print(question_db)
+        else:
+            query = (
+                f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
+                f'qc2.choice_desc as choice2 '
+                f'from Questions q '
+                f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
+                f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+                f'where q.question_id= %s',
+            )
+            question_db = execute_query(db_connection, query[0], (question_id,)).fetchall()
+            print(question_db)
+
+
+        return render_template('Questions.html', values=question_db)
+    
+    # search function: search questions by keywords 
+    if request.method == 'GET':
+        # check whether the email address exists
+        keywords = request.args.get('keywords')
+        print(keywords)
+
+        query = (
+            f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
+            f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
+            f'from Questions q '
+            f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
+            f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+            f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
+            f'where q.question_desc like %s '
+            f'group by q.question_id;',
+        )
+        data= str(keywords)
+        print(data)
+        # query = """SELECT question_id, state, question_desc, question_right_answer from Questions where question_desc like %s"""
+        questions_info = execute_query(db_connection, query[0], ('%'+data+'%',)).fetchall()
+        print(questions_info)
+
+        # query = 'select question_desc from Questions;'
+        # questions = execute_query(db_connection, query).fetchall()
+        # print(questions)
+
+        if len(questions_info) == 0:
+            return 'No matching result!'
+        else:
+            return render_template('Questions.html', values=questions_info)
+
+
 
 
 

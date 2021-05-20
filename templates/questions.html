@@ -3,7 +3,7 @@
 
 {% block content %} 
 <div class="container" style="margin-left: 0;">
-  <h3><a href="/ques">Questions</a></h3>
+  <h3><a href="/questions">Questions</a></h3>
   <p>
     This page is used to manage the Questions and QuestionChoices table. The QuestionChoices is an aided table for the Questions
     table based on 1NF principle. 
@@ -15,85 +15,100 @@
   </p>   
 </div>
 <br>
-<form class="container" action="/ques" method="POST" style="margin-left: 0;">
-  <div>
-    <h4>Add a New Question</h4>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg">
+      <!-- add a new question form -->
+      <form class="container" action="/api/questions" method="POST" style="margin-left: 0;">
+        <div>
+          <h4>Add a New Question</h4>
+        </div>
+        <div class="form-group">
+            <label>Question Description</label> 
+            <input class="form-control" type="text" name="question_desc">
+        </div>
+        <div class="form-group">
+          <label>State</label> 
+          <select name="state">
+            <option>Universal</option>
+            <option>California</option>
+            <option>Oregon</option>
+          </select>
+        </div>
+        <div class="form-group">
+            <label>Choice1</label> 
+            <input class="form-control" type="text" name="choice1">
+        </div>
+        <div class="form-group">
+            <label>Choice2</label> 
+            <input class="form-control" type="text" name="choice2">
+        </div>
+        <div class="form-group">
+            <label>Choice3</label> 
+            <input class="form-control" type="text" name="choice3">
+        </div>
+        <div class="form-group">
+          <label>Right Answer</label> 
+          <input class="form-control" type="text" name="right_answer">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Add">
+      </form>
+    </div>
+    <div class="col-lg">
+      <!--  search bar to find the related questions -->
+      <div>
+        <h4>Search Question</h4>
+      </div>
+      <form class="container" action="/api/questions" method="GET">
+        <input class="form-control mr-sm-2" type="search" name="keywords" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
   </div>
-  <div class="form-group">
-      <label>Question Description</label> 
-      <input class="form-control" type="text" name="question_desc">
-  </div>
-  <div class="form-group">
-    <label>State</label> 
-    <select name="state">
-      <option>Universal</option>
-      <option>California</option>
-      <option>Oregon</option>
-    </select>
-  </div>
-  <div class="form-group">
-      <label>Choice1</label> 
-      <input class="form-control" type="text" name="choice1">
-  </div>
-  <div class="form-group">
-      <label>Choice2</label> 
-      <input class="form-control" type="text" name="choice2">
-  </div>
-  <div class="form-group">
-      <label>Choice3</label> 
-      <input class="form-control" type="text" name="choice3">
-  </div>
-  <div class="form-group">
-      <label>Choice4</label> 
-      <input class="form-control" type="text" name="choice4">
-  </div>
-  <div class="form-group">
-    <label>Right Answer</label> 
-    <input class="form-control" type="text" name="answer">
-  </div>
-  <input class="btn btn-primary" type="submit" value="Add">
-</form>
+</div>
+
 <br>
-<!--  search bar to find the related questions -->
-<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
-  <div>
-    <h4>Search Question</h4>
-  </div>
-  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
 <br>
 <!-- populate the searching result as a table here -->
 <!-- on the right side of each row, there will be two buttons, update or delete -->
-<table class="container" class="table table-striped" style="margin-left: 0;">
+<div>
   <div>
-    <h4>Update/Delete Questions</h4>
+    <h4>Here is the add/search result</h4>
   </div>
-  <thead>
-    <tr>
-      <th scope="col">Question ID#</th>
-      <th scope="col">State</th>
-      <th scope="col">Question Description</th>
-      <th scope="col">Right Answer</th>
-      <th scope="col">Choice1</th>
-      <th scope="col">Choice2</th>
-      <th scope="col">Choice3</th>
-      <th scope="col">Update</th>
-      <th scope="col">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>California</td>
-      <td>Any amount of alcohol in the blood may affect a driver: </td>
-      <td>Judgment and physical coordination.</td>
-      <td>Right-of-way privileges.</td>
-      <td>Judgment and physical coordination.</td>
-      <td>Knowledge.</td>
-      <td><input class="btn btn-primary" type="submit" value="Update"></td>
-      <td><input class="btn btn-primary" type="submit" value="Delete"></td>
-    </tr>
-  </tbody>
-</table>
+  <table class="container" class="table table-striped" style="margin-left: 0;">
+    <thead>
+      <tr>
+        <th scope="col">Question ID#</th>
+        <th scope="col">State</th>
+        <th scope="col">Question Description</th>
+        <th scope="col">Right Answer</th>
+        <th scope="col">Choice1</th>
+        <th scope="col">Choice2</th>
+        <th scope="col">Choice3</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in values %}
+      <tr>
+        <th scope="row">{{data[0]}}</th>
+        <td>{{data[1]}}</td>
+        <td>{{data[2]}}</td>
+        <td>{{data[3]}}</td>
+        <td>{{data[4]}}</td>
+        <td>{{data[5]}}</td>
+        <td>{{data[6]}}</td>
+        <td><input class="btn btn-primary" type="submit" value="Update"></td>
+        <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<br>
+<br>
+<br>
+<br>
+
 {% endblock %}
