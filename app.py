@@ -126,12 +126,12 @@ def sim_user():
     elif request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        #input_id = (request.form['user_id'],)
-        #query = 'Select user_id from Users;'
-        #ids = execute_query(db_connection, query).fetchall()
+        input_id = (request.form['user_id'],)
+        query = 'Select user_id from Users;'
+        ids = execute_query(db_connection, query).fetchall()
         #print(ids)
-        #if (input_id not in ids) and (input_id != ('',)):
-        #    return 'This user id does not exist!'
+        if (input_id not in ids) and (input_id != ('',)):
+            return 'This user id does not exist!'
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
