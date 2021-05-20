@@ -181,7 +181,7 @@ def quiz_user():
         result = execute_query(db_connection, query2, quiz_states)  
         query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
         result2 = execute_query(db_connection, query3, quiz_dates) 
-    	return render_template("quizRecords.html",results=result,delete_dates=result2)
+        return render_template("quizRecords.html",results=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
