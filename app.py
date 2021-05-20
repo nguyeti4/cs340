@@ -139,7 +139,7 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-        return render_template("quizRecords.html")
+    	return render_template("quizRecords.html")
 
 @app.route("/quiz_detail", methods=["POST", "GET"])
 def quiz_detail():
