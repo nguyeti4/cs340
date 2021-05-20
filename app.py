@@ -172,9 +172,10 @@ def sim_user():
         sim_data_db = execute_query(db_connection, query).fetchall()
      #  return render_template("simulators.html",result=sim_data_db)
     
-        query3 = 'SELECT * FROM Simulators WHERE play_date < %s' % (sim_dates)
-        result2 = execute_query(db_connection, query3) 
+        query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
+        result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
         return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
+
 
 # ----------------------------------------------------
 # ----------------------------------------------------
