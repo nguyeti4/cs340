@@ -209,8 +209,8 @@ def quiz_user():
       #  quiz_states = request.form['sel_quizstates']
       #  quiz_dates = request.form['del_quizdates']
         query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from Quiz_Records);'
-        sim_data_db = execute_query(db_connection, query).fetchall()
-        return render_template("simulators.html",result=sim_data_db)
+        quizrecord_data_db = execute_query(db_connection, query).fetchall()
+        return render_template("quizRecords.html",results=quizrecord_data_db)
        # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
        # result2 = execute_query(db_connection, query3, quiz_dates) 
        # return render_template("quizRecords.html",results=result,delete_dates=result2)
