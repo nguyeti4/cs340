@@ -37,22 +37,45 @@
     <input class="btn btn-primary" type="submit" value="Add">
 </form>
 
-<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<form class="container" action="quiz_user" method="POST" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
-    <h4>Search for a Quiz record</h4>	
+    <h4>Search for a Quiz record by State</h4>	
   </div>
   <div>
-    <label>Quiz_State: <input class="form-control" type="text" name="quiz_id"></label>
+    <label>Quiz_State: <input class="form-control" type="text" name="sel_quizstates"></label>
   </div>    
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 
-<form class="container2" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<table class="container" class="table table-striped" style="margin-left: 0;">
+  <thead>
+    <tr>
+      <th scope="col">Quiz ID#</th>
+      <th scope="col">User ID#</th>
+      <th scope="col">Quiz Date</th>
+      <th scope="col">Quiz State</th>
+      <th scope="col">Quiz Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in results %}
+    <tr>
+      <th scope="row">{{item[0]}}</th>
+      <td>{{item[1]}}</td>
+      <td>{{item[2]}}</td>
+      <td>{{item[3]}}</td>
+      <td>{{item[4]}}</td>    
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<form class="container2" action="quiz_user" method="POST" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Search for Quiz records you want to delete that are older than the date specified</h4>	
   </div>
   <div>
-    <label>Quiz_Date: <input class="form-control" type="date" name="quiz_date"></label>
+    <label>Quiz_Date: <input class="form-control" type="date" name="del_quizdates"></label>
   </div>    
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
@@ -74,13 +97,15 @@
     </tr>
   </thead>
   <tbody>
+    {% for record in delete_dates %}
     <tr>
-      <th scope="row">101</th>
-      <td>122</td>
-      <td>03/28/2021</td>
-      <td>California</td>
-      <td>75</td>    
+      <th scope="row">{{record[0]}}</th>
+      <td>{{record[1]}}</td>
+      <td>{{record[2]}}</td>
+      <td>{{record[3]}}</td>
+      <td>{{record[4]}}</td>    
     </tr>
+    {% endfor %}
   </tbody>
 </table>
 <input class="btn btn-primary" type="submit" value="Delete All">
