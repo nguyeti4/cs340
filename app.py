@@ -40,9 +40,11 @@ def users():
     if request.method == 'POST':
         # check if the email address already exist
         input_email = request.form['user_email']
-        query = 'Select user_email from Users;'
-        emails = execute_query(db_connection, query).fetchall()
-        if input_email in emails:
+        print(input_email)
+        query = 'Select * from Users where user_email=%s'
+        user = execute_query(db_connection, query, (input_email,)).fetchall()
+        print(user)
+        if user is not None:
             return 'This email already exist!'
         # insert a new row to the Users table
         print('Add a new user account')
@@ -132,77 +134,7 @@ def delete_account(id):
     result = execute_query(db_connection, query, data)
     return (str(result.rowcount) + "row deleted")
   
-# ----------------------------------------------------
-# ----------------------------------------------------
-#      Simulator Page
-# ----------------------------------------------------
-# ----------------------------------------------------
-
-@app.route("/simulators",methods=["POST","GET"])
-def sim_user():
-    if request.method == 'GET':
-        return render_template("simulators.html")
-    elif request.method == 'POST':
-	db_connection = connect_to_database()
-        print("Add new simulator record!")
-	input_id = request.form['user_id']
-        query = 'Select user_id from Users;'
-        ids = execute_query(db_connection, query).fetchall()
-        if input_id not in ids:
-            return 'This user id does not exist!'
-        user_id = request.form['user_id']
-        grade = request.form['grade']
-        date = request.form['play_date']
-        scenario = request.form['scenario']
- 
-        query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
-        data = (user_id, grade, date, scenario)
-        execute_query(db_connection, query, data)
-        print('sim record added!')
-	sim_scene = request.form['sim_scenario']
-    	sim_dates = request.form['sim_dates']
-	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
-        result = execute_query(db_connection, query2, sim_scene)  
-	query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
-	result2 = execute_query(db_connection, query3, sim_dates) 
-	return render_template("simulators.html",result=result,delete_dates=result2)
-
-# ----------------------------------------------------
-# ----------------------------------------------------
-#      Quiz_Records Page
-# ----------------------------------------------------
-# ----------------------------------------------------
-
-@app.route("/quiz_records", methods=["POST", "GET"])
-def quiz_user():
-    if request.method == 'GET':
-        return render_template("quizRecords.html")
-    elif request.method == 'POST':
-	db_connection = connect_to_database()
-        print("Add new Quiz record!")
-	input_id = request.form['user_id']
-        query = 'Select user_id from Users;'
-        ids = execute_query(db_connection, query).fetchall()
-        if input_id not in ids:
-            return 'This user id does not exist!'
-        quiz_user_id = request.form['quiz_user_id']
-        quiz_date = request.form['quiz_date']
-        quiz_state = request.form['quiz_state']
-        quiz_score = request.form['quiz_score']
-       
-        query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
-        data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
-        execute_query(db_connection, query, data)
-        print('Quiz record added!')
-	quiz_states = request.form['sel_quizstates']
-    	quiz_dates = request.form['del_quizdates']
-	query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
-        result = execute_query(db_connection, query2, quiz_states)  
-	query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-	result2 = execute_query(db_connection, query3, quiz_dates) 
-    	return render_template("quizRecords.html",results=result,delete_dates=result2)
-
-# ----------------------------------------------------
+# # ----------------------------------------------------
 # ----------------------------------------------------
 #      QuizQuestions Page
 # ----------------------------------------------------
