@@ -129,7 +129,13 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-        return render_template("simulators.html")
+	sim_scene = request.form['sim_scenario']
+    	sim_dates = request.form['sim_dates']
+	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
+        result = execute_query(db_connection, query2, sim_scene)  
+	query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
+	result2 = execute_query(db_connection, query3, sim_dates) 
+	return render_template("simulators.html",result=result,delete_dates=result2)
 
 @app.route("/quiz_records", methods=["POST", "GET"])
 def quiz_user():
@@ -146,7 +152,7 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-        return render_template("quizRecords.html")
+    	return render_template("quizRecords.html")
 
 # ----------------------------------------------------
 # ----------------------------------------------------
