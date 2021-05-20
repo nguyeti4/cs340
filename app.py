@@ -173,7 +173,7 @@ def sim_user():
      #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
      #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
      #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
-     elif request.method == 'GET':
+     if request.method == 'GET':
         db_connection = connect_to_database()
         oldest_date = request.args.get('sim_dates')
         query2 = 'Select * from Simulators where play_date < %s;'  
