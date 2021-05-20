@@ -163,8 +163,8 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-        sim_scene = request.form['sim_scenario']
-        sim_dates = request.form['sim_dates']
+     #   sim_scene = request.form['sim_scenario']
+     #   sim_dates = request.form['sim_dates']
         
      #   query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
      #  result = execute_query(db_connection, query2)  
