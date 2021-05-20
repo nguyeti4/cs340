@@ -140,7 +140,13 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-    	return render_template("quizRecords.html")
+	quiz_states = request.form['sel_quizstates']
+    	quiz_dates = request.form['del_quizdates']
+	query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
+        result = execute_query(db_connection, query2, quiz_states)  
+	query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
+	result2 = execute_query(db_connection, query3, quiz_dates) 
+    	return render_template("quizRecords.html",results=result,delete_dates=result2)
 
 @app.route("/quiz_detail", methods=["POST", "GET"])
 def quiz_detail():
