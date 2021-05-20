@@ -176,7 +176,7 @@ def quiz_user():
         execute_query(db_connection, query, data)
         print('Quiz record added!')
         quiz_states = request.form['sel_quizstates']
-    	quiz_dates = request.form['del_quizdates']
+        quiz_dates = request.form['del_quizdates']
         query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
         result = execute_query(db_connection, query2, quiz_states)  
         query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
