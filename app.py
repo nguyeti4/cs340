@@ -129,7 +129,7 @@ def sim_user():
         input_id = (request.form['user_id'],)
         query = 'Select user_id from Users;'
         ids = execute_query(db_connection, query).fetchall()
-        #print(ids)
+        print(ids)
         if (input_id == ('',)):
             return 'You forgot to include user_id'
         if (input_id not in ids):
