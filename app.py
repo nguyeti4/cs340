@@ -44,7 +44,8 @@ def users():
         query = 'Select * from Users where user_email=%s'
         user = execute_query(db_connection, query, (input_email,)).fetchall()
         print(user)
-        if user is not None:
+        if len(user) != 0:
+        # if user is not None:
             return 'This email already exist!'
         # insert a new row to the Users table
         print('Add a new user account')
@@ -74,7 +75,8 @@ def users():
         data = (user_email,)
         user_info = execute_query(db_connection, query, data).fetchall()
         print(user_info)
-        if user_info is None:
+        if len(user_info) == 0:
+        # if user_info is None:
             return 'This email does not exist!'
         else:
             return render_template('users.html', values=user_info)
@@ -196,13 +198,13 @@ def quiz_user():
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
        
-        query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+        query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
       #  quiz_states = request.form['sel_quizstates']
       #  quiz_dates = request.form['del_quizdates']
-        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from Quiz_Records);'
+        query = 'Select * from QuizRecords where quiz_id = (select max(quiz_id) from QuizRecords);'
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
        # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
