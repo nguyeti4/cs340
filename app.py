@@ -16,6 +16,14 @@ def insert_new_row(query, user_details):
 def home():
     return render_template('users.html')
 
+@app.route("/simulators")
+def simulators_page():
+    return render_template('simulators.html')
+
+@app.route("/quiz_records")
+def quiz_records_page():
+    return render_template('quizRecords.html')
+
 # ----------------------------------------------------
 # ----------------------------------------------------
 #      User Page
@@ -54,8 +62,9 @@ def users():
             # send data back to populate the result table
             return render_template('users.html', values=user_data_db)
     
-    # search function: search account by email  
+    # search function:   
     if request.method == 'GET':
+        # search account by email
         # check whether the email address exists
         user_email = request.args.get('user_email')
         print(user_email)
@@ -67,6 +76,16 @@ def users():
             return 'This email does not exist!'
         else:
             return render_template('users.html', values=user_info)
+@app.route('/api/users/new')
+def new_customers():
+    # count new customers
+    db_connection = connect_to_database()
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    query = 'Select regis_date, COUNT(user_id) as new_customers from Users where regis_date >= %s and regis_date <= %s group by regis_date;'
+    dates = (start_date, end_date)
+    num_new_customers = execute_query(db_connection, query, dates).fetchall()
+    return render_template('users.html', numbers=num_new_customers)
 
 @app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
 def update_account(id):
@@ -114,51 +133,51 @@ def delete_account(id):
     return (str(result.rowcount) + "row deleted")
   
 
-@app.route("/simulators",methods=["POST","GET"])
-def sim_user():
-    if request.method == 'GET':
-        return render_template("simulators.html")
-    elif request.method == 'POST':
-        print("Add new simulator record!")
-        user_id = request.form['user_id']
-        grade = request.form['grade']
-        date = request.form['play_date']
-        scenario = request.form['scenario']
-        db_connection = connect_to_database()
-        query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
-        data = (user_id, grade, date, scenario)
-        execute_query(db_connection, query, data)
-        print('sim record added!')
-	sim_scene = request.form['sim_scenario']
-    	sim_dates = request.form['sim_dates']
-	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
-        result = execute_query(db_connection, query2, sim_scene)  
-	query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
-	result2 = execute_query(db_connection, query3, sim_dates) 
-	return render_template("simulators.html",result=result,delete_dates=result2)
+# @app.route("/simulators",methods=["POST","GET"])
+# def sim_user():
+#     if request.method == 'GET':
+#         return render_template("simulators.html")
+#     elif request.method == 'POST':
+#         print("Add new simulator record!")
+#         user_id = request.form['user_id']
+#         grade = request.form['grade']
+#         date = request.form['play_date']
+#         scenario = request.form['scenario']
+#         db_connection = connect_to_database()
+#         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
+#         data = (user_id, grade, date, scenario)
+#         execute_query(db_connection, query, data)
+#         print('sim record added!')
+# 	sim_scene = request.form['sim_scenario']
+#     	sim_dates = request.form['sim_dates']
+# 	query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
+#         result = execute_query(db_connection, query2, sim_scene)  
+# 	query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
+# 	result2 = execute_query(db_connection, query3, sim_dates) 
+# 	return render_template("simulators.html",result=result,delete_dates=result2)
 
-@app.route("/quiz_records", methods=["POST", "GET"])
-def quiz_user():
-    if request.method == 'GET':
-        return render_template("quizRecords.html")
-    elif request.method == 'POST':
-        print("Add new Quiz record!")
-        quiz_user_id = request.form['quiz_user_id']
-        quiz_date = request.form['quiz_date']
-        quiz_state = request.form['quiz_state']
-        quiz_score = request.form['quiz_score']
-        db_connection = connect_to_database()
-        query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
-        data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
-        execute_query(db_connection, query, data)
-        print('Quiz record added!')
-	quiz_states = request.form['sel_quizstates']
-    	quiz_dates = request.form['del_quizdates']
-	query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
-        result = execute_query(db_connection, query2, quiz_states)  
-	query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-	result2 = execute_query(db_connection, query3, quiz_dates) 
-    	return render_template("quizRecords.html",results=result,delete_dates=result2)
+# @app.route("/quiz_records", methods=["POST", "GET"])
+# def quiz_user():
+#     if request.method == 'GET':
+#         return render_template("quizRecords.html")
+#     elif request.method == 'POST':
+#         print("Add new Quiz record!")
+#         quiz_user_id = request.form['quiz_user_id']
+#         quiz_date = request.form['quiz_date']
+#         quiz_state = request.form['quiz_state']
+#         quiz_score = request.form['quiz_score']
+#         db_connection = connect_to_database()
+#         query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+#         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
+#         execute_query(db_connection, query, data)
+#         print('Quiz record added!')
+# 	quiz_states = request.form['sel_quizstates']
+#     	quiz_dates = request.form['del_quizdates']
+# 	query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
+#         result = execute_query(db_connection, query2, quiz_states)  
+# 	query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
+# 	result2 = execute_query(db_connection, query3, quiz_dates) 
+#     	return render_template("quizRecords.html",results=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------

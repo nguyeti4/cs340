@@ -46,7 +46,7 @@
                         <option value="0">False</option>
                     </select> 
                 </div>
-                <input class="btn btn-primary" type="submit" value="Add">
+                <input class="btn btn-primary" type="submit" name="add" value="Add">
             </form>
         </div>
         <!-- Search Form -->
@@ -108,17 +108,39 @@
 <br>
 <br>
 <div class="container-fluid">
-    <form class="container" action="/api/users" method="GET" style="margin-left: 0;">
-        <div>
-            <h4>User Data</h4>
-        </div>
+    <div>
+        <h4>User Data</h4>
+    </div>
+    <form class="container" action="/api/users/new" method="GET" style="margin-left: 0;">    
         <div class="form-group">
             <label>From: <input class="form-control" type="date" name="start_date"></label> 
             <label>To: <input class="form-control" type="date" name="end_date"></label>
         </div>
-        <input class="btn btn-primary" type="submit" value="Choose">
+        <input class="btn btn-primary" type="submit" name="choose" value="Choose">
     </form>
 </div>
+<br>
+<br>
+<div class="container-fluid">
+    <h4>Here is the number of new customers by day</h4>
+    <table class="container" class="table table-striped" style="margin-left: 0;">
+        <thead>
+        <tr>
+            <th scope="col">Register Date</th>
+            <th scope="col">New Customers</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for number in numbers %}
+        <tr>
+            <th scope="row">{{number[0]}}</th>
+            <td>{{number[1]}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <br>
 <br>
 
