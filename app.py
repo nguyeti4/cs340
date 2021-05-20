@@ -129,6 +129,7 @@ def sim_user():
         input_id = request.form['user_id']
         query = 'Select user_id from Users;'
         ids = execute_query(db_connection, query).fetchall()
+        print(ids)
         if input_id not in ids:
             return 'This user id does not exist!'
         user_id = request.form['user_id']
@@ -161,7 +162,7 @@ def quiz_user():
     elif request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
-        input_id = request.form['user_id']
+        input_id = request.form['quiz_user_id']
         query = 'Select user_id from Users;'
         ids = execute_query(db_connection, query).fetchall()
         if input_id not in ids:
