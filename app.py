@@ -130,10 +130,11 @@ def sim_user():
         query = 'Select user_id from Users;'
         ids = execute_query(db_connection, query).fetchall()
         #print(ids)
-        if (input_id not in ids):
-            return 'This user id does not exist!'
         if (input_id == ('',)):
             return 'You forgot to include user_id'
+        if (input_id not in ids):
+            return 'This user id does not exist!'
+       
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
