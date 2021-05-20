@@ -124,12 +124,18 @@ def sim_user():
     if request.method == 'GET':
         return render_template("simulators.html")
     elif request.method == 'POST':
+	db_connection = connect_to_database()
         print("Add new simulator record!")
+	input_id = request.form['user_id']
+        query = 'Select user_id from Users;'
+        ids = execute_query(db_connection, query).fetchall()
+        if input_id not in ids:
+            return 'This user id does not exist!'
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
-        db_connection = connect_to_database()
+ 
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
@@ -153,12 +159,18 @@ def quiz_user():
     if request.method == 'GET':
         return render_template("quizRecords.html")
     elif request.method == 'POST':
+	db_connection = connect_to_database()
         print("Add new Quiz record!")
+	input_id = request.form['user_id']
+        query = 'Select user_id from Users;'
+        ids = execute_query(db_connection, query).fetchall()
+        if input_id not in ids:
+            return 'This user id does not exist!'
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
-        db_connection = connect_to_database()
+       
         query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
