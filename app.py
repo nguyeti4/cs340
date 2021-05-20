@@ -118,7 +118,6 @@ def sim_user():
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
-	#query to display all sim records with the specified scenario name
         print('sim record added!')
 	select_query = 'SELECT * FROM Simulators WHERE scenario_name = %s'
         result = execute_query(db_connection, select_query, sim_scene)         
