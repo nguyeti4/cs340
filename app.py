@@ -112,8 +112,8 @@ def sim_user():
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
-	sim_scene = request.form['sim_scenario']
-	sim_dates = request.form['sim_dates']
+    	sim_scene = request.form['sim_scenario']
+    	sim_dates = request.form['sim_dates']
         db_connection = connect_to_database()
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
