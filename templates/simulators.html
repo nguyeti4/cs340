@@ -41,18 +41,8 @@
     <input class="btn btn-primary" type="submit" value="Add">
 </form>
 
-
-<form class="container" action="/simulators" method="POST" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
-  <div>
-    <h4>Search for scenario records with the specified scenario name</h4>
-  </div> 
-  <div>
-    <label>Scenario name: <input class="form-control" type="text" name="sim_scenario"></label>
-  </div> 
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
-
 <table class="container" class="table table-striped" style="margin-left: 0;">
+  <h4>Here is your Add result</h4>
   <thead>
     <tr>
       <th scope="col">Result ID#</th>
@@ -75,7 +65,7 @@
   </tbody>	
 </table>
 
-<form class="container2"  action="/simulators" method="POST" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<form class="container2"  action="/simulators" method="GET" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Search for scenario record(s) you want to delete that are older than the date you specify</h4>
   </div> 

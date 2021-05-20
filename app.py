@@ -130,9 +130,7 @@ def change_account(id):
 
 @app.route("/simulators",methods=["POST","GET"])
 def sim_user():
-    if request.method == 'GET':
-        return render_template("simulators.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
         input_id = request.form['user_id']
@@ -151,15 +149,25 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
- 
+     #   sim_scene = request.form['sim_scenario']
+     #   sim_dates = request.form['sim_dates']
+        
+     #   query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
+     #  result = execute_query(db_connection, query2)  
         query = 'Select * from Simulators where result_id = (select max(result_id) from Simulators);'
         sim_data_db = execute_query(db_connection, query).fetchall()
-        print(sim_data_db)
-        return render_template("simulators.html", result=sim_data_db)
+        return render_template("simulators.html",result=sim_data_db)
+    
+     #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
+     #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
+     #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
+    elif request.method == 'GET':
+        db_connection = connect_to_database()
+        oldest_date = request.args.get('sim_dates')
+        query2 = 'Select * from Simulators where play_date < %s;'  
+        dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()
+        return render_template('simulators.html', delete_dates=dates_to_delete)
 
-      #  query3 = 'SELECT * FROM Simulators WHERE play_date < %s' % (sim_dates)
-      #  result2 = execute_query(db_connection, query3) 
-      #  return render_template("simulators.html",result=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
@@ -174,11 +182,15 @@ def quiz_user():
     elif request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
+        
         input_id = request.form['quiz_user_id']
-        query = 'Select user_id from Users;'
-        ids = execute_query(db_connection, query).fetchall()
-        if input_id not in ids:
-            return 'This user id does not exist!'
+        print(input_id)
+        query = 'Select * from Users where user_id=%s'
+        user = execute_query(db_connection, query, (input_id,)).fetchall()
+        print(user)
+        if user is None:
+            return 'This user does not exist!'
+        
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
@@ -188,13 +200,14 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-        quiz_states = request.form['sel_quizstates']
-        quiz_dates = request.form['del_quizdates']
-        query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
-        result = execute_query(db_connection, query2, quiz_states)  
-        query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-        result2 = execute_query(db_connection, query3, quiz_dates) 
-        return render_template("quizRecords.html",results=result,delete_dates=result2)
+      #  quiz_states = request.form['sel_quizstates']
+      #  quiz_dates = request.form['del_quizdates']
+        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from Quiz_Records);'
+        quizrecord_data_db = execute_query(db_connection, query).fetchall()
+        return render_template("quizRecords.html",results=quizrecord_data_db)
+       # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
+       # result2 = execute_query(db_connection, query3, quiz_dates) 
+       # return render_template("quizRecords.html",results=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
