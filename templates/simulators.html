@@ -99,13 +99,15 @@
     </tr>
   </thead>
   <tbody>
+    {% for record in delete_dates %}
     <tr>
-      <th scope="row">911</th>
-      <td>119</td>
-      <td>1</td>
-      <td>04/27/2021</td>
-      <td>Freeway</td>
+      <th scope="row">{{record[0]}}</th>
+      <td>{{record[1]}}</td>
+      <td>{{record[2]}}</td>
+      <td>{{record[3]}}</td>
+      <td>{{record[4]}}</td>
     </tr>
+    {% endfor %}
   </tbody>	
 </table>
 <input class="btn btn-primary" type="submit" value="Delete All">
