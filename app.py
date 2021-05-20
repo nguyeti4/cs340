@@ -141,7 +141,7 @@ def sim_user():
         execute_query(db_connection, query, data)
         print('sim record added!')
         sim_scene = request.form['sim_scenario']
-    	sim_dates = request.form['sim_dates']
+        sim_dates = request.form['sim_dates']
         query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s'
         result = execute_query(db_connection, query2, sim_scene)  
         query3 = 'SELECT * FROM Simulators WHERE play_date > %s'
