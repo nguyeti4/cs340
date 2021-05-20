@@ -188,11 +188,15 @@ def quiz_user():
     elif request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
+        
         input_id = request.form['quiz_user_id']
-        query = 'Select user_id from Users;'
-        ids = execute_query(db_connection, query).fetchall()
-        if input_id not in ids:
-            return 'This user id does not exist!'
+        print(input_id)
+        query = 'Select * from Users where user_id=%s'
+        user = execute_query(db_connection, query, (input_id,)).fetchall()
+        print(user)
+        if user is None:
+            return 'This user does not exist!'
+        
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
@@ -202,13 +206,14 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-        quiz_states = request.form['sel_quizstates']
-        quiz_dates = request.form['del_quizdates']
-        query2 = 'SELECT * FROM Quiz_Records WHERE quiz_state = %s'
-        result = execute_query(db_connection, query2, quiz_states)  
-        query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-        result2 = execute_query(db_connection, query3, quiz_dates) 
-        return render_template("quizRecords.html",results=result,delete_dates=result2)
+      #  quiz_states = request.form['sel_quizstates']
+      #  quiz_dates = request.form['del_quizdates']
+        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from Quiz_Records);'
+        sim_data_db = execute_query(db_connection, query).fetchall()
+        return render_template("simulators.html",result=sim_data_db)
+       # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
+       # result2 = execute_query(db_connection, query3, quiz_dates) 
+       # return render_template("quizRecords.html",results=result,delete_dates=result2)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
