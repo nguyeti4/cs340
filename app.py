@@ -142,9 +142,7 @@ def delete_account(id):
 
 @app.route("/simulators",methods=["POST","GET"])
 def sim_user():
-    if request.method == 'GET':
-        return render_template("simulators.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
         input_id = request.form['user_id']
@@ -175,6 +173,12 @@ def sim_user():
      #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
      #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
      #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
+     elif request.method == 'GET':
+        db_connection = connect_to_database()
+        oldest_date = request.args.get('sim_dates')
+        query2 = 'Select * from Simulators where play_date < %s;'  
+        dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()
+        return render_template('simulators.html', delete_dates=dates_to_delete)
 
 
 # ----------------------------------------------------
