@@ -194,12 +194,12 @@ def quiz_user():
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
        
-        query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
+        query = 'INSERT INTO Quiz_Records (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
     
-        query = 'Select * from QuizRecords where quiz_id = (select max(quiz_id) from QuizRecords);'
+        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from QuizRecords);'
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
    
