@@ -203,6 +203,15 @@ def quiz_user():
         query = 'Select * from QuizRecords where quiz_id = (select max(quiz_id) from QuizRecords);'
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
+   
+@app.route("/quiz_records/update")
+def quiz_update():
+    db_connection = connect_to_database()
+    oldest_date = request.args.get('sel_quizstates')
+    query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
+    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
+    return render_template('quizRecords.html', delete_dates=result2)
+       
        # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
        # result2 = execute_query(db_connection, query3, quiz_dates) 
        # return render_template("quizRecords.html",results=result,delete_dates=result2)
