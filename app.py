@@ -198,8 +198,7 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-      #  quiz_states = request.form['sel_quizstates']
-      #  quiz_dates = request.form['del_quizdates']
+    
         query = 'Select * from QuizRecords where quiz_id = (select max(quiz_id) from QuizRecords);'
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
@@ -207,14 +206,11 @@ def quiz_user():
 @app.route("/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('sel_quizstates')
+    oldest_date = request.args.get('del_quizstates')
     query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html', delete_dates=result2)
-       
-       # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-       # result2 = execute_query(db_connection, query3, quiz_dates) 
-       # return render_template("quizRecords.html",results=result,delete_dates=result2)
+
 
 # ----------------------------------------------------
 # ----------------------------------------------------
