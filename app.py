@@ -206,7 +206,7 @@ def quiz_user():
 @app.route("/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('del_quizstates')
+    oldest_date = request.args.get('del_quizdates')
     query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html', delete_dates=result2)
