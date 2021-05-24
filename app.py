@@ -175,9 +175,7 @@ def sim_update():
 
 @app.route("/quiz_records", methods=["POST", "GET"])
 def quiz_user():
-    if request.method == 'GET':
-        return render_template("quizRecords.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
         
