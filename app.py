@@ -168,6 +168,7 @@ def sim_update():
 
 @app.route("/simulators/delete-all/<id_list>")
 def sim_deleteall(id_list):
+    print(id_list)
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id in %s"
     result = execute_query(db_connection,query,id_list)
