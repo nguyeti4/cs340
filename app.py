@@ -199,7 +199,7 @@ def quiz_user():
         execute_query(db_connection, query, data)
         print('Quiz record added!')
     
-        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from QuizRecords);'
+        query = 'Select * from Quiz_Records where quiz_id = (select max(quiz_id) from Quiz_Records);'
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
    
