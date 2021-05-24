@@ -138,7 +138,7 @@ def sim_user():
         query = 'Select * from Users where user_id=%s'
         user = execute_query(db_connection, query, (input_id,)).fetchall()
         print(user)
-        if user is None:
+        if user == None:
             return 'This user does not exist!'
        
         user_id = request.form['user_id']
