@@ -134,7 +134,7 @@ def change_account(id):
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/simulators/add",methods=["POST","GET"])
+@app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
@@ -161,7 +161,7 @@ def sim_user():
         return render_template("simulators.html",result=sim_data_db)
 
         
-@app.route("/simulators/update")
+@app.route("/api/simulators/update")
 def sim_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('sim_dates')
@@ -170,7 +170,7 @@ def sim_update():
     return render_template('simulators.html', delete_dates=dates_to_delete)
     print(oldest_date)
 
-@app.route("/simulators/delete/<int:id>")
+@app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
@@ -185,7 +185,7 @@ def sim_delete(id):
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/quiz_records/add", methods=["POST", "GET"])
+@app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
@@ -213,7 +213,7 @@ def quiz_user():
         quizrecord_data_db = execute_query(db_connection, query).fetchall()
         return render_template("quizRecords.html",results=quizrecord_data_db)
    
-@app.route("/quiz_records/update")
+@app.route("/api/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('del_quizdates')
@@ -221,7 +221,7 @@ def quiz_update():
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html', delete_dates=result2)
 
-@app.route("/quiz_records/delete/<int:id>")
+@app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
