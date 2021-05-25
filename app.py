@@ -216,6 +216,14 @@ def quiz_update():
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html', delete_dates=result2)
 
+@app.route("/quiz_records/delete/<int:id>")
+def quiz_delete(id):
+    db_connection = connect_to_database()
+    query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
+    result = execute_query(db_connection,query,(id,))
+    return (str(result.rowcount) + "rows deleted")
+
+
 
 # ----------------------------------------------------
 # ----------------------------------------------------
