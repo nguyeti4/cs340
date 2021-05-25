@@ -134,7 +134,7 @@ def change_account(id):
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/simulators",methods=["POST","GET"])
+@app.route("/simulators/add",methods=["POST","GET"])
 def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
@@ -185,7 +185,7 @@ def sim_delete(id):
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/quiz_records", methods=["POST", "GET"])
+@app.route("/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
