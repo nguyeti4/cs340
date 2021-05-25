@@ -19,7 +19,7 @@ def home():
 @app.route("/simulators")
 def simulators_page():
     db_connection = connect_to_database()
-    add_result = [{1,3,89,2021-25-05,"DUI"}]
+    add_result = [{1,3,89,'2021-25-05',"DUI"}]
     return render_template('simulators.html',result=add_result,delete_dates=add_result)
 
 @app.route("/quiz_records")
