@@ -153,10 +153,7 @@ def sim_user():
         query = 'Select * from Simulators where result_id = (select max(result_id) from Simulators);'
         sim_data_db = execute_query(db_connection, query).fetchall()
         return render_template("simulators.html",result=sim_data_db)
-    
-     #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
-     #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
-     #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
+
         
 @app.route("/simulators/update")
 def sim_update():
@@ -171,7 +168,8 @@ def sim_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
-    return (str(result.rowcount) + "rows deleted")
+    #return (str(result.rowcount) + "rows deleted")
+    return redirect(url_for("sim_update"))
 
 
 # ----------------------------------------------------
