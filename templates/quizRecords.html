@@ -85,6 +85,7 @@
       <th scope="col">Quiz Date</th>
       <th scope="col">Quiz State</th>
       <th scope="col">Quiz Score</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -95,9 +96,10 @@
       <td>{{record[2]}}</td>
       <td>{{record[3]}}</td>
       <td>{{record[4]}}</td>    
+      <td> <input type="submit" name='Delete' value='Delete' onclick="window.location = '/quiz_record/delete/{{record[0]}}'"> </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<input class="btn btn-primary" type="submit" value="Delete All">
+
 {% endblock %}
