@@ -156,10 +156,10 @@ def sim_user():
         execute_query(db_connection, query, data)
         print('sim record added!')
 
-        query = 'Select * from Simulators;'
-        sim_data_db = execute_query(db_connection, query).fetchall()
-        return render_template("simulators.html",result=sim_data_db)
-
+        #query = 'Select * from Simulators;'
+        #sim_data_db = execute_query(db_connection, query).fetchall()
+        #return render_template("simulators.html",result=sim_data_db)
+        return redirect(url_for("simulators_page"))
         
 @app.route("/api/simulators/update")
 def sim_update():
@@ -209,9 +209,10 @@ def quiz_user():
         execute_query(db_connection, query, data)
         print('Quiz record added!')
     
-        query = 'Select * from Quiz_Records;'
-        quizrecord_data_db = execute_query(db_connection, query).fetchall()
-        return render_template("quizRecords.html",results=quizrecord_data_db)
+        #query = 'Select * from Quiz_Records;'
+        #quizrecord_data_db = execute_query(db_connection, query).fetchall()
+        #return render_template("quizRecords.html",results=quizrecord_data_db)
+        return redirect(url_for("quiz_records_page"))
    
 @app.route("/api/quiz_records/update")
 def quiz_update():
