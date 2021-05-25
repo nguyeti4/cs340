@@ -18,7 +18,9 @@ def home():
 
 @app.route("/simulators")
 def simulators_page():
-    return render_template('simulators.html')
+    db_connection = connect_to_database()
+    add_result = [{x,x,x,xxxx-xx-xx,x}]
+    return render_template('simulators.html',result=add_result,delete_dates=add_result)
 
 @app.route("/quiz_records")
 def quiz_records_page():
