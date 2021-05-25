@@ -169,8 +169,8 @@ def sim_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
-    print(str(result.rowcount) + "rows deleted")
-    return redirect(url_for("simulators_page"))
+    return(str(result.rowcount) + "rows deleted")
+    #return redirect(url_for("simulators_page"))
 
 
 # ----------------------------------------------------
@@ -220,8 +220,8 @@ def quiz_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
-    print(str(result.rowcount) + "rows deleted")
-    return redirect(url_for("quiz_records_page"))
+    return(str(result.rowcount) + "rows deleted")
+    #return redirect(url_for("quiz_records_page"))
 
 
 # ----------------------------------------------------
