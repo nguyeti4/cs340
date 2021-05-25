@@ -170,7 +170,7 @@ def sim_delete(id):
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
-    return redirect(url_for("sim_update"))
+    return redirect(url_for("simulators_page"))
 
 
 # ----------------------------------------------------
@@ -221,7 +221,7 @@ def quiz_delete(id):
     query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
-    return redirect(url_for("quiz_update"))
+    return redirect(url_for("quiz_records_page"))
 
 
 # ----------------------------------------------------
