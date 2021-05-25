@@ -14,6 +14,7 @@
   </p>   
 </div>
 
+<div>
 <form class="container" action="/api/quiz_records/add" method="POST" style="margin-left: 0;">
     <div>
         <h4>Add a Quiz record Manually</h4>
@@ -36,7 +37,11 @@
     </div>
     <input class="btn btn-primary" type="submit" value="Add">
 </form>
+</div>
+<br>
 
+<br>
+<div>
 <table class="container" class="table table-striped" style="margin-left: 0;">
 <h4>Here is your Add result</h4>
   <thead>
@@ -60,7 +65,11 @@
     {% endfor %}
   </tbody>
 </table>
+</div>
+<br>
 
+<br>
+<div>
 <form class="container2" action="/api/quiz_records/update" method="GET" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Search for Quiz records you want to delete that are older than the date specified</h4>	
@@ -70,10 +79,13 @@
   </div>    
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>	
 </form>
+</div>
+<br>
 
-
+<br>
 <!-- populate the searching result as a table here -->
 <!-- on the right side of each row, there will be two buttons, update or delete -->
+<div>
 <table class="container" class="table table-striped" style="margin-left: 0;">
   <div>
     <h4>Delete quiz record</h4>
@@ -101,5 +113,7 @@
     {% endfor %}
   </tbody>
 </table>
+</div>
+<br>
 
 {% endblock %}
