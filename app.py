@@ -18,11 +18,17 @@ def home():
 
 @app.route("/simulators")
 def simulators_page():
-    return render_template('simulators.html')
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Simulators"
+    init=execute_query(db_connection, query)
+    return render_template('simulators.html',result=init)
 
 @app.route("/quiz_records")
 def quiz_records_page():
-    return render_template('quizRecords.html')
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Quiz_Records"
+    init=execute_query(db_connection, query)
+    return render_template('quizRecords.html',results=init)
 
 # ----------------------------------------------------
 # ----------------------------------------------------
