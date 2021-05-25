@@ -169,7 +169,7 @@ def sim_update():
 @app.route("/simulators/delete/<int:id>")
 def sim_delete(id):
     db_connection = connect_to_database()
-    query = "DELETE FROM Simulators WHERE result_id == %s"
+    query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
     return (str(result.rowcount) + "rows deleted")
 
