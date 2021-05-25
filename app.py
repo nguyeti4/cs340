@@ -168,8 +168,12 @@ def sim_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
-    #return (str(result.rowcount) + "rows deleted")
-    return redirect(url_for("sim_update"))
+    print(str(result.rowcount) + "rows deleted")
+    #return redirect(url_for("sim_update"))
+    oldest_date = request.args.get('sim_dates')
+    query2 = 'Select * from Simulators where play_date < %s;'  
+    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
+    return render_template('simulators.html', delete_dates=dates_to_delete)
 
 
 # ----------------------------------------------------
