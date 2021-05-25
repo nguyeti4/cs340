@@ -188,7 +188,7 @@ def quiz_user():
         input_id = request.form['quiz_user_id']
         print(input_id)
         query = 'Select * from Users where user_id=%s'
-        user = execute_query(db_connection, query, (input_id,)).fetchall()
+        user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
         if user is None:
             return 'This user does not exist!'
