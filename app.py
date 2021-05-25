@@ -136,11 +136,6 @@ def change_account(id):
 
 @app.route("/simulators/add",methods=["POST","GET"])
 def sim_user():
-    if request.method == 'GET':
-        db_connection = connect_to_database()
-        query = "SELECT * FROM Simulators"
-        init=execute_query(db_connection, query)
-        return render_template('simulators.html',result=init)
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
@@ -192,11 +187,6 @@ def sim_delete(id):
 
 @app.route("/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
-    if request.method == 'GET':
-        db_connection = connect_to_database()
-        query = "SELECT * FROM Quiz_Records"
-        init=execute_query(db_connection, query)
-        return render_template('quizRecords.html',results=init)
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
