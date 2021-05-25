@@ -89,6 +89,7 @@
       <th scope="col">Grading</th>
       <th scope="col">Play date</th>
       <th scope="col">Scenario Name</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -99,9 +100,10 @@
       <td>{{record[2]}}</td>
       <td>{{record[3]}}</td>
       <td>{{record[4]}}</td>
+      <td><input class="btn btn-primary" type="submit" value="Delete" onclick="window.location = '/simulators/delete/{{record[0]}}'"></td>
     </tr>
     {% endfor %}
   </tbody>	
 </table>
-<input class="btn btn-primary" type="submit" value="Delete All" onclick="window.location = '/simulators/delete-all/{{delete_dates}}'">
+
 {% endblock %}
