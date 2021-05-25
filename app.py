@@ -155,13 +155,13 @@ def sim_user():
         return render_template("simulators.html",result=sim_data_db)
 
         
-@app.route("/simulators/update/<select_date>")
-def sim_update(select_date):
+@app.route("/simulators/update")
+def sim_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('sim_dates')
     query2 = 'Select * from Simulators where play_date < %s;'  
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
-    return render_template('simulators.html', delete_dates=dates_to_delete, select_date=oldest_date)
+    return render_template('simulators.html', delete_dates=dates_to_delete)
     print(oldest_date)
 
 @app.route("/simulators/delete/<int:id>")
