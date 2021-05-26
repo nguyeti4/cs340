@@ -108,7 +108,7 @@ def change_account(id):
         print (str(result.rowcount) + "row deleted")
         return redirect(url_for("users_page")
  
-    update account
+    #update account
     elif request.method == 'PUT':
         print("Update account!")
         update_details = (
