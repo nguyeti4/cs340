@@ -109,24 +109,24 @@ def change_account(id):
         return redirect(url_for("users_page")
  
     # update account
-    if request.method == 'PUT':
-        print("Update account!")
-        update_details = (
-            request.form['user_name'],
-            request.form['user_password'],
-            request.form['regis_date'],
-            request.form['active'],
-            request.form['user_id']
-        )
-        print(request.form)
-        user_id = request.form['user_id']
+    #if request.method == 'PUT':
+    #    print("Update account!")
+    #    update_details = (
+    #        request.form['user_name'],
+    #        request.form['user_password'],
+    #        request.form['regis_date'],
+    #        request.form['active'],
+    #        request.form['user_id']
+    #    )
+    #    print(request.form)
+    #    user_id = request.form['user_id']
 
-        query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
-        result = execute_query(db_connection, query, update_details)
-        print(str(result.rowcount) + " row(s) updated")
-        query = 'Select * from Users where user_id=%s'
-        updated_user = execute_query(db_connection, query, (user_id,)).fetchall()
-        return render_template('users.html', updated_user)
+    #    query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
+    #    result = execute_query(db_connection, query, update_details)
+    #    print(str(result.rowcount) + " row(s) updated")
+    #    query = 'Select * from Users where user_id=%s'
+    #    updated_user = execute_query(db_connection, query, (user_id,)).fetchall()
+    #    return render_template('users.html', updated_user)
   
 # ----------------------------------------------------
 # ----------------------------------------------------
