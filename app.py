@@ -109,7 +109,7 @@ def change_account(id):
         return redirect(url_for("users_page")
  
     #update account
-    elif request.method == 'PUT':
+    if request.method == 'PUT':
         print("Update account!")
         update_details = (
             request.form['user_name'],
