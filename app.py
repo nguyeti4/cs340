@@ -155,15 +155,9 @@ def count_customers():
 @app.route("/simulators", methods=["GET"])
 def simulators_page():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('sim_dates')
-    if oldest_date != None:
-        query2 = 'Select * from Simulators where play_date < %s;'  
-        dates_to_filter = execute_query(db_connection, query2, (oldest_date,)).fetchall() 
-        return render_template('simulators.html', result=dates_to_filter)
-    else:
-        query = "SELECT * FROM Simulators"
-        sim_db=execute_query(db_connection, query)
-        return render_template('simulators.html', result=sim_db)
+    query = "SELECT * FROM Simulators"
+    sim_db=execute_query(db_connection, query)
+    return render_template('simulators.html', result=sim_db)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
@@ -190,13 +184,13 @@ def sim_user():
 
         return redirect(url_for("simulators_page"))
         
-#@app.route("/api/simulators/update")
-#def sim_update():
-#    db_connection = connect_to_database()
-#    oldest_date = request.args.get('sim_dates')
-#    query2 = 'Select * from Simulators where play_date < %s;'  
-#    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
-#    return redirect(url_for("simulators_page"))
+@app.route("/api/simulators/update")
+def sim_update():
+    db_connection = connect_to_database()
+    oldest_date = request.args.get('sim_dates')
+    query2 = 'Select * from Simulators where play_date < %s;'  
+    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
+    return render_template('simulators.html',result=dates_to_delete)
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
@@ -255,13 +249,13 @@ def quiz_user():
         #return render_template("quizRecords.html",results=quizrecord_data_db)
         return redirect(url_for("quiz_records_page"))
    
-#@app.route("/api/quiz_records/update")
-#def quiz_update():
-#    db_connection = connect_to_database()
-#    oldest_date = request.args.get('del_quizdates')
-#   query3 = 'Select * from QuizRecords where quiz_date < %s;'  
-#    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
-#    return redirect(url_for("quiz_records_page"))
+@app.route("/api/quiz_records/update")
+def quiz_update():
+    db_connection = connect_to_database()
+    oldest_date = request.args.get('del_quizdates')
+    query3 = 'Select * from QuizRecords where quiz_date < %s;'  
+    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
+    return render_template('quizRecords.html',results=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
