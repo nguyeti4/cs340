@@ -14,7 +14,8 @@
   </p>   
 </div>
 
-<form class="container" action="quiz_records" method="POST" style="margin-left: 0;">
+<div>
+<form class="container" action="/api/quiz_records/add" method="POST" style="margin-left: 0;">
     <div>
         <h4>Add a Quiz record Manually</h4>
     </div>
@@ -36,7 +37,11 @@
     </div>
     <input class="btn btn-primary" type="submit" value="Add">
 </form>
+</div>
+<br>
 
+<br>
+<div>
 <table class="container" class="table table-striped" style="margin-left: 0;">
 <h4>Here is your Add result</h4>
   <thead>
@@ -56,24 +61,32 @@
       <td>{{item[2]}}</td>
       <td>{{item[3]}}</td>
       <td>{{item[4]}}</td>    
+      <td> <input type="submit" name='Delete' value='Delete' onclick="window.location = '/api/quiz_records/delete/{{item[0]}}'"> </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+</div>
+<br>
 
-<form class="container2" action="quiz_records" method="POST" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<br>
+<div>
+<form class="container2" action="/api/quiz_records/update" method="GET" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Search for Quiz records you want to delete that are older than the date specified</h4>	
   </div>
   <div>
-    <label>Quiz_Date: <input class="form-control" type="date" name="del_quizdates"></label>
+    <label>Quiz_Date: <input class="form-control" type="date" value='2021-06-30' name="del_quizdates"></label>
   </div>    
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>	
 </form>
+</div>
+<br>
 
-
+<br>
 <!-- populate the searching result as a table here -->
 <!-- on the right side of each row, there will be two buttons, update or delete -->
+<div>
 <table class="container" class="table table-striped" style="margin-left: 0;">
   <div>
     <h4>Delete quiz record</h4>
@@ -85,6 +98,7 @@
       <th scope="col">Quiz Date</th>
       <th scope="col">Quiz State</th>
       <th scope="col">Quiz Score</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -95,9 +109,12 @@
       <td>{{record[2]}}</td>
       <td>{{record[3]}}</td>
       <td>{{record[4]}}</td>    
+      <td> <input type="submit" name='Delete' value='Delete' onclick="window.location = '/api/quiz_records/delete/{{record[0]}}'"> </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<input class="btn btn-primary" type="submit" value="Delete All">
+</div>
+<br>
+
 {% endblock %}

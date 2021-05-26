@@ -17,7 +17,10 @@ app.permanent_session_lifetime = timedelta(days=1)
 @app.route("/", methods=["GET"])
 @app.route("/users", methods=["GET"])
 def users_page():
-    return render_template('users.html')
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Users"
+    users_db=execute_query(db_connection, query)
+    return render_template('users.html', users=users_db)
 
 @app.route("/api/users", methods=["POST", "GET"])
 def users():
@@ -76,7 +79,7 @@ def users():
         res = make_response(jsonify(users))
         return res
 
-@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
+@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
 def change_account(id):
     db_connection = connect_to_database()
     # Delete user
@@ -89,8 +92,8 @@ def change_account(id):
         print (str(result.rowcount) + "row deleted")
         return jsonify("delete ok")
  
-    # update account
-    elif request.method == 'PUT':
+    #update account
+    if request.method == 'PUT':
         print("Update account!")
         user_id = id
         update_details = (
@@ -153,18 +156,19 @@ def count_customers():
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/api/simulators",methods=["POST","GET"])
+@app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
         input_id = request.form['user_id']
         print(input_id)
-        query = 'Select * from Users where user_id=%s'
-        user = execute_query(db_connection, query, (input_id,)).fetchall()
+        query = 'Select * from Users where user_id= %s'
+        user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
-        if user is None:
-            return 'This user does not exist!'
+        if user == None:
+            print('This user does not exist!')
+            return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -174,24 +178,28 @@ def sim_user():
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         print('sim record added!')
-     #   sim_scene = request.form['sim_scenario']
-     #   sim_dates = request.form['sim_dates']
+
+        #query = 'Select * from Simulators;'
+        #sim_data_db = execute_query(db_connection, query).fetchall()
+        #return render_template("simulators.html",result=sim_data_db)
+        return redirect(url_for("simulators_page"))
         
-     #   query2 = 'SELECT * FROM Simulators WHERE scenario_name = %s' % (sim_scene)
-     #  result = execute_query(db_connection, query2)  
-        query = 'Select * from Simulators where result_id = (select max(result_id) from Simulators);'
-        sim_data_db = execute_query(db_connection, query).fetchall()
-        return render_template("simulators.html",result=sim_data_db)
-    
-     #   query3 = 'SELECT * FROM Simulators WHERE play_date < %s'
-     #   result2 = execute_query(db_connection, query3, (sim_dates,)).fetchall()
-     #   return render_template("simulators.html",result=sim_data_db,delete_dates=result2)
-    elif request.method == 'GET':
-        db_connection = connect_to_database()
-        oldest_date = request.args.get('sim_dates')
-        query2 = 'Select * from Simulators where play_date < %s;'  
-        dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()
-        return render_template('simulators.html', delete_dates=dates_to_delete)
+@app.route("/api/simulators/update")
+def sim_update():
+    db_connection = connect_to_database()
+    oldest_date = request.args.get('sim_dates')
+    query2 = 'Select * from Simulators where play_date < %s;'  
+    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
+    return render_template('simulators.html', delete_dates=dates_to_delete)
+    print(oldest_date)
+
+@app.route("/api/simulators/delete/<int:id>")
+def sim_delete(id):
+    db_connection = connect_to_database()
+    query = "DELETE FROM Simulators WHERE result_id = %s"
+    result = execute_query(db_connection,query,(id,))
+    print(str(result.rowcount) + "rows deleted")
+    return redirect(url_for("simulators_page"))
 
 
 # ----------------------------------------------------
@@ -200,21 +208,20 @@ def sim_user():
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/quiz_records", methods=["POST", "GET"])
+@app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
-    if request.method == 'GET':
-        return render_template("quizRecords.html")
-    elif request.method == 'POST':
+    if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new Quiz record!")
         
         input_id = request.form['quiz_user_id']
         print(input_id)
         query = 'Select * from Users where user_id=%s'
-        user = execute_query(db_connection, query, (input_id,)).fetchall()
+        user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
         if user is None:
-            return 'This user does not exist!'
+            print('This user does not exist!')
+            return redirect(url_for("quiz_records_page"))
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
@@ -225,14 +232,28 @@ def quiz_user():
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
         print('Quiz record added!')
-      #  quiz_states = request.form['sel_quizstates']
-      #  quiz_dates = request.form['del_quizdates']
-        query = 'Select * from QuizRecords where quiz_id = (select max(quiz_id) from QuizRecords);'
-        quizrecord_data_db = execute_query(db_connection, query).fetchall()
-        return render_template("quizRecords.html",results=quizrecord_data_db)
-       # query3 = 'SELECT * FROM Simulators WHERE quiz_date > %s'
-       # result2 = execute_query(db_connection, query3, quiz_dates) 
-       # return render_template("quizRecords.html",results=result,delete_dates=result2)
+    
+        #query = 'Select * from Quiz_Records;'
+        #quizrecord_data_db = execute_query(db_connection, query).fetchall()
+        #return render_template("quizRecords.html",results=quizrecord_data_db)
+        return redirect(url_for("quiz_records_page"))
+   
+@app.route("/api/quiz_records/update")
+def quiz_update():
+    db_connection = connect_to_database()
+    oldest_date = request.args.get('del_quizdates')
+    query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
+    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
+    return render_template('quizRecords.html', delete_dates=result2)
+
+@app.route("/api/quiz_records/delete/<int:id>")
+def quiz_delete(id):
+    db_connection = connect_to_database()
+    query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
+    result = execute_query(db_connection,query,(id,))
+    print(str(result.rowcount) + "rows deleted")
+    return redirect(url_for("quiz_records_page"))
+
 
 # ----------------------------------------------------
 # ----------------------------------------------------
