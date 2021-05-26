@@ -188,8 +188,8 @@ def sim_user():
 def sim_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('sim_dates')
-    if oldest_date == None:
-        print(oldest_date)
+    if oldest_date == '':
+        print("Good")
         #return redirect(url_for("simulators_page"))
     query2 = 'Select * from Simulators where play_date < %s;'  
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
@@ -241,9 +241,6 @@ def quiz_user():
         execute_query(db_connection, query, data)
         print('Quiz record added!')
     
-        #query = 'Select * from Quiz_Records;'
-        #quizrecord_data_db = execute_query(db_connection, query).fetchall()
-        #return render_template("quizRecords.html",results=quizrecord_data_db)
         return redirect(url_for("quiz_records_page"))
    
 @app.route("/api/quiz_records/update")
