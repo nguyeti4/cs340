@@ -155,9 +155,15 @@ def count_customers():
 @app.route("/simulators", methods=["GET"])
 def simulators_page():
     db_connection = connect_to_database()
-    query = "SELECT * FROM Simulators"
-    sim_db=execute_query(db_connection, query)
-    return render_template('simulators.html', result=sim_db)
+    oldest_date = request.args.get('sim_dates')
+    if oldest_date != None:
+        query2 = 'Select * from Simulators where play_date < %s;'  
+        dates_to_filter = execute_query(db_connection, query2, (oldest_date,)).fetchall() 
+        return render_template('simulators.html', result=dates_to_filter)
+    else:
+        query = "SELECT * FROM Simulators"
+        sim_db=execute_query(db_connection, query)
+        return render_template('simulators.html', result=sim_db)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
@@ -209,9 +215,15 @@ def sim_delete(id):
 @app.route("/quiz_records", methods=["GET"])
 def quiz_records_page():
     db_connection = connect_to_database()
-    query = "SELECT * FROM QuizRecords"
-    record_db=execute_query(db_connection, query)
-    return render_template('quizRecords.html', results=record_db)
+    oldest_date = request.args.get('del_quizdates')
+    if oldest_date != None:
+        query3 = 'Select * from QuizRecords where quiz_date < %s;'  
+        filter_by_date = execute_query(db_connection, query3, (oldest_date,)).fetchall()
+        return render_template('quizRecords.html', results=filter_by_date)
+    else:
+        query = "SELECT * FROM QuizRecords"
+        record_db=execute_query(db_connection, query)
+        return render_template('quizRecords.html', results=record_db)
 
 @app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
