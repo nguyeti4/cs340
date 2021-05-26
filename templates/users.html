@@ -25,28 +25,28 @@
                 </div>
                 <div>
                     <label class="col-sm-4 col-form-label">User Name</label> 
-                    <input type="text" name="user_name">
+                    <input type="text" name="user_name" id="user_name">
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 col-form-label">User Password</label> 
-                    <input type="text" name="user_password">
+                    <input type="text" name="user_password" id="user_password">
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 col-form-label">User Email</label> 
-                    <input type="email" name="user_email">
+                    <input type="email" name="user_email" id="user_email">
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 col-form-label">Register Date</label> 
-                    <input type="date" name="regis_date">
+                    <input type="date" name="regis_date" id="regis_date">
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 col-form-label">Active</label>
-                    <select name="active">
+                    <select name="active" id="active">
                         <option value="1">True</option>
                         <option value="0">False</option>
                     </select> 
                 </div>
-                <input class="btn btn-primary" type="submit" name="add" value="Add">
+                <input class="btn btn-primary" type="submit" name="add" value="Add" id="add-user">
             </form>
         </div>
         <!-- Search Form -->
@@ -66,7 +66,7 @@
 <br>
 <!-- Table to display the add/search result -->
 <div class="container-fluid">
-    <h4>Here is the Add/Search Result</h4>
+    <h4>Here is the Users table</h4>
     <table class="container" class="table table-striped" style="margin-left: 0;">
         <thead>
         <tr>
@@ -80,9 +80,51 @@
             <th scope="col">Close</th>
         </tr>
         </thead>
-        <tbody>
-        {% for data in values %}
-        <tr>
+        <!-- <tbody  id="user-table">
+            {% for user in users %}
+            <tr user-id="{{user_id}}" id="user-template" class="edit">
+                <td>
+                    <span class="noEdit id">{{user.user_id}}</span>
+                </td>
+                <td >
+                    <span class="noEdit name">{{user.user_name}}</span>
+                    <input class="edit name">
+                </td>
+                <td >
+                    <span class="noEdit password">{{user.user_password}}</span>
+                    <input class="edit password">
+                </td>
+                <td >
+                    <span class="noEdit email">{{user.user_email}}</span>
+                    <input class="edit email">
+                </td>
+                <td >
+                    <span class="noEdit date">{{user.regis_date}}</span>
+                    <input class="edit date">
+                </td>
+                <td>
+                    <span class="noEdit status">{{user.active}}</span>
+                    <select class="edit status">
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                </td>
+                
+                <td>
+                    <button class="noEdit" user-id='{{user_id}}' id='update-user'>Update</button>
+                    <button class="edit save" user-id='{{user_id}}' id='save-edit'>Save</button>
+                    <button class="edit cancel" user-id='{{user_id}}' id='cancel-edit'>cancel</button>
+                </td>
+                    
+                <td><button class="noEdit" user-id='{{user_id}}' id='delete-user'>Delete</button></td>
+            </tr>
+            {% endfor %}
+        </tbody> -->
+
+
+        <tbody id="user-table">
+        {% for data in users %}
+        <tr id="user-template">
             <th scope="row">{{data[0]}}</th>
             <td>{{data[1]}}</td>
             <td>{{data[2]}}</td>
@@ -95,18 +137,51 @@
                 </form>
             </td>
             <td>
-                <form action="/api/users/{{data[0]}}" method="DELETE">
+                <form action="/api/users/{{data[0]}}" method="GET">
                     <input class="btn btn-primary" type="submit" value="Delete" >
                 </form>
             </td>
         </tr>
         {% endfor %}
-        </tbody>
+        </tbody> 
     </table>
 </div>
 
 <br>
 <br>
+
+<!-- <div>
+    <table>
+        <thead>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody id="user-template">
+            <tr user-id="{{user_id}}">
+                <td class="noEdit id">{{user_id}}</td>
+                <td class="noEdit name">{{user_name}}</td>
+                <input class="edit name">
+                <td class="noEdit password">{{user_password}}</td>
+                <input class="edit password">
+                <td class="noEdit email">{{user_mail}}</td>
+                <input class="edit email">
+                <td class="noEdit date">{{regis_date}}</td>
+                <input class="edit date">
+                <td class="noEdit status">{{active}}</td>
+                <select class="edit status">
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+                <td><button class="noEdit" user-id='{{user_id}}' id='update-user'>Update</button></td>
+                <td>
+                    <button class="edit" user-id='{{user_id}}' id='save-edit'>Save</button>
+                    <button class="edit" user-id='{{user_id}}' id='cancel-edit'>cancel</button>
+                </td>
+                <td><button user-id='{{user_id}}' id='delete-user'>Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
 <div class="container-fluid">
     <div>
         <h4>User Data</h4>
@@ -144,5 +219,11 @@
 <br>
 <br>
 
+<script src=" {{ url_for('static', filename='users.js') }}"></script>
 {% endblock %}
+
+<!-- {% block script %}
+<script src=" {{ url_for('static', filename='users.js') }}"></script>
+
+{% endblock %} -->
 

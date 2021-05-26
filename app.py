@@ -1,40 +1,39 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash, jsonify
+from flask import Flask, redirect, url_for, render_template, request, session, flash, jsonify, Response
 from datetime import timedelta
+
+from flask.helpers import make_response
 from db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
-def insert_new_row(query, user_details):
-    db_connection = connect_to_database()
-    execute_query(db_connection, query, user_details)
-    print(user_details)
-    return 'inserted OK'
 
-@app.route("/")
-def home():
-    return render_template('users.html')
+# @app.route("/simulators")
+# def simulators_page():
+#     return render_template('simulators.html')
 
-@app.route("/simulators")
-def simulators_page():
-    return render_template('simulators.html')
-
-@app.route("/quiz_records")
-def quiz_records_page():
-    return render_template('quizRecords.html')
+# @app.route("/quiz_records")
+# def quiz_records_page():
+#     return render_template('quizRecords.html')
 
 # ----------------------------------------------------
 # ----------------------------------------------------
 #      User Page
 # ----------------------------------------------------
 # ----------------------------------------------------
-@app.route("/users")
+@app.route("/", methods=["GET"])
+@app.route("/users", methods=["GET"])
 def users_page():
-    return render_template('users.html')
+    db_connection = connect_to_database()
+    query = "select * from Users;"
+    users_db = execute_query(db_connection, query).fetchall()
+    # users_db = []
+    return render_template('users.html', users=users_db)
 
 @app.route("/api/users", methods=["POST", "GET"])
 def users():
+    print('/api/users')
     db_connection = connect_to_database()
     # add a new user account
     if request.method == 'POST':
@@ -47,6 +46,12 @@ def users():
         if len(user) != 0:
         # if user is not None:
             return 'This email already exist!'
+        user_name = request.form['user_name']
+        if user_name is None: # Not Null
+            flash("user_name can not be null!")
+        
+        # regis_date = request.form['regis_date']
+        
         # insert a new row to the Users table
         print('Add a new user account')
         user_details = (
@@ -57,14 +62,23 @@ def users():
             request.form['active']
         )
         query = 'Insert into Users (user_name, user_password, user_email, regis_date, active) Values (%s,%s,%s,%s,%s)'
-        status_info = insert_new_row(query, user_details)
-        if status_info == 'inserted OK':
-            # select the last inserted row from the Users table
-            query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-            user_data_db = execute_query(db_connection, query).fetchall()
+        execute_query(db_connection, query, user_details)
+        # insert_new_row(query, user_details)
+        # if status_info == 'inserted OK':
+        #     # select the last inserted row from the Users table
+        #     query = 'Select * from Users;'
+        #     user_data_db = execute_query(db_connection, query).fetchall()
             # send data back to populate the result table
-            return render_template('users.html', values=user_data_db)
+        return redirect(url_for('users_page'))
     
+    if request.method == 'GET':
+        db_connection = connect_to_database()
+        query = "select * from Users;"
+        users = execute_query(db_connection, query).fetchall()
+        res = make_response(jsonify(users))
+        return res
+
+def search_user():
     # search function:   
     if request.method == 'GET':
         # search account by email
@@ -91,18 +105,18 @@ def new_customers():
     num_new_customers = execute_query(db_connection, query, dates).fetchall()
     return render_template('users.html', numbers=num_new_customers)
 
-@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
+@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
 def change_account(id):
     db_connection = connect_to_database()
-    # Delete account
-    if request.method == 'DELETE':
+    # Delete user
+    if request.method == 'GET':
         print('Delete account')
         db_connection = connect_to_database()
         query = "DELETE FROM Users WHERE user_id = %s"
         data = (id,)
         result = execute_query(db_connection, query, data)
         print (str(result.rowcount) + "row deleted")
-        return render_template('users.html')
+        return redirect(url_for("users_page"))
  
     # update account
     elif request.method == 'PUT':
@@ -130,7 +144,7 @@ def change_account(id):
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/simulators",methods=["POST","GET"])
+@app.route("/api/simulators",methods=["POST","GET"])
 def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
@@ -375,11 +389,10 @@ def questions():
             print(question_db)
 
 
-        return render_template('Questions.html', values=question_db)
+        return render_template('questions.html', values=question_db)
     
     # search function: search questions by keywords 
     if request.method == 'GET':
-        # check whether the email address exists
         keywords = request.args.get('keywords')
         print(keywords)
 
@@ -395,18 +408,14 @@ def questions():
         )
         data= str(keywords)
         print(data)
-        # query = """SELECT question_id, state, question_desc, question_right_answer from Questions where question_desc like %s"""
         questions_info = execute_query(db_connection, query[0], ('%'+data+'%',)).fetchall()
         print(questions_info)
 
-        # query = 'select question_desc from Questions;'
-        # questions = execute_query(db_connection, query).fetchall()
-        # print(questions)
 
         if len(questions_info) == 0:
             return 'No matching result!'
         else:
-            return render_template('Questions.html', values=questions_info)
+            return render_template('questions.html', values=questions_info)
 
 
 
