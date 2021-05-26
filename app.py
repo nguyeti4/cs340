@@ -189,7 +189,8 @@ def sim_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('sim_dates')
     if oldest_date == None:
-        return redirect(url_for("simulators_page"))
+        print(oldest_date)
+        #return redirect(url_for("simulators_page"))
     query2 = 'Select * from Simulators where play_date < %s;'  
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
     return render_template('simulators.html',result=dates_to_delete)
