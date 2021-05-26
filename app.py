@@ -247,7 +247,7 @@ def quiz_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('del_quizdates')
     if oldest_date == '':
-        return redirect(url_page("quiz_records_page"))
+        return redirect(url_for("quiz_records_page"))
     query3 = 'Select * from QuizRecords where quiz_date < %s;'  
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html',results=result2)
