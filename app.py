@@ -17,10 +17,7 @@ app.permanent_session_lifetime = timedelta(days=1)
 @app.route("/", methods=["GET"])
 @app.route("/users", methods=["GET"])
 def users_page():
-    db_connection = connect_to_database()
-    query = "SELECT * FROM Users"
-    users_db=execute_query(db_connection, query)
-    return render_template('users.html', users=users_db)
+    return render_template('users.html')
 
 @app.route("/api/users", methods=["POST", "GET"])
 def users():
@@ -155,6 +152,14 @@ def count_customers():
 #      Simulator Page
 # ----------------------------------------------------
 # ----------------------------------------------------
+@app.route("/simulators", methods=["GET"])
+def simulators_page():
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Simulators"
+    sim_db=execute_query(db_connection, query)
+    return render_template('simulators.html', result=sim_db)
+
+
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
@@ -207,6 +212,12 @@ def sim_delete(id):
 #      Quiz_Records Page
 # ----------------------------------------------------
 # ----------------------------------------------------
+@app.route("/quiz_records", methods=["GET"])
+def quiz_records_page():
+    db_connection = connect_to_database()
+    query = "SELECT * FROM QuizRecords"
+    record_db=execute_query(db_connection, query)
+    return render_template('quizRecords.html', results=record_db)
 
 @app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
