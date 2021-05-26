@@ -9,14 +9,6 @@ app.secret_key = "group19"
 app.permanent_session_lifetime = timedelta(days=1)
 
 
-# @app.route("/simulators")
-# def simulators_page():
-#     return render_template('simulators.html')
-
-# @app.route("/quiz_records")
-# def quiz_records_page():
-#     return render_template('quizRecords.html')
-
 # ----------------------------------------------------
 # ----------------------------------------------------
 #      User Page
@@ -25,15 +17,11 @@ app.permanent_session_lifetime = timedelta(days=1)
 @app.route("/", methods=["GET"])
 @app.route("/users", methods=["GET"])
 def users_page():
-    db_connection = connect_to_database()
-    query = "select * from Users;"
-    users_db = execute_query(db_connection, query).fetchall()
-    # users_db = []
-    return render_template('users.html', users=users_db)
+    return render_template('users.html')
 
 @app.route("/api/users", methods=["POST", "GET"])
 def users():
-    print('/api/users')
+    print('/api/users', request.method)
     db_connection = connect_to_database()
     # add a new user account
     if request.method == 'POST':
@@ -44,13 +32,11 @@ def users():
         user = execute_query(db_connection, query, (input_email,)).fetchall()
         print(user)
         if len(user) != 0:
-        # if user is not None:
+        # if user with this email already exsit:
             return 'This email already exist!'
         user_name = request.form['user_name']
         if user_name is None: # Not Null
-            flash("user_name can not be null!")
-        
-        # regis_date = request.form['regis_date']
+            return 'user_name can not be null!' 
         
         # insert a new row to the Users table
         print('Add a new user account')
@@ -62,40 +48,96 @@ def users():
             request.form['active']
         )
         query = 'Insert into Users (user_name, user_password, user_email, regis_date, active) Values (%s,%s,%s,%s,%s)'
-        execute_query(db_connection, query, user_details)
-        # insert_new_row(query, user_details)
-        # if status_info == 'inserted OK':
-        #     # select the last inserted row from the Users table
-        #     query = 'Select * from Users;'
-        #     user_data_db = execute_query(db_connection, query).fetchall()
-            # send data back to populate the result table
-        return redirect(url_for('users_page'))
-    
+        cur = execute_query(db_connection, query, user_details)
+
+        return jsonify({
+            'user_id': cur.lastrowid,
+            'user_name': user_details[0],
+            'user_password': user_details[1],
+            'user_email': user_details[2],
+            'regis_date': str(user_details[3]),
+            'active': user_details[4],
+        })
+
     if request.method == 'GET':
         db_connection = connect_to_database()
         query = "select * from Users;"
-        users = execute_query(db_connection, query).fetchall()
+        rows = execute_query(db_connection, query).fetchall()
+        users = []
+        for row in rows:
+            users.append({
+                'user_id': row[0],
+                'user_name': row[1],
+                'user_password': row[2],
+                'user_email': row[3],
+                'regis_date': str(row[4]),
+                'active': row[5],
+            })
         res = make_response(jsonify(users))
         return res
 
+@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
+def change_account(id):
+    db_connection = connect_to_database()
+    # Delete user
+    if request.method == 'DELETE':
+        print('Delete account')
+        db_connection = connect_to_database()
+        query = "DELETE FROM Users WHERE user_id = %s"
+        data = (id,)
+        result = execute_query(db_connection, query, data)
+        print (str(result.rowcount) + "row deleted")
+        return jsonify("delete ok")
+ 
+    # update account
+    elif request.method == 'PUT':
+        print("Update account!")
+        user_id = id
+        update_details = (
+            request.form['user_name'],
+            request.form['user_password'],
+            request.form['regis_date'],
+            request.form['active'],
+            user_id
+        )
+        print(request.form)
+
+        query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
+        result = execute_query(db_connection, query, update_details)
+        print(str(result.rowcount) + " row(s) updated")
+        query = 'Select * from Users where user_id=%s'
+        rows = execute_query(db_connection, query, (user_id,)).fetchall()
+        row = rows[0]
+        return jsonify({
+            'user_id': row[0],
+            'user_name': row[1],
+            'user_password': row[2],
+            'user_email': row[3],
+            'regis_date': str(row[4]),
+            'active': row[5],
+        })
+
+@app.route('/api/users/search')
 def search_user():
-    # search function:   
-    if request.method == 'GET':
-        # search account by email
-        # check whether the email address exists
-        user_email = request.args.get('user_email')
-        print(user_email)
-        query = 'Select * from Users WHERE user_email=%s'
-        data = (user_email,)
-        user_info = execute_query(db_connection, query, data).fetchall()
-        print(user_info)
-        if len(user_info) == 0:
-        # if user_info is None:
-            return 'This email does not exist!'
-        else:
-            return render_template('users.html', values=user_info)
-@app.route('/api/users/new')
-def new_customers():
+    db_connection = connect_to_database()
+    '''
+    User Account Search by email in the User page
+    '''
+    # check whether the email address exists
+    user_email = request.args.get('user_email')
+    print(user_email)
+    query = 'Select * from Users WHERE user_email=%s'
+    data = (user_email,)
+    user_info = execute_query(db_connection, query, data).fetchall()
+    print(user_info)
+    if len(user_info) == 0:
+    # if user_info is None:
+        return 'This email does not exist!'
+    else:
+        return render_template('users.html', values=user_info)
+
+@app.route('/api/users/statistics')
+def count_customers():
     # count new customers
     db_connection = connect_to_database()
     start_date = request.args.get('start_date')
@@ -105,39 +147,6 @@ def new_customers():
     num_new_customers = execute_query(db_connection, query, dates).fetchall()
     return render_template('users.html', numbers=num_new_customers)
 
-@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
-def change_account(id):
-    db_connection = connect_to_database()
-    # Delete user
-    if request.method == 'GET':
-        print('Delete account')
-        db_connection = connect_to_database()
-        query = "DELETE FROM Users WHERE user_id = %s"
-        data = (id,)
-        result = execute_query(db_connection, query, data)
-        print (str(result.rowcount) + "row deleted")
-        return redirect(url_for("users_page"))
- 
-    # update account
-    elif request.method == 'PUT':
-        print("Update account!")
-        update_details = (
-            request.form['user_name'],
-            request.form['user_password'],
-            request.form['regis_date'],
-            request.form['active'],
-            request.form['user_id']
-        )
-        print(request.form)
-        user_id = request.form['user_id']
-
-        query = "UPDATE Users SET user_name = %s, user_password = %s, regis_date = %s, active = %s WHERE user_id = %s"
-        result = execute_query(db_connection, query, update_details)
-        print(str(result.rowcount) + " row(s) updated")
-        query = 'Select * from Users where user_id=%s'
-        updated_user = execute_query(db_connection, query, (user_id,)).fetchall()
-        return render_template('users.html', updated_user)
-  
 # ----------------------------------------------------
 # ----------------------------------------------------
 #      Simulator Page
@@ -322,7 +331,7 @@ def question_accuracy():
 # ----------------------------------------------------
 # ----------------------------------------------------
 
-@app.route("/questions", methods=["POST", "GET"])
+@app.route("/questions", methods=["GET"])
 def questions_page():
     return render_template("questions.html")
 
@@ -340,82 +349,187 @@ def questions():
             request.form['right_answer']
         )
         query = 'Insert into Questions (state, question_desc, question_right_answer) Values (%s,%s,%s)'
-        status_info = insert_new_row(query, question_details)
-        if status_info == 'inserted OK':
-            # select the last inserted row from the Questions table
-            query = 'Select * from Questions where question_id = (select max(question_id) from Questions);'
-            data_db = execute_query(db_connection, query).fetchone()
-            question_id = data_db[0]
-            print(question_id)
+        cur = execute_query(db_connection, query, question_details)
+        question_id = cur.lastrowid
+        print(question_id)
 
         choices =[]
-        if len(request.form['choice1']) != 0:
-            choices.append(request.form['choice1'])
-        if len(request.form['choice2']) != 0:
-            choices.append(request.form['choice2'])
-        if len(request.form['choice3']) != 0:
-            choices.append(request.form['choice3'])
+        if len(request.form['choice_1']) != 0:
+            choices.append(request.form['choice_1'])
+        if len(request.form['choice_2']) != 0:
+            choices.append(request.form['choice_2'])
+        if len(request.form['choice_3']) != 0:
+            choices.append(request.form['choice_3'])
         print(choices)
         
         for choice in choices:
             query = 'Insert into QuestionChoices (question_id, choice_desc) Values (%s,%s)'
             data = (question_id, choice)
-            status_info = insert_new_row(query, data)
-        print(choices)
-        print(len(choices))
-        # send data back to populate the result table
+            execute_query(db_connection, query, data)
+        
         if len(choices) == 3:
-            query = (
-                f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
-                f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
-                f'from Questions q '
-                f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
-                f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
-                f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
-                f'where q.question_id= %s',
-            )
-            question_db = execute_query(db_connection, query[0], (question_id,)).fetchall()
-            print(question_db)
+            return jsonify({
+                'question_id': question_id,
+                'state': question_details[0],
+                'question_desc': question_details[1],
+                'right_answer': question_details[2],
+                'choice_1': choices[0],
+                'choice_2': choices[1],
+                'choice_3': choices[2]
+            })
         else:
-            query = (
-                f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
-                f'qc2.choice_desc as choice2 '
-                f'from Questions q '
-                f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
-                f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
-                f'where q.question_id= %s',
-            )
-            question_db = execute_query(db_connection, query[0], (question_id,)).fetchall()
-            print(question_db)
+            return jsonify({
+                'question_id': question_id,
+                'state': question_details[0],
+                'question_desc': question_details[1],
+                'right_answer': question_details[2],
+                'choice_1': choices[0],
+                'choice_2': choices[1],
+                'choice_3': '',
+            })
 
-
-        return render_template('questions.html', values=question_db)
-    
-    # search function: search questions by keywords 
     if request.method == 'GET':
-        keywords = request.args.get('keywords')
-        print(keywords)
-
-        query = (
+        query_1 = (
             f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
             f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
             f'from Questions q '
-            f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
-            f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
-            f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
-            f'where q.question_desc like %s '
-            f'group by q.question_id;',
+            f'left join QuestionChoices qc1 on q.question_id = qc1.question_id '
+            f'left join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+            f'left join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
+            f'group by q.question_id',
         )
-        data= str(keywords)
-        print(data)
-        questions_info = execute_query(db_connection, query[0], ('%'+data+'%',)).fetchall()
-        print(questions_info)
+        result_1 = execute_query(db_connection, query_1[0]).fetchall()
+        print(result_1)
+        questions = []
+        for row in result_1:
+            questions.append({
+                'question_id': row[0],
+                'state': row[1],
+                'question_desc': row[2],
+                'right_answer': row[3],
+                'choice_1': row[4],
+                'choice_2':row[5],
+                'choice_3': row[6],
+            })
+        print(questions)
+
+        res = make_response(jsonify(questions))
+        return res
+
+@app.route('/api/questions/<int:id>', methods=['DELETE', 'PUT'])
+def change_questions(id):
+    db_connection = connect_to_database()
+    # Delete questions
+    if request.method == 'DELETE':
+        print('Delete a question')
+        query = "DELETE FROM Questions WHERE question_id = %s"
+        data = (id,)
+        result = execute_query(db_connection, query, data)
+        print (str(result.rowcount) + "row deleted")
+        return jsonify("delete ok")
+ 
+    # update account
+    elif request.method == 'PUT':
+        print("Update a question!")
+        question_id = id
+        # first update the Questions table
+        update_question = (
+            request.form['state'],
+            request.form['question_desc'],
+            request.form['right_answer'],
+            question_id
+        )
+        print(request.form)
+
+        query = "UPDATE Questions SET state = %s, question_desc = %s, question_right_answer = %s WHERE question_id = %s"
+        result = execute_query(db_connection, query, update_question)
+        print(str(result.rowcount) + " row(s) updated")
+
+        # then update the QuestionChoices table
+        # group the updated choices
+        update_choices =[]
+        if len(request.form['choice_1']) != 0:
+            update_choices.append(request.form['choice_1'])
+        if len(request.form['choice_2']) != 0:
+            update_choices.append(request.form['choice_2'])
+        if len(request.form['choice_3']) != 0:
+            update_choices.append(request.form['choice_3'])
+        print(update_choices)
+
+        # pull out the orginal choices for this particular question
+        query = 'Select * from QuestionChoices where question_id=%s'
+        rows = execute_query(db_connection, query, (question_id,)).fetchall()
+        
+        # execute SQL update
+        i = 0
+        for row in rows:
+            query = 'UPDATE QuestionChoices SET choice_desc = %s WHERE choice_id = %s'
+            data =(update_choices[i],row[0])
+            execute_query(db_connection, query, data)
+            i += 1
+
+        # special case: add a new choice
+        if len(update_choices) > len(rows):
+            query = 'Insert into QuestionChoices (question_id, choice_desc) VALUES (%s,%s)'
+            data = (question_id, update_choices[2])
+            execute_query(db_connection, query, data)
+        # special case: delete a choice
+        if len(update_choices) < len(rows):
+            query = 'Delete * from QuestionChoices where choice_id = %s '
+            data = (rows[2][0])
+            execute_query(db_connection, query, data)
+
+        return jsonify({
+            'state': update_question[0],
+            'question_desc': update_question[1],
+            'right_answer': update_question[2],
+            'choice_1': update_choices[0],
+            'choice_2': update_choices[1],
+            'choice_3': update_choices[2],
+        })
 
 
-        if len(questions_info) == 0:
-            return 'No matching result!'
-        else:
-            return render_template('questions.html', values=questions_info)
+@app.route("/api/questions/search", methods=["GET"])
+def search_question():
+    db_connection = connect_to_database()
+    # search function: search questions by keywords
+    keywords = request.args.get('keywords')
+    print(keywords)
+
+    query1 = (
+        f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
+        f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
+        f'from Questions q '
+        f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
+        f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+        f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
+        f'where q.question_desc like %s '
+        f'group by q.question_id;',
+    )
+    data= str(keywords)
+    print(data)
+    result1 = execute_query(db_connection, query1[0], ('%'+data+'%',)).fetchall()
+    print(result1)
+
+    query2 = (
+        f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
+        f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
+        f'from Questions q '
+        f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
+        f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+        f'where q.question_desc like %s '
+        f'group by q.question_id;',
+    )
+    data= str(keywords)
+    print(data)
+    result2 = execute_query(db_connection, query2[0], ('%'+data+'%',)).fetchall()
+    print(result2)
+
+
+    if len(questions_info) == 0:
+        return 'No matching result!'
+    else:
+        return render_template('questions.html', values=questions_info)
 
 
 

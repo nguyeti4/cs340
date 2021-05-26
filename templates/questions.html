@@ -19,17 +19,17 @@
   <div class="row">
     <div class="col-lg">
       <!-- add a new question form -->
-      <form class="container" action="/api/questions" method="POST" style="margin-left: 0;">
+      <form class="container" style="margin-left: 0;">
         <div>
           <h4>Add a New Question</h4>
         </div>
         <div class="form-group">
             <label>Question Description</label> 
-            <input class="form-control" type="text" name="question_desc">
+            <input class="form-control" type="text" name="question_desc" id="question-desc">
         </div>
         <div class="form-group">
           <label>State</label> 
-          <select name="state">
+          <select name="state" id="state">
             <option>Universal</option>
             <option>California</option>
             <option>Oregon</option>
@@ -37,21 +37,21 @@
         </div>
         <div class="form-group">
             <label>Choice1</label> 
-            <input class="form-control" type="text" name="choice1">
+            <input class="form-control" type="text" name="choice1" id="choice-1">
         </div>
         <div class="form-group">
             <label>Choice2</label> 
-            <input class="form-control" type="text" name="choice2">
+            <input class="form-control" type="text" name="choice2" id="choice-2">
         </div>
         <div class="form-group">
             <label>Choice3</label> 
-            <input class="form-control" type="text" name="choice3">
+            <input class="form-control" type="text" name="choice3" id="choice-3">
         </div>
         <div class="form-group">
           <label>Right Answer</label> 
-          <input class="form-control" type="text" name="right_answer">
+          <input class="form-control" type="text" name="right_answer" id="right-answer">
         </div>
-        <input class="btn btn-primary" type="submit" value="Add">
+        <input class="btn btn-primary" type="submit" value="Add" id="add-question">
       </form>
     </div>
     <div class="col-lg">
@@ -71,9 +71,9 @@
 <br>
 <!-- populate the searching result as a table here -->
 <!-- on the right side of each row, there will be two buttons, update or delete -->
-<div>
+<div class="container-fluid">
   <div>
-    <h4>Here is the add/search result</h4>
+    <h4>Questions Table</h4>
   </div>
   <table class="container" class="table table-striped" style="margin-left: 0;">
     <thead>
@@ -85,30 +85,37 @@
         <th scope="col">Choice1</th>
         <th scope="col">Choice2</th>
         <th scope="col">Choice3</th>
-        <th scope="col">Update</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
-      {% for data in values %}
-      <tr>
-        <th scope="row">{{data[0]}}</th>
-        <td>{{data[1]}}</td>
-        <td>{{data[2]}}</td>
-        <td>{{data[3]}}</td>
-        <td>{{data[4]}}</td>
-        <td>{{data[5]}}</td>
-        <td>{{data[6]}}</td>
-        <td><input class="btn btn-primary" type="submit" value="Update"></td>
-        <td><input class="btn btn-primary" type="submit" value="Delete"></td>
-      </tr>
-      {% endfor %}
-    </tbody>
+    <tbody id="question-table"></tbody>
   </table>
 </div>
 <br>
 <br>
 <br>
 <br>
+{% raw %}
+<template id="question-template">
+    <tr>
+        <th scope="row">{{question_id}}</th>
+        <td><span class="noedit state">{{state}}</span><input class="edit state" ></td>
+        <td><span class="noedit question_desc">{{question_desc}}</span><input class="edit question_desc" ></td>
+        <td><span class="noedit right_answer">{{right_answer}}</span><input class="edit right_answer" ></td>
+        <td><span class="noedit choice_1">{{choice_1}}</span><input type="text" class="edit choice_1" ></td>
+        <td><span class="noedit choice_2">{{choice_2}}</span><input type="text" class="edit choice_2" ></td>
+        <td><span class="noedit choice_3">{{choice_3}}</span><input type="text" class="edit choice_3" ></td>
+        <td>
+            <input class="btn btn-primary noedit" type="button" value="Delete" question_id="{{question_id}}" id="delete-question">
+            <input class="btn btn-primary noedit" type="button" value="Edit" question_id="{{question_id}}" id="edit-question">
+            <input class="btn btn-primary edit" type="button" value="Save" question_id="{{question_id}}" id="save-edit-question">
+            <input class="btn btn-primary edit" type="button" value="Cancel" question_id="{{question_id}}" id="cancel-edit-question">
+        </td>
+    </tr>
+</template>
+{% endraw %}
+
+<script src=" {{ url_for('static', filename='questions.js') }}"></script>
+
 
 {% endblock %}

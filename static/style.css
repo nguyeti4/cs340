@@ -8,3 +8,15 @@
     clear: right;
     margin-right: 100px;
 } */
+
+table tbody tr .edit {
+    display: none;
+}
+
+table tbody tr.edit .edit {
+    display: initial;
+}
+
+table tbody tr.edit .noedit {
+    display: none;
+}

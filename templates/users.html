@@ -19,7 +19,7 @@
     <div class='row'>
         <!-- Add a new account -->
         <div class="col-lg">
-            <form id="add-account" action="/api/users" method="POST">
+            <form id="add-account">
                 <div>
                     <h4>Add New User Account</h4>
                 </div>
@@ -64,9 +64,10 @@
     </div>
 </div>
 <br>
+
 <!-- Table to display the add/search result -->
 <div class="container-fluid">
-    <h4>Here is the Users table</h4>
+    <h4>User Accounts table</h4>
     <table class="container" class="table table-striped" style="margin-left: 0;">
         <thead>
         <tr>
@@ -76,112 +77,14 @@
             <th scope="col">Email</th>
             <th scope="col">Register Date</th>
             <th scope="col">Active</th>
-            <th scope="col">Update</th>
-            <th scope="col">Close</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
-        <!-- <tbody  id="user-table">
-            {% for user in users %}
-            <tr user-id="{{user_id}}" id="user-template" class="edit">
-                <td>
-                    <span class="noEdit id">{{user.user_id}}</span>
-                </td>
-                <td >
-                    <span class="noEdit name">{{user.user_name}}</span>
-                    <input class="edit name">
-                </td>
-                <td >
-                    <span class="noEdit password">{{user.user_password}}</span>
-                    <input class="edit password">
-                </td>
-                <td >
-                    <span class="noEdit email">{{user.user_email}}</span>
-                    <input class="edit email">
-                </td>
-                <td >
-                    <span class="noEdit date">{{user.regis_date}}</span>
-                    <input class="edit date">
-                </td>
-                <td>
-                    <span class="noEdit status">{{user.active}}</span>
-                    <select class="edit status">
-                        <option value="1">True</option>
-                        <option value="0">False</option>
-                    </select>
-                </td>
-                
-                <td>
-                    <button class="noEdit" user-id='{{user_id}}' id='update-user'>Update</button>
-                    <button class="edit save" user-id='{{user_id}}' id='save-edit'>Save</button>
-                    <button class="edit cancel" user-id='{{user_id}}' id='cancel-edit'>cancel</button>
-                </td>
-                    
-                <td><button class="noEdit" user-id='{{user_id}}' id='delete-user'>Delete</button></td>
-            </tr>
-            {% endfor %}
-        </tbody> -->
-
-
-        <tbody id="user-table">
-        {% for data in users %}
-        <tr id="user-template">
-            <th scope="row">{{data[0]}}</th>
-            <td>{{data[1]}}</td>
-            <td>{{data[2]}}</td>
-            <td>{{data[3]}}</td>
-            <td>{{data[4]}}</td>
-            <td>{{data[5]}}</td>
-            <td>
-                <form action="/api/users/{{data[0]}}" method="PUT">
-                    <input class="btn btn-primary" type="submit" value="Update" >
-                </form>
-            </td>
-            <td>
-                <form action="/api/users/{{data[0]}}" method="GET">
-                    <input class="btn btn-primary" type="submit" value="Delete" >
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody> 
+        <tbody id="user-table"></tbody> 
     </table>
 </div>
-
 <br>
 <br>
-
-<!-- <div>
-    <table>
-        <thead>
-            <th></th>
-            <th></th>
-        </thead>
-        <tbody id="user-template">
-            <tr user-id="{{user_id}}">
-                <td class="noEdit id">{{user_id}}</td>
-                <td class="noEdit name">{{user_name}}</td>
-                <input class="edit name">
-                <td class="noEdit password">{{user_password}}</td>
-                <input class="edit password">
-                <td class="noEdit email">{{user_mail}}</td>
-                <input class="edit email">
-                <td class="noEdit date">{{regis_date}}</td>
-                <input class="edit date">
-                <td class="noEdit status">{{active}}</td>
-                <select class="edit status">
-                    <option value="1">True</option>
-                    <option value="0">False</option>
-                </select>
-                <td><button class="noEdit" user-id='{{user_id}}' id='update-user'>Update</button></td>
-                <td>
-                    <button class="edit" user-id='{{user_id}}' id='save-edit'>Save</button>
-                    <button class="edit" user-id='{{user_id}}' id='cancel-edit'>cancel</button>
-                </td>
-                <td><button user-id='{{user_id}}' id='delete-user'>Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div> -->
 <div class="container-fluid">
     <div>
         <h4>User Data</h4>
@@ -219,11 +122,30 @@
 <br>
 <br>
 
+{% raw %}
+<template id="user-template">
+    <tr>
+        <th scope="row">{{user_id}}</th>
+        <td><span class="noedit name">{{user_name}}</span><input class="edit name" ></td>
+        <td><span class="noedit password">{{user_password}}</span><input class="edit password" ></td>
+        <td><span class="noedit email">{{user_email}}</span><input class="edit email" ></td>
+        <td><span class="noedit regis">{{regis_date}}</span><input type="date" class="edit regis" ></td>
+        <td><span class="noedit active">{{active}}</span>
+            <select class="edit active">
+                <option value="1">1</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td>
+            <input class="btn btn-primary noedit" type="button" value="Delete" user_id="{{user_id}}" id="delete-user">
+            <input class="btn btn-primary noedit" type="button" value="Edit" user_id="{{user_id}}" id="edit-user">
+            <input class="btn btn-primary edit" type="button" value="Save" user_id="{{user_id}}" id="save-edit-user">
+            <input class="btn btn-primary edit" type="button" value="Cancel" user_id="{{user_id}}" id="cancel-edit-user">
+        </td>
+    </tr>
+</template>
+{% endraw %}
+
 <script src=" {{ url_for('static', filename='users.js') }}"></script>
+
 {% endblock %}
-
-<!-- {% block script %}
-<script src=" {{ url_for('static', filename='users.js') }}"></script>
-
-{% endblock %} -->
-
