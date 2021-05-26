@@ -190,7 +190,7 @@ def sim_update():
     oldest_date = request.args.get('sim_dates')
     query2 = 'Select * from Simulators where play_date < %s;'  
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
-    return redirect(url_for("simulators_page"), result=dates_to_delete)
+    return redirect(url_for("simulators_page"))
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
@@ -249,7 +249,7 @@ def quiz_update():
     oldest_date = request.args.get('del_quizdates')
     query3 = 'Select * from QuizRecords where quiz_date < %s;'  
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
-    return redirect(url_for("quiz_records_page"), results=result2)
+    return redirect(url_for("quiz_records_page"))
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
