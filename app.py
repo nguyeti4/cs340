@@ -253,14 +253,14 @@ def quiz_user():
 def quiz_update():
     db_connection = connect_to_database()
     oldest_date = request.args.get('del_quizdates')
-    query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
+    query3 = 'Select * from QuizRecords where quiz_date < %s;'  
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html', delete_dates=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
     db_connection = connect_to_database()
-    query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
+    query = "DELETE FROM QuizRecords WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
     return redirect(url_for("quiz_records_page"))
