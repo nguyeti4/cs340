@@ -35,9 +35,13 @@ def quiz_records_page():
 #      User Page
 # ----------------------------------------------------
 # ----------------------------------------------------
+@app.route("/")
 @app.route("/users")
 def users_page():
-    return render_template('users.html')
+    db_connection = connect_to_database()
+    query = "SELECT * FROM Users"
+    users_db=execute_query(db_connection, query)
+    return render_template('users.html', users=users_db)
 
 @app.route("/api/users", methods=["POST", "GET"])
 def users():
@@ -63,12 +67,8 @@ def users():
         )
         query = 'Insert into Users (user_name, user_password, user_email, regis_date, active) Values (%s,%s,%s,%s,%s)'
         status_info = insert_new_row(query, user_details)
-        if status_info == 'inserted OK':
-            # select the last inserted row from the Users table
-            query = 'Select * from Users where user_id = (select max(user_id) from Users);'
-            user_data_db = execute_query(db_connection, query).fetchall()
-            # send data back to populate the result table
-            return render_template('users.html', values=user_data_db)
+        
+        return redirect(url_for('users_page'))
     
     # search function:   
     if request.method == 'GET':
@@ -95,18 +95,18 @@ def new_customers():
     num_new_customers = execute_query(db_connection, query, dates).fetchall()
     return render_template('users.html', numbers=num_new_customers)
 
-@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
+@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
 def change_account(id):
     db_connection = connect_to_database()
     # Delete account
-    if request.method == 'DELETE':
+    if request.method == 'GET':
         print('Delete account')
         db_connection = connect_to_database()
         query = "DELETE FROM Users WHERE user_id = %s"
         data = (id,)
         result = execute_query(db_connection, query, data)
         print (str(result.rowcount) + "row deleted")
-        return render_template('users.html')
+        return redirect(url_for("users_page")
  
     # update account
     elif request.method == 'PUT':
