@@ -187,12 +187,12 @@ def sim_user():
 @app.route("/api/simulators/update")
 def sim_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('sim_dates')
-    if oldest_date == '':
+    scene = request.args.get('sim_scenario')
+    if scene == '':
        return redirect(url_for("simulators_page"))
-    query2 = 'Select * from Simulators where play_date < %s;'  
-    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
-    return render_template('simulators.html',result=dates_to_delete)
+    query2 = 'Select * from Simulators where scenario_name = %s;'  
+    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall()  
+    return render_template('simulators.html',result=selected_scenarios)
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
@@ -245,11 +245,11 @@ def quiz_user():
 @app.route("/api/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('del_quizdates')
-    if oldest_date == '':
+    state = request.args.get('select_states')
+    if state == '':
         return redirect(url_for("quiz_records_page"))
-    query3 = 'Select * from QuizRecords where quiz_date < %s;'  
-    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
+    query3 = 'Select * from QuizRecords where quiz_state = %s;'  
+    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
     return render_template('quizRecords.html',results=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
