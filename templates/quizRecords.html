@@ -44,7 +44,7 @@
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
 		{% for msg in messages %}
-			<h3>{{msg}}</h3>
+			<h5 class="flash">{{msg}}</h5>
 		{% endfor %}
 	{% endif %}
 {% endwith %}
