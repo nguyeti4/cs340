@@ -199,10 +199,10 @@ def sim_update():
     if scene == '':
        return redirect(url_for("simulators_page"))
     query2 = 'Select * from Simulators where scenario_name = %s;'  
-    if query2 == None:
-        flash(f"There so scenario w/ the name {scene}")
+    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
+    if selected_scenarios == None:
+        flash(f"Can't filter; There no scenario w/ the name {scene}")
         return redirect(url_for("simulators_page"))
-    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall()  
     return render_template('simulators.html',result=selected_scenarios)
 
 @app.route("/api/simulators/delete/<int:id>")
