@@ -194,13 +194,14 @@ def sim_update():
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
     return render_template('simulators.html',result=dates_to_delete)
 
-@app.route("/api/simulators/delete/<int:id>")
-def sim_delete(id):
+@app.route("/<current_url>/delete/<int:id>")
+def sim_delete(current_url,id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
-    return redirect(url_for("simulators_page"))
+    #return redirect(url_for("simulators_page"))
+    return redirect(url_for(current_url))
 
 
 # ----------------------------------------------------
@@ -252,15 +253,14 @@ def quiz_update():
     result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
     return render_template('quizRecords.html',results=result2)
 
-#@app.route("/api/quiz_records/delete/<int:id>")
-@app.route("<current_url>/delete/<int:id>")
-def quiz_delete(current_url,id):
+@app.route("/api/quiz_records/delete/<int:id>")
+def quiz_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM QuizRecords WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
-    #return redirect(url_for("quiz_records_page"))
-    return redirect(url_for(current_url))
+    return redirect(url_for("quiz_records_page"))
+   
     
 # ----------------------------------------------------
 # ----------------------------------------------------
