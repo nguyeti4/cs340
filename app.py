@@ -194,14 +194,13 @@ def sim_update():
     dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
     return render_template('simulators.html',result=dates_to_delete)
 
-@app.route("/<current_url>/delete/<int:id>")
+@app.route("/api/simulators/delete/<int:id>")
 def sim_delete(current_url,id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
-    #return redirect(url_for("simulators_page"))
-    return redirect(current_url)
+    return redirect(url_for("simulators_page"))
 
 
 # ----------------------------------------------------
