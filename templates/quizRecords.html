@@ -2,6 +2,15 @@
 {% block title %}Quiz_Records{% endblock %}
 
 {% block content %} 
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for msg in messages %}
+			<p>{{msg}}</p>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <div class="container" style="margin-left: 0;">
   <h3><a href="/quiz_records">QuizRecords</a></h3>
   <p>
