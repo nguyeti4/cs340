@@ -223,6 +223,13 @@ def sim_delete(id):
 @app.route("/quiz_records", methods=["GET"])
 def quiz_records_page():
     db_connection = connect_to_database()
+    
+    state = request.args.get('select_state')
+    if state == 'California' or state == 'Oregon':
+        query3 = 'Select * from QuizRecords where quiz_state = %s;'          
+        result2 = execute_query(db_connection, query3, (state,)).fetchall()     
+        return render_template('quizRecords.html',results=result2)
+    
     query = "SELECT * FROM QuizRecords"
     record_db=execute_query(db_connection, query)
     return render_template('quizRecords.html', results=record_db)
@@ -264,15 +271,15 @@ def quiz_user():
     
         return redirect(url_for("quiz_records_page"))
    
-@app.route("/api/quiz_records/update")
-def quiz_update():
-    db_connection = connect_to_database()
-    state = request.args.get('select_state')
-    if state == 'Default':
-        return redirect(url_for("quiz_records_page"))
-    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
-    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-    return render_template('quizRecords.html',results=result2)
+#@app.route("/api/quiz_records/update")
+#def quiz_update():
+#    db_connection = connect_to_database()
+#    state = request.args.get('select_state')
+#    if state == 'Default':
+#        return redirect(url_for("quiz_records_page"))
+#    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
+#    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
+#    return render_template('quizRecords.html',results=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
