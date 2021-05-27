@@ -245,7 +245,7 @@ def quiz_user():
 @app.route("/api/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
-    state = request.args.get('select_states')
+    state = request.args.get('select_state')
     if state == '':
         return redirect(url_for("quiz_records_page"))
     query3 = 'Select * from QuizRecords where quiz_state = %s;'  
