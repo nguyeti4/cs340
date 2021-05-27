@@ -158,7 +158,7 @@ def simulators_page():
     
     scene = request.args.get('sim_scenario')
     print(scene)
-    if scene != '':
+    if scene != None:
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
         return render_template('simulators.html',result=selected_scenarios)
