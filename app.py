@@ -246,7 +246,7 @@ def quiz_user():
 def quiz_update():
     db_connection = connect_to_database()
     state = request.args.get('select_state')
-    if state == '':
+    if state == 'Default':
         return redirect(url_for("quiz_records_page"))
     query3 = 'Select * from QuizRecords where quiz_state = %s;'  
     result2 = execute_query(db_connection, query3, (state,)).fetchall()     
