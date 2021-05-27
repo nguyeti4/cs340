@@ -13,6 +13,10 @@
     padding-left: 15px;
 }
 
+.flash {
+    color: red;
+}
+
 table tbody tr .edit {
     display: none;
 }
