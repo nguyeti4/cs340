@@ -9,6 +9,14 @@
     margin-right: 100px;
 } */
 
+.container-liquid {
+    padding-left: 15px;
+}
+
+.flash {
+    color: red;
+}
+
 table tbody tr .edit {
     display: none;
 }
@@ -19,12 +27,4 @@ table tbody tr.edit .edit {
 
 table tbody tr.edit .noedit {
     display: none;
-}
-
-table {
-    border-collapse:collapse;
-}
-
-tr {
-    border:1px skyblue;
 }

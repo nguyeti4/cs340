@@ -159,8 +159,6 @@ def simulators_page():
     sim_db=execute_query(db_connection, query)
     return render_template('simulators.html', result=sim_db)
 
-
-
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
     if request.method == 'POST':
@@ -171,32 +169,38 @@ def sim_user():
         query = 'Select * from Users where user_id= %s'
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
+        if input_id == '':
+            flash("Please enter user id!")
+            return redirect(url_for("simulators_page"))
         if user == None:
-            print('This user does not exist!')
+            #print('This user does not exist!')
+            flash("This user id does not exist!")
             return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
+        if date == '':
+            flash("Please remember to add play date!")
         scenario = request.form['scenario']
+        if scenario == '':
+            flash("Please remember to add scenario!")
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
-        print('sim record added!')
+        flash("Simulator record added!")
 
-        #query = 'Select * from Simulators;'
-        #sim_data_db = execute_query(db_connection, query).fetchall()
-        #return render_template("simulators.html",result=sim_data_db)
         return redirect(url_for("simulators_page"))
         
 @app.route("/api/simulators/update")
 def sim_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('sim_dates')
-    query2 = 'Select * from Simulators where play_date < %s;'  
-    dates_to_delete = execute_query(db_connection, query2, (oldest_date,)).fetchall()  
-    return render_template('simulators.html', delete_dates=dates_to_delete)
-    print(oldest_date)
+    scene = request.args.get('sim_scenario')
+    if scene == '':
+       return redirect(url_for("simulators_page"))
+    query2 = 'Select * from Simulators where scenario_name = %s;'  
+    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall()  
+    return render_template('simulators.html',result=selected_scenarios)
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
@@ -230,42 +234,51 @@ def quiz_user():
         query = 'Select * from Users where user_id=%s'
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
+        if input_id == '':
+            flash("Please enter a user id!")
+            return redirect(url_for("quiz_records_page"))
         if user is None:
-            print('This user does not exist!')
+            #print('This user does not exist!')
+            flash("This user id does not exist!")
             return redirect(url_for("quiz_records_page"))
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
+        if quiz_date == '':
+            flash("Please remember to enter a date!")
         quiz_state = request.form['quiz_state']
+        if quiz_state == '':
+            flash("Please remember to enter a state!")
         quiz_score = request.form['quiz_score']
+        if quiz_score == '':
+            flash("Please remember to enter a score!")
        
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
-        print('Quiz record added!')
+        flash('Quiz record added!')
     
-        #query = 'Select * from Quiz_Records;'
-        #quizrecord_data_db = execute_query(db_connection, query).fetchall()
-        #return render_template("quizRecords.html",results=quizrecord_data_db)
         return redirect(url_for("quiz_records_page"))
    
 @app.route("/api/quiz_records/update")
 def quiz_update():
     db_connection = connect_to_database()
-    oldest_date = request.args.get('del_quizdates')
-    query3 = 'Select * from Quiz_Records where quiz_date < %s;'  
-    result2 = execute_query(db_connection, query3, (oldest_date,)).fetchall()     
-    return render_template('quizRecords.html', delete_dates=result2)
+    state = request.args.get('select_state')
+    if state == 'Default':
+        return redirect(url_for("quiz_records_page"))
+    query3 = 'Select * from QuizRecords where quiz_state = %s;'  
+    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
+    return render_template('quizRecords.html',results=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
     db_connection = connect_to_database()
-    query = "DELETE FROM Quiz_Records WHERE quiz_id = %s"
+    query = "DELETE FROM QuizRecords WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
     return redirect(url_for("quiz_records_page"))
-
-
+   
+    
 # ----------------------------------------------------
 # ----------------------------------------------------
 #      QuizQuestions Page
