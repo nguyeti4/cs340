@@ -371,7 +371,7 @@ def search_quiz():
     else:
         return render_template('quizQuestions.html', values=quiz_info)
 
-@app.route("/api/question_accuracy", methods=["POST", "GET"])
+@app.route("/api/quiz_questions/statistic", methods=["POST", "GET"])
 def question_accuracy():
     db_connection = connect_to_database()
     question_id = request.args.get('ques_id')
@@ -379,9 +379,9 @@ def question_accuracy():
     # if there is no parameter in the request, it means it requests all
     if question_id is None:
         query = (
-            f'Select q.question_id, sum(ifnull(qzqs.result,0)) as total_score, ifnull(COUNT(qzqs.question_id),0) as frequency, '
+            f'Select q.question_id, sum(ifnull(qzqs.result,0)) as total_score, ifnull(COUNT(qzqs.question_id),0) as frequency, ' 
             f'( ifnull(sum(qzqs.result) / COUNT(qzqs.question_id),0) ) as accuracy from QuizQuestions qzqs '
-            f'RIGHT JOIN Questions q on qzqs.question_id = q.question_id '
+            f'RIGHT JOIN Questions q on qzqs.question_id = q.question_id ' 
             f'group by q.question_id;',
         )
         accuracy_all = execute_query(db_connection, query[0]).fetchall()

@@ -39,7 +39,7 @@
         <input class="btn btn-primary" type="submit" value="Add" id="add-quiz-question">
       </form>
     </div>
-    <div class="col-lg">
+    <!-- <div class="col-lg">
       <div>
         <h4>Look Up a Quiz Detail</h4>
       </div>
@@ -49,7 +49,7 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
         </form>
       </div> 
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -103,29 +103,29 @@
 <br>
 <br>
 
-<div class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<!-- <div class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Calculate Accuracy of Questions</h4>
   </div>
   <div class="row">
     <div class="col-sm">
-      <form action="/api/question_accuracy" method="GET">
+      <form action="/api/quiz_questions/statistic" method="GET">
         <label>Select by Question ID: <input class="form-control" type="text" name="ques_id"></label>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
       </form> 
     </div>
     <div class="col-sm">
-      <form action="/api/question_accuracy" method="GET">
+      <form action="/api/quiz_questions/statisticy" method="GET">
         <label>Select All Questions: </label>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Select All</button>
       </form>
     </div> 
   </div> 
-</div>
+</div> -->
 <br>
 
 <!-- Table to display the accuracy result -->
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <h4>The ACCURACY RESULT </h4>
   <table class="container" class="table table-striped" style="margin-left: 0;">
       <thead>
@@ -147,13 +147,13 @@
       {% endfor %}
       </tbody>
   </table>
-</div>
+</div> -->
 <br>
 <br>
 
 
 <!-- This is the Delete area -->
-<form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
+<!-- <form class="container" class="form-inline my-2 my-lg-0" style="margin-left: 0;">
   <div>
     <h4>Delete Data from the Database</h4>
   </div>
@@ -162,7 +162,7 @@
     <label>to: <input class="form-control" type="date" name="end_date"></label>
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
   </div>  
-</form>
+</form> -->
 <br>
 <br>
 <br>
