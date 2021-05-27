@@ -161,10 +161,10 @@ def simulators_page():
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
         return render_template('simulators.html',result=selected_scenarios)
-
-    query = "SELECT * FROM Simulators"
-    sim_db=execute_query(db_connection, query)
-    return render_template('simulators.html', result=sim_db)
+    else:
+        query = "SELECT * FROM Simulators"
+        sim_db=execute_query(db_connection, query)
+        return render_template('simulators.html', result=sim_db)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
