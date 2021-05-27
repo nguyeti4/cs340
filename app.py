@@ -201,7 +201,7 @@ def sim_delete(current_url,id):
     result = execute_query(db_connection,query,(id,))
     print(str(result.rowcount) + "rows deleted")
     #return redirect(url_for("simulators_page"))
-    return redirect(url_for(current_url))
+    return redirect(current_url)
 
 
 # ----------------------------------------------------
