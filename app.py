@@ -165,7 +165,10 @@ def simulators_page():
     else:
         query = "SELECT * FROM Simulators"
         sim_db=execute_query(db_connection, query)
-        return render_template('simulators.html', result=sim_db)
+        
+        query3 = "Select user_id From Users"
+        id_list = execute_query(db_connection,query3).fetchall()
+        return render_template('simulators.html', result=sim_db, id_list=id_list)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
