@@ -199,6 +199,9 @@ def sim_update():
     if scene == '':
        return redirect(url_for("simulators_page"))
     query2 = 'Select * from Simulators where scenario_name = %s;'  
+    if query2 == None:
+        flash(f"There so scenario w/ the name {scene}")
+        return redirect(url_for("simulators_page"))
     selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall()  
     return render_template('simulators.html',result=selected_scenarios)
 
@@ -267,7 +270,7 @@ def quiz_update():
     state = request.args.get('select_state')
     if state == 'Default':
         return redirect(url_for("quiz_records_page"))
-    query3 = 'Select * from QuizRecords where quiz_state = %s;'  
+    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
     result2 = execute_query(db_connection, query3, (state,)).fetchall()     
     return render_template('quizRecords.html',results=result2)
 
