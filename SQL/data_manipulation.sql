@@ -129,7 +129,12 @@ Update QuestionChoices
 set choice_desc = :choice_des_from_update
 where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
+
 --Simulator Page
+
+--display all current sim records
+SELECT * FROM Simulators
+
 --add a new Record
 Insert into Simulators (user_id, grading, play_date, scenario_name)
 Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
@@ -138,14 +143,15 @@ Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
 Select * from Simulators
 where Scenario = :scenInput;
 
---Lookup Simulator records you want to delete
-Select * from Simulators where play_date <= :play_from_update;
+--Delete the Searched sims by id
+Delete * from Simulators
+where user_id = :sim_delete_input;
 
---Delete the Searched quiz records that are older than play_date
-Delete * from Simulators 
-where play_date < :play_from_update;
 
 --QuizRecords Page
+--display all current quiz records
+SELECT * FROM Simulators
+
 --add a new Record
 Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
 Values (:useInput, :quizInput, :stateInput, :scoreInput);
@@ -153,19 +159,14 @@ Values (:useInput, :quizInput, :stateInput, :scoreInput);
 --Lookup all Quiz records by state
 Select * from QuizRecords where quiz_state = :State_input;
 
---Lookup all Quiz records by date
-Select * from QuizRecords 
-where quiz_date <= :quiz_delete_input;
-
---Delete the Searched records that are older than quiz_date
+--Delete the Searched records by id
 Delete * from QuizRecords
-where quiz_date < :quiz_delete_input;
+where quiz_id = :quiz_delete_input;
 
 -- Alter Table QuizRecords On DELETE CASCADE
 SHOW CREATE TABLE QuizRecords;
 ALTER TABLE QuizRecords DROP FOREIGN KEY QuizRecords_ibfk_1;
 ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserQuiz FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
-
 
 
 -- Alter Table Simulators On DELETE CASCADE
