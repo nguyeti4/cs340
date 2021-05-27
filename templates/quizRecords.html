@@ -3,14 +3,6 @@
 
 {% block content %} 
 
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		{% for msg in messages %}
-			<p>{{msg}}</p>
-		{% endfor %}
-	{% endif %}
-{% endwith %}
-
 <div class="container" style="margin-left: 0;">
   <h3><a href="/quiz_records">QuizRecords</a></h3>
   <p>
@@ -49,9 +41,17 @@
 </div>
 <br>
 
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for msg in messages %}
+			<h3>{{msg}}</h3>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <br>
 <div class="container-liquid">
-<h4>Here is your Add result</h4>
+<h4>Current list of quiz records</h4>
 <table class="container" class="table table-striped" style="margin-left: 0;">
   <thead>
     <tr>
