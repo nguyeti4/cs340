@@ -9,6 +9,10 @@
     margin-right: 100px;
 } */
 
+.container-liquid .container2 {
+    padding-left:15px
+}
+
 table tbody tr .edit {
     display: none;
 }
