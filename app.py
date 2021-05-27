@@ -155,9 +155,17 @@ def count_customers():
 @app.route("/simulators", methods=["GET"])
 def simulators_page():
     db_connection = connect_to_database()
-    query = "SELECT * FROM Simulators"
-    sim_db=execute_query(db_connection, query)
-    return render_template('simulators.html', result=sim_db)
+    
+    scene = request.args.get('sim_scenario')
+    print(scene)
+    if scene != None:
+        query2 = 'Select * from Simulators where scenario_name = %s;'  
+        selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
+        return render_template('simulators.html',result=selected_scenarios)
+    else:
+        query = "SELECT * FROM Simulators"
+        sim_db=execute_query(db_connection, query)
+        return render_template('simulators.html', result=sim_db)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
@@ -192,22 +200,23 @@ def sim_user():
 
         return redirect(url_for("simulators_page"))
         
-@app.route("/api/simulators/update")
-def sim_update():
-    db_connection = connect_to_database()
-    scene = request.args.get('sim_scenario')
-    if scene == '':
-       return redirect(url_for("simulators_page"))
-    query2 = 'Select * from Simulators where scenario_name = %s;'  
-    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall()  
-    return render_template('simulators.html',result=selected_scenarios)
+#@app.route("/api/simulators/update")
+#def sim_update():
+#    db_connection = connect_to_database()
+#    scene = request.args.get('sim_scenario')
+#    if scene == '':
+#       return redirect(url_for("simulators_page"))
+#    query2 = 'Select * from Simulators where scenario_name = %s;'  
+#    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
+#   return render_template('simulators.html',result=selected_scenarios)
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM Simulators WHERE result_id = %s"
     result = execute_query(db_connection,query,(id,))
-    print(str(result.rowcount) + "rows deleted")
+    flash(f"Deleted row w/ user id {id}")
+    #print(str(result.rowcount) + "rows deleted")
     return redirect(url_for("simulators_page"))
 
 
@@ -219,6 +228,13 @@ def sim_delete(id):
 @app.route("/quiz_records", methods=["GET"])
 def quiz_records_page():
     db_connection = connect_to_database()
+    
+    state = request.args.get('select_state')
+    if state == 'California' or state == 'Oregon':
+        query3 = 'Select * from QuizRecords where quiz_state = %s;'          
+        result2 = execute_query(db_connection, query3, (state,)).fetchall()     
+        return render_template('quizRecords.html',results=result2)
+    
     query = "SELECT * FROM QuizRecords"
     record_db=execute_query(db_connection, query)
     return render_template('quizRecords.html', results=record_db)
@@ -260,22 +276,23 @@ def quiz_user():
     
         return redirect(url_for("quiz_records_page"))
    
-@app.route("/api/quiz_records/update")
-def quiz_update():
-    db_connection = connect_to_database()
-    state = request.args.get('select_state')
-    if state == 'Default':
-        return redirect(url_for("quiz_records_page"))
-    query3 = 'Select * from QuizRecords where quiz_state = %s;'  
-    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-    return render_template('quizRecords.html',results=result2)
+#@app.route("/api/quiz_records/update")
+#def quiz_update():
+#    db_connection = connect_to_database()
+#    state = request.args.get('select_state')
+#    if state == 'Default':
+#        return redirect(url_for("quiz_records_page"))
+#    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
+#    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
+#    return render_template('quizRecords.html',results=result2)
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
     db_connection = connect_to_database()
     query = "DELETE FROM QuizRecords WHERE quiz_id = %s"
     result = execute_query(db_connection,query,(id,))
-    print(str(result.rowcount) + "rows deleted")
+    #print(str(result.rowcount) + "rows deleted")
+    flash(f"Deleted row w/ user id {id}")
     return redirect(url_for("quiz_records_page"))
    
     
