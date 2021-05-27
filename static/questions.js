@@ -30,7 +30,7 @@ $(function() {
             question_desc: $('#question-desc').val(),
             right_answer: $('#right-answer').val(),
             choice_1: $('#choice-1').val(),
-            choice_2: $('choice-2').val(),
+            choice_2: $('#choice-2').val(),
             choice_3:$('#choice-3').val()
         };
         $.ajax( {

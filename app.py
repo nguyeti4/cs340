@@ -589,40 +589,25 @@ def search_question():
     keywords = request.args.get('keywords')
     print(keywords)
 
-    query1 = (
+    query = (
         f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
         f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
         f'from Questions q '
-        f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
-        f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
-        f'join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
+        f'left join QuestionChoices qc1 on q.question_id = qc1.question_id '
+        f'left join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
+        f'left join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id) '
         f'where q.question_desc like %s '
         f'group by q.question_id;',
     )
     data= str(keywords)
     print(data)
-    result1 = execute_query(db_connection, query1[0], ('%'+data+'%',)).fetchall()
-    print(result1)
+    result = execute_query(db_connection, query[0], ('%'+data+'%',)).fetchall()
+    print(result)
 
-    query2 = (
-        f'SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1, '
-        f'qc2.choice_desc as choice2, qc3.choice_desc as choice3 '
-        f'from Questions q '
-        f'join QuestionChoices qc1 on q.question_id = qc1.question_id '
-        f'join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id) '
-        f'where q.question_desc like %s '
-        f'group by q.question_id;',
-    )
-    data= str(keywords)
-    print(data)
-    result2 = execute_query(db_connection, query2[0], ('%'+data+'%',)).fetchall()
-    print(result2)
-
-
-    if len(questions_info) == 0:
+    if len(result) == 0:
         return 'No matching result!'
     else:
-        return render_template('questions.html', values=questions_info)
+        return render_template('questions.html', values=result)
 
 
 
