@@ -103,9 +103,9 @@ $(function() {
             data: userInfo,
             success: function(res, status, xhr) {
                 console.log(res);
-                $updateRow.find("span.user_name").text(res.user_name);
-                $updateRow.find("span.user_password").text(res.user_password);
-                $updateRow.find("span.user_email").text(res.user_email);
+                $updateRow.find("span.name").text(res.user_name);
+                $updateRow.find("span.password").text(res.user_password);
+                $updateRow.find("span.email").text(res.user_email);
                 $updateRow.find("span.regis").text(res.regis_date);
                 $updateRow.find("span.active").text(res.active);
                 $updateRow.removeClass("edit");  

@@ -20,3 +20,11 @@ table tbody tr.edit .edit {
 table tbody tr.edit .noedit {
     display: none;
 }
+
+table {
+    border-collapse:collapse;
+}
+
+tr {
+    border:1px skyblue;
+}

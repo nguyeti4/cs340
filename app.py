@@ -60,7 +60,6 @@ def users():
         })
 
     if request.method == 'GET':
-        db_connection = connect_to_database()
         query = "select * from Users;"
         rows = execute_query(db_connection, query).fetchall()
         users = []
@@ -76,7 +75,7 @@ def users():
         res = make_response(jsonify(users))
         return res
 
-@app.route('/api/users/<int:id>', methods=['GET', 'PUT'])
+@app.route('/api/users/<int:id>', methods=['DELETE', 'PUT'])
 def change_account(id):
     db_connection = connect_to_database()
     # Delete user
@@ -108,6 +107,7 @@ def change_account(id):
         query = 'Select * from Users where user_id=%s'
         rows = execute_query(db_connection, query, (user_id,)).fetchall()
         row = rows[0]
+        print(row)
         return jsonify({
             'user_id': row[0],
             'user_name': row[1],
@@ -301,27 +301,75 @@ def quiz_questions():
             request.form['result']
         )
         query = 'Insert into QuizQuestions (quiz_id, question_id, result) Values (%s,%s,%s)'
-        status_info = insert_new_row(query, quizQues_details)
-        if status_info == 'inserted OK':
-            # select the last inserted row from the QuizQuestions table
-            query = 'Select * from QuizQuestions where id = (select max(id) from QuizQuestions);'
-            data_db = execute_query(db_connection, query).fetchall()
-            # send data back to populate the result table
-            return render_template('quizQuestions.html', values=data_db)
-    
+        cur = execute_query(db_connection, query, quizQues_details)
+
+        return jsonify({
+            'id': cur.lastrowid,
+            'quiz_id': quizQues_details[0],
+            'question_id': quizQues_details[1],
+            'result': quizQues_details[2]
+        })
+    if request.method == "GET":
+        query = "select * from QuizQuestions;"
+        rows = execute_query(db_connection, query).fetchall()
+        print(rows)
+        records = []
+        for row in rows:
+            records.append({
+                'id': row[0],
+                'quiz_id': row[1],
+                'question_id': row[2],
+                'result': row[3]
+            })
+        res = make_response(jsonify(records))
+        return res
+
+@app.route('/api/quiz_questions/<int:id>', methods=['DELETE', 'PUT'])
+def change_result(id):
+    db_connection = connect_to_database()
+    # Delete this item
+    if request.method == 'DELETE':
+        print('Delete quiz question')
+        query = "DELETE FROM QuizQuestions WHERE id = %s"
+        data = (id,)
+        result = execute_query(db_connection, query, data)
+        print (str(result.rowcount) + "row deleted")
+        return jsonify("delete ok")
+ 
+    #update account
+    if request.method == 'PUT':
+        print("Update result!")
+        item_id = id
+        update_details = (
+            request.form['result'],
+            item_id
+        )
+        print(request.form)
+
+        query = "UPDATE QuizQuestions SET result = %s WHERE id = %s"
+        result = execute_query(db_connection, query, update_details)
+        print(str(result.rowcount) + " row(s) updated")
+        query = 'Select * from QuizQuestions where id=%s'
+        row = execute_query(db_connection, query, (item_id,)).fetchone()
+        print(row)
+        return jsonify({
+            'result': row[3],
+        })
+
+@app.route("/api/quiz_questions/search", methods=["POST", "GET"])
+def search_quiz():
     # search function: search quiz_info by quiz_id 
-    if request.method == 'GET':
-        # check whether the email address exists
-        quiz_id = request.args.get('quiz_id')
-        print(quiz_id)
-        query = 'Select * from QuizQuestions WHERE quiz_id=%s'
-        data = (quiz_id,)
-        quiz_info = execute_query(db_connection, query, data).fetchall()
-        print(quiz_info)
-        if quiz_info is None:
-            return 'This quiz_id does not exist!'
-        else:
-            return render_template('quizQuestions.html', values=quiz_info)
+    db_connection = connect_to_database()
+    quiz_id = request.args.get('quiz_id')
+    print(quiz_id)
+    query = 'Select * from QuizQuestions WHERE quiz_id=%s'
+    data = (quiz_id,)
+    quiz_info = execute_query(db_connection, query, data).fetchall()
+    print(quiz_info)
+    if quiz_info is None:
+        return 'This quiz_id does not exist!'
+    else:
+        return render_template('quizQuestions.html', values=quiz_info)
 
 @app.route("/api/question_accuracy", methods=["POST", "GET"])
 def question_accuracy():
