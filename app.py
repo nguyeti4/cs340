@@ -170,7 +170,8 @@ def sim_user():
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
         if user == None:
-            print('This user does not exist!')
+            #print('This user does not exist!')
+            flash("This user does not exist!")
             return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
@@ -227,7 +228,8 @@ def quiz_user():
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
         if user is None:
-            print('This user does not exist!')
+            #print('This user does not exist!')
+            flash("This user does not exist!")
             return redirect(url_for("quiz_records_page"))
         
         quiz_user_id = request.form['quiz_user_id']
