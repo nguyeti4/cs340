@@ -3,14 +3,6 @@
 
 {% block content %} 
 
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		{% for msg in messages %}
-			<p>{{msg}}</p>
-		{% endfor %}
-	{% endif %}
-{% endwith %}
-
 <div class="container" style="margin-left: 0;">
   <h3><a href="/simulators">Simulators</a></h3>
   <p>
@@ -52,6 +44,14 @@
 </form>
 </div>	
 <br>
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for msg in messages %}
+			<h3>{{msg}}</h3>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
 
 <br>
 <div class="container-liquid">
