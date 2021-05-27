@@ -11,12 +11,14 @@ Values (:nameInput, :passInput, :emailInput, :dateInput);
 
 -- Select user's information  '2001-01-01', '2021-12-31' 
 -- test case: replace :startdateInput with '2001-01-01', :enddateInput with '2021-12-31'
+-- this query work, but I disabled this function in our website
 Select regis_date, COUNT(user_id) as new_customers
 from Users
 where regis_date >= :startdateInput and regis_date <= :enddateInput
 group by regis_date;
 
 -- Look up a particular user's information by user_email
+-- this query work, but I disabled this function in our website
 Select * from Users
 where user_email=:emailInput;
 
@@ -38,12 +40,25 @@ where user_id = :userID_from_update;
 Insert into QuizQuestions (quiz_id, question_id, result)
 Values (:quiz_idInput, :ques_idInput, :resultInput);
 
+-- select all data from this table to display on the webpage
+SELECT * FROM QuizQuestions;
+
+-- UPDATE the resulf of a question in a quiz
+UPDATE QuizQuestions SET result = :userInput WHERE id = :fromRequest;
+
+-- DELETE a record
+DELETE FROM QuizQuestions WHERE id = :fromRequest;
+
+
+
 -- Look up a particular quiz's information
+-- this query work, but I disabled this function in our website
 Select quiz_id, question_id, result from QuizQuestions
 where quiz_id=:quiz_idInput;
 
 -- Calculate a particular question's accuracy 
 -- test case: replace :question_idInput with 1
+-- this query work, but I disabled this function in our website
 Select q.question_id, sum(qzqs.result) as total_score, COUNT(qzqs.question_id) as frequency, ( sum(qzqs.result) / COUNT(qzqs.question_id) ) as accuracy
 from QuizQuestions qzqs
 RIGHT JOIN Questions q on qzqs.question_id = q.question_id 
@@ -51,12 +66,14 @@ where q.question_id = :question_idInput
 group by q.question_id;
 
 -- Calculate all questions' accuracy
+-- this query work, but I disabled this function in our website
 Select q.question_id, sum(qzqs.result) as total_score, COUNT(qzqs.question_id) as frequency, ( sum(qzqs.result) / COUNT(qzqs.question_id) ) as accuracy
 from QuizQuestions qzqs
 RIGHT JOIN Questions q on qzqs.question_id = q.question_id
 group by q.question_id;
 
 -- For Delete Data from the database
+-- this query work, but I disabled this function in our website
 Delete from QuizQuestions qzqs
 where qzqs.quiz_id in (
     Select qr.quiz_id from QuizRecords qr
@@ -89,14 +106,13 @@ Begin transaction
     end
 COMMIT
 
--- Search questions by keywords: testcase - 'alcohol'
+-- select all questions
 SELECT q.question_id, q.state, q.question_desc, q.question_right_answer, qc1.choice_desc as choice1,
 qc2.choice_desc as choice2, qc3.choice_desc as choice3
 from Questions q 
-join QuestionChoices qc1 on q.question_id = qc1.question_id
-join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id)
-join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id)
-where (q.question_desc like '%alcohol%')
+left join QuestionChoices qc1 on q.question_id = qc1.question_id
+left join QuestionChoices qc2 on (qc1.question_id = qc2.question_id and qc1.choice_id < qc2.choice_id)
+left join QuestionChoices qc3 on (qc2.question_id = qc3.question_id and qc2.choice_id < qc3.choice_id)
 group by q.question_id;
 
 
