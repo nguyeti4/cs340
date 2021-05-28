@@ -233,16 +233,19 @@ def sim_delete(id):
 @app.route("/quiz_records", methods=["GET"])
 def quiz_records_page():
     db_connection = connect_to_database()
-    
     state = request.args.get('select_state')
+    
+    query3 = "Select user_id From Users"
+    id_list = execute_query(db_connection,query3).fetchall()
+    
     if state == 'California' or state == 'Oregon':
         query3 = 'Select * from QuizRecords where quiz_state = %s;'          
         result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-        return render_template('quizRecords.html',results=result2)
+        return render_template('quizRecords.html',results=result2, id_list=id_list)
     
     query = "SELECT * FROM QuizRecords"
     record_db=execute_query(db_connection, query)
-    return render_template('quizRecords.html', results=record_db)
+    return render_template('quizRecords.html', results=record_db, id_list=id_list)
 
 @app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
