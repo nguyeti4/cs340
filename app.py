@@ -277,7 +277,7 @@ def quiz_user():
         quiz_score = request.form['quiz_score']
         if quiz_score == '':
             flash("Please remember to enter a score!")
-        if int(grade) < 0 or int(grade) > 100:
+        if int(quiz_score) < 0 or int(quiz_score) > 100:
             flash("The score must be btwn 1 and 100 (inclusive)")             
             
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
