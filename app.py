@@ -157,7 +157,8 @@ def simulators_page():
     db_connection = connect_to_database()  
     scene = request.args.get('sim_scenario')
     print(scene)
-    query3 = "Select user_id From Users"
+    
+    query3 = "Select user_id,user_name From Users"
     id_list = execute_query(db_connection,query3).fetchall()
     
     query4 = "Select DISTINCT scenario_name From Simulators"
@@ -235,7 +236,7 @@ def quiz_records_page():
     db_connection = connect_to_database()
     state = request.args.get('select_state')
     
-    query3 = "Select user_id From Users"
+    query3 = "Select user_id,user_name From Users"
     id_list = execute_query(db_connection,query3).fetchall()
     
     if state == 'California' or state == 'Oregon':
