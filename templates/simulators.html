@@ -27,7 +27,7 @@
     <label>User ID</label>	    
     <select name="user_id" action="/simulator">
 	{% for id in id_list %}
-	    <option value="{{id}}" SELECTED>{{id}}</option>"
+	    <option value="{{id[0]}}" SELECTED>{{id[0]}}</option>"
         {% endfor %}
     </select>
     </div>	    
