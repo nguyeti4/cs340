@@ -159,7 +159,7 @@ def simulators_page():
     print(scene)
     query3 = "Select user_id From Users"
     id_list = execute_query(db_connection,query3).fetchall()
-    if scene == '':
+    if scene != '':
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
         return render_template('simulators.html',result=selected_scenarios, id_list=id_list)
