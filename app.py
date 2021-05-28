@@ -163,7 +163,7 @@ def simulators_page():
     query4 = "Select DISTINCT scenario_name From Simulators"
     scenario_list = execute_query(db_connection,query4).fetchall()
     
-    if scene != None and scene != '':
+    if scene != None and scene != '' and scene != 'Default':
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
         return render_template('simulators.html',result=selected_scenarios, id_list=id_list, scenario_list=scenario_list)
