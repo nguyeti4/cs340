@@ -152,7 +152,7 @@ def count_customers():
 #      Simulator Page
 # ----------------------------------------------------
 # ----------------------------------------------------
-@app.route("/simulators", methods=["POST,GET"])
+@app.route("/simulators", methods=["GET"])
 def simulators_page():
     db_connection = connect_to_database()  
     scene = request.args.get('sim_scenario')
