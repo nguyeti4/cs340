@@ -193,6 +193,9 @@ def sim_user():
        
         user_id = request.form['user_id']
         grade = request.form['grade']
+        if grade == '':
+            flash("Please remember to add a grade!")
+        print(type(grade))
         date = request.form['play_date']
         if date == '':
             flash("Please remember to add play date!")
