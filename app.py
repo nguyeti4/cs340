@@ -152,18 +152,18 @@ def count_customers():
 #      Simulator Page
 # ----------------------------------------------------
 # ----------------------------------------------------
-@app.route("/simulators", methods=["GET"])
+@app.route("/simulators", methods=["POST,GET"])
 def simulators_page():
     db_connection = connect_to_database()  
     scene = request.args.get('sim_scenario')
     print(scene)
     query3 = "Select user_id From Users"
     id_list = execute_query(db_connection,query3).fetchall()
-    if scene != None:
+    if scene == '':
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
         return render_template('simulators.html',result=selected_scenarios, id_list=id_list)
-    else:
+    if scene == None:
         query = "SELECT * FROM Simulators"
         sim_db=execute_query(db_connection, query)
         return render_template('simulators.html', result=sim_db, id_list=id_list)
