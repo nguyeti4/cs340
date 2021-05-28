@@ -156,7 +156,7 @@ def count_customers():
 def simulators_page():
     db_connection = connect_to_database()  
     scene = request.args.get('sim_scenario')
-    #print(scene)
+    print(scene)
     query3 = "Select user_id From Users"
     id_list = execute_query(db_connection,query3).fetchall()
     
