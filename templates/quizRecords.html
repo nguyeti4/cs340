@@ -20,10 +20,16 @@
     <div>
         <h4>Add a Quiz record Manually</h4>
     </div>
+	
     <div class="form-group">
-        <label>User ID</label> 
-        <input class="form-control" type="number" name="quiz_user_id">
+	 <label>User ID</label>	    
+	   	 <select name="quiz_user_id" action="/quiz_records">
+			{% for id in id_list %}
+			    <option value="{{id[0]}}" SELECTED>{{id[0]}}</option>"
+			{% endfor %}
+		 </select>
     </div>
+	
     <div class="form-group">
         <label>Quiz Date</label> 
         <input class="form-control" type="date" name="quiz_date">
