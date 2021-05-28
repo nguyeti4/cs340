@@ -161,7 +161,7 @@ def simulators_page():
     id_list = execute_query(db_connection,query3).fetchall()
     
     query4 = "Select DISTINCT scenario_name From Simulators"
-    scenario_list = execute_query(db_connection,query3).fetchall()
+    scenario_list = execute_query(db_connection,query4).fetchall()
     
     if scene != None and scene != '':
         query2 = 'Select * from Simulators where scenario_name = %s;'  
