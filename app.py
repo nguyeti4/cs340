@@ -195,7 +195,7 @@ def sim_user():
         grade = request.form['grade']
         if grade == '':
             flash("Please remember to add a quiz score!")
-        if grade<0 or grade>100:
+        if int(grade) <0 or int(grade) >100:
             flash("The score must be btwn 1 and 100 (inclusive)")
         date = request.form['play_date']
         if date == '':
