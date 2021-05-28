@@ -193,10 +193,6 @@ def sim_user():
        
         user_id = request.form['user_id']
         grade = request.form['grade']
-        if grade == '':
-            flash("Please remember to add a quiz score!")
-        if int(grade) <0 or int(grade) >100:
-            flash("The score must be btwn 1 and 100 (inclusive)")
         date = request.form['play_date']
         if date == '':
             flash("Please remember to add play date!")
@@ -281,7 +277,9 @@ def quiz_user():
         quiz_score = request.form['quiz_score']
         if quiz_score == '':
             flash("Please remember to enter a score!")
-       
+        if int(grade) < 0 or int(grade) > 100:
+            flash("The score must be btwn 1 and 100 (inclusive)")             
+            
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
