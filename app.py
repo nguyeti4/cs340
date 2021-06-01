@@ -269,11 +269,11 @@ def quiz_user():
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
+        quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
         if quiz_date == '' or quiz_score == '':
             if quiz_date == '':
                 flash("Please remember to enter a date!")
-            quiz_state = request.form['quiz_state']
             #quiz_score = request.form['quiz_score']
             if quiz_score == '':
                 flash("Please remember to enter a score!")
