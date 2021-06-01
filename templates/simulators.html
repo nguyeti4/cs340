@@ -98,10 +98,10 @@
   <div class="form-group">
     <label>Scenario</label>	    
     <select name="sim_scenario" action="/simulator">
-	    <option value="Default" SELECTED>Default (no filter)</option>
 	{% for scene in scenario_list %}
 	    <option value="{{scene[0]}}" SELECTED>{{scene[0]}}</option>
         {% endfor %}
+	    <option value="Default" SELECTED>Default (no filter)</option>
     </select>
   </div>	 
 	
