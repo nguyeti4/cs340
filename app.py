@@ -199,7 +199,7 @@ def sim_user():
             flash("Error: Failed to add a simulator record")
             if date == '':
                 flash("Please remember to add play date!")
-            scenario = request.form['scenario']
+            #scenario = request.form['scenario']
             if scenario == '':
                 flash("Please remember to add a scenario!")
             return redirect(url_for("simulators_page"))
