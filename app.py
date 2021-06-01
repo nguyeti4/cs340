@@ -194,11 +194,16 @@ def sim_user():
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
-        if date == '':
-            flash("Please remember to add play date!")
         scenario = request.form['scenario']
-        if scenario == '':
-            flash("Please remember to add scenario!")
+        if date == '' or scenario == '':
+            flash("Error: Failed to add a simulator record")
+            if date == '':
+                flash("Please remember to add play date!")
+            scenario = request.form['scenario']
+            if scenario == '':
+                flash("Please remember to add a scenario!")
+            return redirect(url_for("simulators_page"))
+            
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
@@ -272,14 +277,14 @@ def quiz_user():
         quiz_state = request.form['quiz_state']
         quiz_score = request.form['quiz_score']
         if quiz_date == '' or quiz_score == '' or int(quiz_score) < 0 or int(quiz_score) > 100:
+            flash("Error: Failed to add a quiz record")   
             if quiz_date == '':
                 flash("Please remember to enter a date!")
             #quiz_score = request.form['quiz_score']
             if quiz_score == '':
                 flash("Please remember to enter a score!")
             elif int(quiz_score) < 0 or int(quiz_score) > 100:
-                flash("The score must be btwn 1 and 100 (inclusive)")  
-            flash("Error: Failed to add a record")    
+                flash("The score must be btwn 1 and 100 (inclusive)")             
             return redirect(url_for("quiz_records_page"))
             
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
