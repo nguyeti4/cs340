@@ -269,16 +269,17 @@ def quiz_user():
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
-        if quiz_date == '':
-            flash("Please remember to enter a date!")
-        quiz_state = request.form['quiz_state']
-        if quiz_state == '':
-            flash("Please remember to enter a state!")
         quiz_score = request.form['quiz_score']
-        if quiz_score == '':
-            flash("Please remember to enter a score!")
-        elif int(quiz_score) < 0 or int(quiz_score) > 100:
-            flash("The score must be btwn 1 and 100 (inclusive)")             
+        if quiz_date == '' or quiz_score == '':
+            if quiz_date == '':
+                flash("Please remember to enter a date!")
+            quiz_state = request.form['quiz_state']
+            #quiz_score = request.form['quiz_score']
+            if quiz_score == '':
+                flash("Please remember to enter a score!")
+            elif int(quiz_score) < 0 or int(quiz_score) > 100:
+                flash("The score must be btwn 1 and 100 (inclusive)")  
+            return redirect(url_for("quiz_records_page"))
             
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
