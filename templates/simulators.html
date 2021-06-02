@@ -21,10 +21,16 @@
     <div>
        <h4>Add scenario result Manually</h4>
     </div>	
+  
     <div class="form-group">
-        <label>User ID</label> 
-        <input class="form-control" type="number" name="user_id">
-    </div>
+    <label>User ID</label>	    
+    <select name="user_id" action="/simulator">
+	{% for id in id_list %}
+	    <option value="{{id[0]}}" SELECTED>{{id[0]}} ({{id[1]}}'s ID)</option>"
+        {% endfor %}
+    </select>
+    </div>	    
+	
     <div class="form-group">
         <label class="col-sm-4 col-form-label">Grade</label>
             <select name="grade">
@@ -88,9 +94,17 @@
   <div>
    <h4>Search for scenario record(s) by scenario name</h4>
   </div> 
-  <div>
-    <label>Scenario: <input class="form-control" type="text" name="sim_scenario"></label>
-  </div> 
+ 
+  <div class="form-group">
+    <label>Scenario</label>	    
+    <select name="sim_scenario" action="/simulator">
+	{% for scene in scenario_list %}
+	    <option value="{{scene[0]}}" SELECTED>{{scene[0]}}</option>
+        {% endfor %}
+	    <option value="Default" SELECTED>Default (no filter)</option>
+    </select>
+  </div>	 
+	
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 </div>	

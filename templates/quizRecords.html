@@ -20,20 +20,31 @@
     <div>
         <h4>Add a Quiz record Manually</h4>
     </div>
+	
     <div class="form-group">
-        <label>User ID</label> 
-        <input class="form-control" type="number" name="quiz_user_id">
+	 <label>User ID</label>	    
+	   	 <select name="quiz_user_id" action="/quiz_records">
+			{% for id in id_list %}
+			    <option value="{{id[0]}}" SELECTED>{{id[0]}} ({{id[1]}}'s ID)</option>
+			{% endfor %}
+		 </select>
     </div>
+	
     <div class="form-group">
         <label>Quiz Date</label> 
         <input class="form-control" type="date" name="quiz_date">
     </div>
+		
     <div class="form-group">
-        <label>Quiz State</label> 
-        <input class="form-control" type="text" name="quiz_state">
+	 <label>Quiz State</label>	    
+	   	 <select name="quiz_state">			
+			    <option value="California" SELECTED>California</option>	
+			    <option value="Oregon" SELECTED>Oregon</option>
+		 </select>
     </div>
+	
     <div class="form-group">
-        <label>Quiz Score</label> 
+        <label>Quiz Score (Choose a value between 0 and 100)</label> 
         <input class="form-control" type="number" name="quiz_score">
     </div>
     <input class="btn btn-primary" type="submit" value="Add">
@@ -87,7 +98,7 @@
   <div class="form-group">
           <label>State</label> 
           <select name="select_state" id="state">
-	    <option>Default</option>
+	    <option>Default (no filter)</option>
             <option>California</option>
             <option>Oregon</option>
           </select>

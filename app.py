@@ -173,18 +173,24 @@ def count_customers():
 # ----------------------------------------------------
 @app.route("/simulators", methods=["GET"])
 def simulators_page():
-    db_connection = connect_to_database()
-    
+    db_connection = connect_to_database()  
     scene = request.args.get('sim_scenario')
     print(scene)
-    if scene != None:
+    
+    query3 = "Select user_id,user_name From Users"
+    id_list = execute_query(db_connection,query3).fetchall()
+    
+    query4 = "Select DISTINCT scenario_name From Simulators"
+    scenario_list = execute_query(db_connection,query4).fetchall()
+    
+    if scene != None and scene != '' and scene != 'Default':
         query2 = 'Select * from Simulators where scenario_name = %s;'  
         selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
-        return render_template('simulators.html',result=selected_scenarios)
+        return render_template('simulators.html',result=selected_scenarios, id_list=id_list, scenario_list=scenario_list)
     else:
         query = "SELECT * FROM Simulators"
         sim_db=execute_query(db_connection, query)
-        return render_template('simulators.html', result=sim_db)
+        return render_template('simulators.html', result=sim_db, id_list=id_list, scenario_list=scenario_list)
 
 @app.route("/api/simulators/add",methods=["POST","GET"])
 def sim_user():
@@ -207,11 +213,16 @@ def sim_user():
         user_id = request.form['user_id']
         grade = request.form['grade']
         date = request.form['play_date']
-        if date == '':
-            flash("Please remember to add play date!")
         scenario = request.form['scenario']
-        if scenario == '':
-            flash("Please remember to add scenario!")
+        if date == '' or scenario == '':
+            flash("Error: Failed to add a simulator record")
+            if date == '':
+                flash("Please remember to add play date!")
+            #scenario = request.form['scenario']
+            if scenario == '':
+                flash("Please remember to add a scenario!")
+            return redirect(url_for("simulators_page"))
+            
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
@@ -247,16 +258,19 @@ def sim_delete(id):
 @app.route("/quiz_records", methods=["GET"])
 def quiz_records_page():
     db_connection = connect_to_database()
-    
     state = request.args.get('select_state')
+    
+    query3 = "Select user_id,user_name From Users"
+    id_list = execute_query(db_connection,query3).fetchall()
+    
     if state == 'California' or state == 'Oregon':
         query3 = 'Select * from QuizRecords where quiz_state = %s;'          
         result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-        return render_template('quizRecords.html',results=result2)
+        return render_template('quizRecords.html',results=result2, id_list=id_list)
     
     query = "SELECT * FROM QuizRecords"
     record_db=execute_query(db_connection, query)
-    return render_template('quizRecords.html', results=record_db)
+    return render_template('quizRecords.html', results=record_db, id_list=id_list)
 
 @app.route("/api/quiz_records/add", methods=["POST", "GET"])
 def quiz_user():
@@ -279,15 +293,19 @@ def quiz_user():
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
-        if quiz_date == '':
-            flash("Please remember to enter a date!")
         quiz_state = request.form['quiz_state']
-        if quiz_state == '':
-            flash("Please remember to enter a state!")
         quiz_score = request.form['quiz_score']
-        if quiz_score == '':
-            flash("Please remember to enter a score!")
-       
+        if quiz_date == '' or quiz_score == '' or int(quiz_score) < 0 or int(quiz_score) > 100:
+            flash("Error: Failed to add a quiz record")   
+            if quiz_date == '':
+                flash("Please remember to enter a date!")
+            #quiz_score = request.form['quiz_score']
+            if quiz_score == '':
+                flash("Please remember to enter a score!")
+            elif int(quiz_score) < 0 or int(quiz_score) > 100:
+                flash("The score must be btwn 1 and 100 (inclusive)")             
+            return redirect(url_for("quiz_records_page"))
+            
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
