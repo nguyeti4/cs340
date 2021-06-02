@@ -19,12 +19,17 @@ $(document).ready( function(){
     })
 });
 
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
 // add/update/delete users
 $(function() {
     console.log('function')
     $("#add-user").on("click", function(e) {
         console.log('add-user clicked')
-        e.preventDefault();
+        
         var userInfo = {
             user_name: $('#user_name').val(),
             user_password: $('#user_password').val(),
@@ -32,19 +37,36 @@ $(function() {
             regis_date: $('#regis_date').val(),
             active: $('#active').val()
         };
+        
+        var email = $('#user_email').val();
+        if (!validateEmail(email)) {
+            $("#error-message").text("Your Input Email is not valid!");
+            return
+        };
+        
         $.ajax( {
             type: "POST",
             url: "/api/users",
             data: userInfo,
             success: function(res, status, xhr) {
                 console.log(res);
-                $users.append(Mustache.render(userTemplate, res));
+                if (res.error) {
+                    $("#error-message").text(res.error);
+                } else {
+                    $users.append(Mustache.render(userTemplate, res));
+                    $("#error-message").text(" ");
+                }; 
             },
             error: function() {
                 alert("error loading new users")
             }
         });
-
+        $('#user_name').val("");
+        $('#user_password').val("");
+        $('#user_email').val("");
+        $('#regis_date').val(new Date());
+        // $('#active')[0].selectedIndex = 0;
+        e.preventDefault();
     });
 
     $users.delegate("#delete-user", "click", function(e) {

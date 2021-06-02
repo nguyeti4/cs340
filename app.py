@@ -32,12 +32,31 @@ def users():
         user = execute_query(db_connection, query, (input_email,)).fetchall()
         print(user)
         if len(user) != 0:
-        # if user with this email already exsit:
-            return 'This email already exist!'
+            return jsonify({
+                'error': 'This email already exist!',
+            })
+        # validate user name
         user_name = request.form['user_name']
+        print(user_name)
         if user_name is None: # Not Null
-            return 'user_name can not be null!' 
+            return jsonify({
+                'error': 'User Name is empty!',
+            })
         
+        # validate user password
+        user_password = request.form['user_password']
+        if user_password is None:
+            return jsonify({
+                'error': 'User Password is empty!',
+            })
+
+        # validate regis date
+        regis_date = request.form['regis_date']
+        if regis_date is None: # Not Null
+            return jsonify({
+                'error': 'Register Date is empty!',
+            })
+
         # insert a new row to the Users table
         print('Add a new user account')
         user_details = (
@@ -304,7 +323,12 @@ def quiz_delete(id):
 
 @app.route("/quiz_questions")
 def quiz_question_page():
-    return render_template("quizQuestions.html")
+    db_connection = connect_to_database()
+    query = "Select quiz_id from QuizRecords;"
+    quiz_ids = execute_query(db_connection, query).fetchall()
+    query = "Select question_id from Questions;"
+    question_ids = execute_query(db_connection, query).fetchall()
+    return render_template("quizQuestions.html", quiz_ids=quiz_ids, question_ids=question_ids)
 
 @app.route("/api/quiz_questions", methods=["POST", "GET"])
 def quiz_questions():
@@ -325,6 +349,16 @@ def quiz_questions():
             return 'No such question_id exist!'
         # insert a new row to the QuizQuestions table
         print('Add a row to the QuizQuestions table')
+        quiz_id = request.form['quiz_id']
+        question_id = request.form['question_id']
+        data = (quiz_id, question_id)
+        query = 'Select * from QuizQuestions where quiz_id=%s and question_id=%s;'
+        result = execute_query(db_connection, query, data).fetchall()
+        if result:
+            return jsonify({
+                'error': 'This question has already been added in this quiz, please update the result in the below table!',
+            })
+        
         quizQues_details = (
             request.form['quiz_id'],
             request.form['question_id'],
@@ -332,12 +366,11 @@ def quiz_questions():
         )
         query = 'Insert into QuizQuestions (quiz_id, question_id, result) Values (%s,%s,%s)'
         cur = execute_query(db_connection, query, quizQues_details)
-
         return jsonify({
             'id': cur.lastrowid,
             'quiz_id': quizQues_details[0],
             'question_id': quizQues_details[1],
-            'result': quizQues_details[2]
+            'result': "Correct" if quizQues_details[2] == 1 else "Wrong",
         })
     if request.method == "GET":
         query = "select * from QuizQuestions;"
@@ -349,7 +382,7 @@ def quiz_questions():
                 'id': row[0],
                 'quiz_id': row[1],
                 'question_id': row[2],
-                'result': row[3]
+                'result': "Correct" if row[3] == 1 else "Wrong",
             })
         res = make_response(jsonify(records))
         return res
@@ -383,7 +416,7 @@ def change_result(id):
         row = execute_query(db_connection, query, (item_id,)).fetchone()
         print(row)
         return jsonify({
-            'result': row[3],
+            'result': "Correct" if row[3] == 1 else "Wrong",
         })
 
 @app.route("/api/quiz_questions/search", methods=["POST", "GET"])

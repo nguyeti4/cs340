@@ -32,12 +32,19 @@ $(function() {
             data: itemInfo,
             success: function(res, status, xhr) {
                 console.log(res);
-                $quizQuestions.append(Mustache.render(quizQuestionTemplate, res));
+                if (res.error) {
+                    console.log(res.error);
+                    $("#error-message").text(res.error);
+                } else {
+                    $quizQuestions.append(Mustache.render(quizQuestionTemplate, res));
+                    $("#error-message").text("");
+                };  
             },
             error: function() {
-                alert("error loading new record")
+                alert("error loading new record");
             }
         });
+        
 
     });
 

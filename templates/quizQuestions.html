@@ -8,9 +8,9 @@
       This page is used to manage the QuizQuestions table. 
       <ul>
         <li>Normally, the data of this table comes from the customer facing website. Each time a user took a quiz, questions of that quiz will be inserted into this table.</li>
-        <li>On this page, the admin staff can check the detail of a particular quiz.</li>
-        <li>Also, for the purpose of statistic, they can calculate the accuracy of each question.</li>
-        <li>Sometimes answers provided were wrong or the system was down, the admin can manually add/update/delete some records and user's score will be changed too. </li>
+        <li hidden>On this page, the admin staff can check the detail of a particular quiz.</li>
+        <li hidden>Also, for the purpose of statistic, they can calculate the accuracy of each question.</li>
+        <li>Sometimes answers provided were wrong or the system was down, the admin can manually add/update/delete some records and the users' scores will be changed too. </li>
       </ul>   
   </p>   
 </div>
@@ -22,15 +22,27 @@
             <h4>Add a Question from a Quiz Manually</h4>
         </div>
         <div class="form-group">
-          <label>Quiz ID</label> 
-          <input class="form-control" type="text" id="quiz_id">
+          <label>Quiz ID: </label>
+          <select id="quiz_id">
+            <option disabled="true" selected> --Select Quiz ID--</option>
+            {% for quiz_id in quiz_ids %}
+            <option >{{quiz_id[0]}}</option>
+            {% endfor %}
+          </select> 
+          <!-- <input class="form-control" type="text" id="quiz_id"> -->
         </div>
         <div class="form-group">
-            <label>Question ID</label> 
-            <input class="form-control" type="text" id="question_id">
+            <label>Question ID: </label> 
+            <select id="question_id">
+              <option disabled="true" selected> --Select Question ID--</option>
+              {% for question_id in question_ids %}
+              <option >{{question_id[0]}}</option>
+              {% endfor %}
+            </select>
+            <!-- <input class="form-control" type="text" id="question_id"> -->
         </div>
         <div class="form-group">
-            <label>Result</label> 
+            <label>Result:</label> 
             <select id="result">
               <option value="1">Correct</option>
               <option value="0">Wrong</option>
@@ -52,6 +64,8 @@
     </div> -->
   </div>
 </div>
+<br>
+<div class="container-fluid"><p id="error-message"></p></div>
 
 <br>
 <br>
