@@ -238,7 +238,7 @@ def sim_update(id):
         query = 'SELECT * from Simulators WHERE user_id = %s' % (id)
         result = execute_query(db_connection, people_query).fetchone()
         print('Returning')
-        return render_template('simulators_update.html', record = result)
+        return render_template('simulators_update.html', record = result, user_id = id)
     elif request.method == 'POST':
         print('The POST request')
         user_id = request.form['user_id_to_update']
