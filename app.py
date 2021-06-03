@@ -235,10 +235,14 @@ def sim_update(id):
     db_connection = connect_to_database()
     if request.method == 'GET':
         print('The GET request')
-        query = 'SELECT * from Simulators WHERE user_id = %s' % (id)
-        result = execute_query(db_connection, people_query).fetchone()
+        
+        query1 = "Select user_id,user_name From Users"
+        id_list = execute_query(db_connection,query3).fetchall()
+        
+        query2 = 'SELECT * from Simulators WHERE user_id = %s' % (id)
+        result = execute_query(db_connection, query2).fetchone()
         print('Returning')
-        return render_template('simulators_update.html', record = result, user_id = id)
+        return render_template('simulators_update.html', id_list = id_list, record = result, user_id = id)
     elif request.method == 'POST':
         print('The POST request')
         user_id = request.form['user_id_to_update']
