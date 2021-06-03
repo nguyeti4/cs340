@@ -233,7 +233,23 @@ def sim_user():
 @app.route("/api/simulators/update/<int:id>")
 def sim_update(id):
     db_connection = connect_to_database()
-    return "You are updating id: " + str(id)
+    if request.method == 'GET':
+        print('The GET request')
+        query = 'SELECT * from Simulators WHERE user_id = %s' % (id)
+        result = execute_query(db_connection, people_query).fetchone()
+        print('Returning')
+        return render_template('simulators_update.html', record = result)
+    elif request.method == 'POST':
+        print('The POST request')
+        user_id = request.form['user_id_to_update']
+        grade = request.form['grading_to_update']
+        date = request.form['play_date_to_update']
+        scenario = request.form['scenario_to_update']
+        query = "UPDATE Simulators SET user_id = %s"
+        data = (user_id,grade,date,scenario)
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated")
+        return redirect(url_for("simulators_page"))
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
