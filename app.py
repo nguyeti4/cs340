@@ -230,15 +230,10 @@ def sim_user():
 
         return redirect(url_for("simulators_page"))
         
-#@app.route("/api/simulators/update")
-#def sim_update():
-#    db_connection = connect_to_database()
-#    scene = request.args.get('sim_scenario')
-#    if scene == '':
-#       return redirect(url_for("simulators_page"))
-#    query2 = 'Select * from Simulators where scenario_name = %s;'  
-#    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
-#   return render_template('simulators.html',result=selected_scenarios)
+@app.route("/api/simulators/update/<int:id>")
+def sim_update(id):
+    db_connection = connect_to_database()
+    return "You are updating id: " + str(id)
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
