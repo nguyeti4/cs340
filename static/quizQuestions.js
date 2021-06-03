@@ -44,8 +44,9 @@ $(function() {
                 alert("error loading new record");
             }
         });
-        
-
+        $('#quiz_id')[0].selectedIndex = 0;
+        $('#question_id')[0].selectedIndex = 0;
+        $('#result')[0].selectedIndex = 0;
     });
 
     $quizQuestions.delegate("#delete-this", "click", function(e) {

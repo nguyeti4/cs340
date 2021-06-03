@@ -226,3 +226,26 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-02-03  0:38:33
+
+-- Alter Table QuizRecords On DELETE CASCADE
+SHOW CREATE TABLE QuizRecords;
+ALTER TABLE QuizRecords DROP FOREIGN KEY QuizRecords_ibfk_1;
+ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserQuiz FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
+
+
+-- Alter Table Simulators On DELETE CASCADE
+SHOW CREATE TABLE Simulators;
+
+ALTER TABLE Simulators DROP FOREIGN KEY Simulators_ibfk_1;
+ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
+ALTER TABLE Simulator MODIFY user_id INT;
+ALTER TABLE Simulators DROP FOREIGN KEY FK_UserSim;
+ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE SET NULL;
+
+
+-- Alter Table QuizRecords On DELETE CASCADE
+SHOW CREATE TABLE QuizQuestions;
+ALTER TABLE QuizQuestions DROP FOREIGN KEY QuizQuestions_ibfk_1;
+ALTER TABLE QuizQuestions DROP FOREIGN KEY QuizQuestions_ibfk_2;
+ALTER TABLE QuizQuestions ADD CONSTRAINT FK_LinkQuiz FOREIGN KEY (quiz_id) REFERENCES QuizRecords (quiz_id) ON DELETE cascade;
+ALTER TABLE QuizQuestions ADD CONSTRAINT FK_LinkQuestion FOREIGN KEY (question_id) REFERENCES Questions (question_id) ON DELETE Cascade;

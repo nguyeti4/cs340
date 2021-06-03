@@ -24,11 +24,23 @@ $(function() {
     console.log('function')
     $("#add-question").on("click", function(e) {
         console.log('add-question clicked')
-        e.preventDefault();
+        
+        var right_answer
+        if ($('#right-answer').val()=="choice1") {
+            right_answer = $('#choice-1').val();
+        };
+        if ($('#right-answer').val()=="choice2") {
+            right_answer = $('#choice-2').val();
+        };
+        if ($('#right-answer').val()=="choice3") {
+            right_answer = $('#choice-3').val();
+        };
+        
+
         var questionInfo = {
             state: $('#state').val(),
             question_desc: $('#question-desc').val(),
-            right_answer: $('#right-answer').val(),
+            right_answer: right_answer,
             choice_1: $('#choice-1').val(),
             choice_2: $('#choice-2').val(),
             choice_3:$('#choice-3').val()
@@ -39,13 +51,25 @@ $(function() {
             data: questionInfo,
             success: function(res, status, xhr) {
                 console.log(res);
-                $questions.append(Mustache.render(questionTemplate, res));
+                if (res.error) {
+                    console.log(res.error);
+                    $("#error-message").text(res.error);
+                } else {
+                    $questions.append(Mustache.render(questionTemplate, res));
+                    $("#error-message").text("");
+                };
             },
             error: function() {
                 alert("error loading new question")
             }
         });
-
+        $('#question-desc').val("");
+        $('#choice-1').val("");
+        $('#choice-2').val("");
+        $('#choice-3').val("");
+        $('#state')[0].selectedIndex = 0;
+        $('#right-answer')[0].selectedIndex = 0;
+        e.preventDefault();
     });
 
     $questions.delegate("#delete-question", "click", function(e) {

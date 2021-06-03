@@ -49,8 +49,13 @@
             <input class="form-control" type="text" name="choice3" id="choice-3">
         </div>
         <div class="form-group">
-          <label>Right Answer</label> 
-          <input class="form-control" type="text" name="right_answer" id="right-answer">
+          <label>Right Answer</label>
+          <select id="right-answer">
+            <option disabled="true" selected> --Select one choice--</option>
+            <option value="choice1">Choice1</option>
+            <option value="choice2">Choice2</option>
+            <option value="choice3">Choice3</option>
+          </select>
         </div>
         <input class="btn btn-primary" type="submit" value="Add" id="add-question">
       </form>
@@ -66,6 +71,9 @@
       </form>
     </div> -->
   </div>
+</div>
+<div class="container">
+  <p id='error-message'></p>
 </div>
 
 <br>

@@ -163,21 +163,3 @@ Select * from QuizRecords where quiz_state = :State_input;
 Delete * from QuizRecords
 where quiz_id = :quiz_delete_input;
 
--- Alter Table QuizRecords On DELETE CASCADE
-SHOW CREATE TABLE QuizRecords;
-ALTER TABLE QuizRecords DROP FOREIGN KEY QuizRecords_ibfk_1;
-ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserQuiz FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
-
-
--- Alter Table Simulators On DELETE CASCADE
-SHOW CREATE TABLE Simulators;
-ALTER TABLE Simulators DROP FOREIGN KEY Simulators_ibfk_1;
-ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
-
-
--- Alter Table QuizRecords On DELETE CASCADE
-show create table QuizQuestions;
-ALTER TABLE QuizQuestions DROP FOREIGN KEY QuizQuestions_ibfk_1;
-ALTER TABLE QuizQuestions DROP FOREIGN KEY QuizQuestions_ibfk_2;
-ALTER TABLE QuizQuestions ADD CONSTRAINT FK_LinkQuiz FOREIGN KEY (quiz_id) REFERENCES QuizRecords (quiz_id) ON DELETE cascade;
-ALTER TABLE QuizQuestions ADD CONSTRAINT FK_LinkQuestion FOREIGN KEY (question_id) REFERENCES Questions (question_id) ON DELETE Cascade;
