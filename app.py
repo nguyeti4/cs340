@@ -237,7 +237,7 @@ def sim_update(id):
         print('The GET request')
         
         query1 = "Select user_id,user_name From Users"
-        id_list = execute_query(db_connection,query3).fetchall()
+        id_list = execute_query(db_connection,query1).fetchall()
         
         query2 = 'SELECT * from Simulators WHERE user_id = %s' % (id)
         result = execute_query(db_connection, query2).fetchone()
