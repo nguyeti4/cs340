@@ -25,6 +25,7 @@
     <div class="form-group">
     <label>User ID</label>	    
     <select name="user_id" action="/simulator">
+	    <option value=''>None</option>
 	{% for id in id_list %}
 	    <option value="{{id[0]}}" SELECTED>{{id[0]}} ({{id[1]}}'s ID)</option>"
         {% endfor %}
@@ -80,6 +81,7 @@
       <td>{{item[2]}}</td>
       <td>{{item[3]}}</td>
       <td>{{item[4]}}</td>
+      <td><input class="btn btn-primary" type="submit" value="Update" onclick="window.location = '/api/simulators/update/{{item[0]}}'"></td>
       <td><input class="btn btn-primary" type="submit" value="Delete" onclick="window.location = '/api/simulators/delete/{{item[0]}}'"></td>
     </tr>
     {% endfor %}

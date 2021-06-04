@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Simulators{% endblock %}
+
+{% block content %} 
+
+<div class="container" style="margin-left: 0;">
+  <h3><a href="/simulators">Simulators</a></h3>
+  <p>
+      This page is used as a form to update info on a record in the Simulators table.
+	<ul>  
+	  <li>Previous data for the record being updated is automatically set as default values for input fields </li>
+	  <li>Input validation is implemented so the admin doesn't add invalid inputs</li>
+          <li>If admin chooses to not make any changes to the record they shall click "Discard Changes" and be returned to the front-end</li>
+	</ul>
+  </p>   
+</div>
+
+<div>
+<form class="container" action="/api/simulators/update/{{user_id}}" method="POST" style="margin-left: 0;">
+    <h4>Update simulator record</h4>	
+	
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	<br>
+		{% for msg in messages %}
+			<h5 class="container-fluid" id="flash">{{msg}}</h5>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
+	
+<br>
+    <div class="form-group">
+	<p>Initial User ID: {{record[0]}}</p>
+    <label>User ID</label>	
+    <select name="user_id_to_update">
+	    <option value=''>None</option>
+	  {% for id in id_list %}
+	    {% if id[0] == record[0] %}
+	    	<option value="{{id[0]}}" SELECTED >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% else %}
+	    	<option value="{{id[0]}}" >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% endif %}
+    	  {% endfor %}
+    </select>
+    </div>	    
+<br>	
+	
+    <div class="form-group">
+	    <p>Initial Grade: {{record[1]}}</p>
+        <label>Grade</label>
+            <select name="grading_to_update">
+		{% if record[1] == 1 %}
+                	<option value="1" SELECTED>Pass</option>
+			 <option value="0">Fail</option>
+		{% else %}
+                	<option value="0" SELECTED>Fail</option>		
+	               	<option value="1">Pass</option>
+		{% endif %}
+            </select> 
+    </div>
+<br>
+	
+    <div class="form-group">
+	    <p>Initial Play Date: {{record[2]}}</p>
+        <label>Play date</label> 
+        <input class="form-control" type="date" name="play_date_to_update" value={{record[2]}}>
+    </div>
+<br>
+	
+    <div class="form-group">
+	    <p>Initial Scenario: {{record[3]}}</p>
+        <label>Scenario</label> 
+        <input class="form-control" type="text" name="scenario_to_update" value="{{record[3]}}">
+    </div>
+<br>
+    <input class="btn btn-primary" type="submit" value="Save Changes">	
+</form>
+<br>	
+    <div class="container-fluid"><input class="btn btn-primary" type="submit" value="Discard Changes" onclick="window.location = '/simulators'"></div>
+</div>	
+
+
+{% endblock %}

@@ -202,18 +202,18 @@ def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        # input_id = request.form['user_id']
-        # print(input_id)
-        # query = 'Select * from Users where user_id= %s'
-        # user = execute_query(db_connection, query, (input_id,)).fetchone()
-        # print(user)
-        # if input_id == '':
-        #     flash("Please enter user id!")
-        #     return redirect(url_for("simulators_page"))
-        # if user == None:
-        #     #print('This user does not exist!')
-        #     flash("This user id does not exist!")
-        #     return redirect(url_for("simulators_page"))
+        #input_id = request.form['user_id']
+        #print(input_id)
+        #query = 'Select * from Users where user_id= %s'
+        #user = execute_query(db_connection, query, (input_id,)).fetchone()
+        #print(user)
+        #if input_id == '':
+        #    flash("Please enter user id!")
+        #    return redirect(url_for("simulators_page"))
+        #if user == None:
+        #    #print('This user does not exist!')
+        #    flash("This user id does not exist!")
+        #    return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -235,15 +235,40 @@ def sim_user():
 
         return redirect(url_for("simulators_page"))
         
-#@app.route("/api/simulators/update")
-#def sim_update():
-#    db_connection = connect_to_database()
-#    scene = request.args.get('sim_scenario')
-#    if scene == '':
-#       return redirect(url_for("simulators_page"))
-#    query2 = 'Select * from Simulators where scenario_name = %s;'  
-#    selected_scenarios = execute_query(db_connection, query2, (scene,)).fetchall() 
-#   return render_template('simulators.html',result=selected_scenarios)
+@app.route("/api/simulators/update/<int:id>",methods=["POST","GET"])
+def sim_update(id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        print('The GET request')
+        
+        query1 = "Select user_id,user_name From Users"
+        id_list = execute_query(db_connection,query1).fetchall()
+        
+        query2 = 'SELECT user_id,grading,play_date,scenario_name from Simulators WHERE result_id = %s' 
+        result = execute_query(db_connection, query2, (id,)).fetchone()
+        print('Returning')
+        return render_template('simulators_update.html', id_list = id_list, record = result, user_id = id)
+    elif request.method == 'POST':
+        print('The POST request')
+        user_id = request.form['user_id_to_update']
+        grade = request.form['grading_to_update']
+        date = request.form['play_date_to_update']
+        scenario = request.form['scenario_to_update']
+        
+        if date == '' or scenario == '':
+            flash(f"Error: Failed to update simulator record w/ result id {id}")
+            if date == '':
+                flash("Please remember to add play date!")
+            if scenario == '':
+                flash("Please remember to add a scenario!")
+            return redirect(url_for("sim_update", id = id))
+        
+        query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
+        data = (user_id,grade,date,scenario,id)
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated")
+        flash(f"Updated row w/ result id {id}")
+        return redirect(url_for("simulators_page"))
 
 @app.route("/api/simulators/delete/<int:id>")
 def sim_delete(id):
@@ -283,18 +308,18 @@ def quiz_user():
         db_connection = connect_to_database()
         print("Add new Quiz record!")
         
-        input_id = request.form['quiz_user_id']
-        print(input_id)
-        query = 'Select * from Users where user_id=%s'
-        user = execute_query(db_connection, query, (input_id,)).fetchone()
-        print(user)
-        if input_id == '':
-            flash("Please enter a user id!")
-            return redirect(url_for("quiz_records_page"))
-        if user is None:
+        #input_id = request.form['quiz_user_id']
+        #print(input_id)
+        #query = 'Select * from Users where user_id=%s'
+        #user = execute_query(db_connection, query, (input_id,)).fetchone()
+        #print(user)
+        #if input_id == '':
+        #    flash("Please enter a user id!")
+        #    return redirect(url_for("quiz_records_page"))
+        #if user is None:
             #print('This user does not exist!')
-            flash("This user id does not exist!")
-            return redirect(url_for("quiz_records_page"))
+        #    flash("This user id does not exist!")
+        #    return redirect(url_for("quiz_records_page"))
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
@@ -318,15 +343,42 @@ def quiz_user():
     
         return redirect(url_for("quiz_records_page"))
    
-#@app.route("/api/quiz_records/update")
-#def quiz_update():
-#    db_connection = connect_to_database()
-#    state = request.args.get('select_state')
-#    if state == 'Default':
-#        return redirect(url_for("quiz_records_page"))
-#    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
-#    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-#    return render_template('quizRecords.html',results=result2)
+@app.route("/api/quiz_records/update/<int:id>",methods=["POST","GET"])
+def quiz_update(id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        print('The GET request')
+        
+        query1 = "Select user_id,user_name From Users"
+        id_list = execute_query(db_connection,query1).fetchall()
+        
+        query2 = 'SELECT user_id,quiz_date,quiz_state,quiz_score from QuizRecords WHERE quiz_id = %s' 
+        result = execute_query(db_connection, query2, (id,)).fetchone()
+        print('Returning')
+        return render_template('quizRecords_update.html', id_list = id_list, record = result, user_id = id)
+    elif request.method == 'POST':
+        print('The POST request')
+        user_id = request.form['quiz_user_id_to_update']
+        date = request.form['quiz_date_to_update']
+        state = request.form['quiz_state_to_update']
+        score = request.form['quiz_score_to_update']
+        
+        if date == '' or score == '' or int(score) < 0 or int(score) > 100:
+            flash(f"Error: Failed to update a quiz record w/ quiz id {id}")   
+            if date == '':
+                flash("Please remember to enter a date!")
+            if score == '':
+                flash("Please remember to enter a score!")
+            elif int(score) < 0 or int(score) > 100:
+                flash("The score must be btwn 1 and 100 (inclusive)")             
+            return redirect(url_for("quiz_update", id = id))
+        
+        query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
+        data = (user_id,date,state,score,id)
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated")
+        flash(f"Updated row w/ quiz id {id}")
+        return redirect(url_for("quiz_records_page"))
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):

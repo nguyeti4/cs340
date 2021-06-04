@@ -129,8 +129,9 @@ Update QuestionChoices
 set choice_desc = :choice_des_from_update
 where question_id = :id_from_update and choice_id = :choice_id_from_update;
 
-
---Simulator Page
+--
+--Simulators Page
+--
 
 --display all current sim records
 SELECT * FROM Simulators
@@ -139,27 +140,62 @@ SELECT * FROM Simulators
 Insert into Simulators (user_id, grading, play_date, scenario_name)
 Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
 
---Lookup Simulator record by scenario name
+--Filter Simulator record by scenario name
 Select * from Simulators
-where Scenario = :scenInput;
+where scenario_name = :scenInput;
+
+--Display a form to update simulator record
+--The form displays info on the row to be updated, where the row result_id (Primary Key) equals :updateResult
+SELECT user_id, grading, play_date, scenario_name FROM Simulators WHERE result_id = :updateResult;
+
+--Update Simulator Record
+--:updateResult is the same input used in line 149
+UPDATE Simulators 
+SET user_id = :updateID, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario WHERE result_id = :updateResult;
+
+--Update Simulator Record (where user_id is NULL)
+--:updateResult is the same input used in line 149
+--if doesn't play the simulator, set user_id to NULL
+UPDATE Simulators 
+SET user_id = NULL, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario WHERE result_id = :updateResult;
 
 --Delete the Searched sims by id
+--where :sim_delete_input is the result_id of the row you want deleted
 Delete * from Simulators
-where user_id = :sim_delete_input;
+where result_id = :sim_delete_input;
 
 
+--
 --QuizRecords Page
+--
+
 --display all current quiz records
-SELECT * FROM Simulators
+SELECT * FROM QuizRecords
 
 --add a new Record
 Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
 Values (:useInput, :quizInput, :stateInput, :scoreInput);
 
---Lookup all Quiz records by state
+--Filter all Quiz records by state
 Select * from QuizRecords where quiz_state = :State_input;
 
+--Display a form to update quiz record
+--The form displays info on the row to be updated, where the row quiz_id (Primary Key) equals :updateQuiz
+SELECT user_id, quiz_date, quiz_state, quiz_score FROM QuizRecords WHERE quiz_id = :updateQuiz
+
+--Update QuizRecord record
+--:updateQuiz is the same input used in line 178
+UPDATE QuizRecords
+SET user_id = :updateID, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene WHERE quiz_id = :updateQuiz;
+
+--Update QuizRecord record (where user_id is NULL)
+--:updateQuiz is the same input used in line 178
+--if doesn't do the Quiz, set user_id to NULL
+UPDATE QuizRecords
+SET user_id = NULL, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene WHERE quiz_id = :updateQuiz;
+
 --Delete the Searched records by id
+--where :quiz_delete_input is the quiz_id of the row you want deleted
 Delete * from QuizRecords
 where quiz_id = :quiz_delete_input;
 
