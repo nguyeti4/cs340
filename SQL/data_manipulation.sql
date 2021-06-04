@@ -146,11 +146,12 @@ where scenario_name = :scenInput;
 
 --Display a form to update simulator record
 --The form displays info on the row to be updated, where the row result_id (Primary Key) equals :updateResult
-SELECT user_id, grading, play_date, scenario_name FROM Simulators WHERE result_id = :updateResult
+SELECT user_id, grading, play_date, scenario_name FROM Simulators WHERE result_id = :updateResult;
 
 --Update Simulator Record
+--:updateResult is the same input used in line 149
 UPDATE Simulators 
-SET user_id = :updateID, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario;
+SET user_id = :updateID, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario WHERE result_id = :updateResult;
 
 --Delete the Searched sims by id
 --where :sim_delete_input is the result_id of the row you want deleted
@@ -177,8 +178,9 @@ Select * from QuizRecords where quiz_state = :State_input;
 SELECT user_id, quiz_date, quiz_state, quiz_score FROM QuizRecords WHERE quiz_id = :updateQuiz
 
 --Update QuizRecord record
+--:updateQuiz is the same input used in line 178
 UPDATE QuizRecords
-SET user_id = :updateID, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene;
+SET user_id = :updateID, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene WHERE quiz_id = :updateQuiz;
 
 --Delete the Searched records by id
 --where :quiz_delete_input is the quiz_id of the row you want deleted
