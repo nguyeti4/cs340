@@ -204,7 +204,7 @@ def sim_user():
         print("Add new simulator record!")
         #input_id = request.form['user_id']
         #print(input_id)
-        #query = 'Select * from Users where user_id= %s'
+        #query1 = 'Select * from Users where user_id= %s'
         #user = execute_query(db_connection, query, (input_id,)).fetchone()
         #print(user)
         #if input_id == '':
@@ -215,7 +215,7 @@ def sim_user():
         #    flash("This user id does not exist!")
         #    return redirect(url_for("simulators_page"))
        
-        user_id = request.form['user_id']
+        user_id = request.form['user_id']                     
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
@@ -227,7 +227,12 @@ def sim_user():
             if scenario == '':
                 flash("Please remember to add a scenario!")
             return redirect(url_for("simulators_page"))
-            
+        if user_id == '':
+            query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (NULL,%s,%s,%s)'
+            data = (grade, date, scenario)
+            execute_query(db_connection, query, data)
+            flash("Simulator record added!") 
+            return redirect(url_for("simulators_page"))
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
