@@ -237,10 +237,20 @@ ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserQuiz FOREIGN KEY (user_id) REFEREN
 SHOW CREATE TABLE Simulators;
 
 ALTER TABLE Simulators DROP FOREIGN KEY Simulators_ibfk_1;
-ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
+--ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
 ALTER TABLE Simulator MODIFY user_id INT;
-ALTER TABLE Simulators DROP FOREIGN KEY FK_UserSim;
+--ALTER TABLE Simulators DROP FOREIGN KEY FK_UserSim;
 ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE SET NULL;
+
+
+-- Alter Table QuizRecords On DELETE CASCADE
+SHOW CREATE TABLE QuizRecords;
+
+ALTER TABLE QuizRecords DROP FOREIGN KEY QuizRecords_ibfk_1;
+--ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserRec FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
+ALTER TABLE QuizRecords MODIFY user_id INT;
+--ALTER TABLE QuizRecords DROP FOREIGN KEY FK_UserRec;
+ALTER TABLE QuizRecords ADD CONSTRAINT FK_UserRec FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE SET NULL;
 
 
 -- Alter Table QuizRecords On DELETE CASCADE
