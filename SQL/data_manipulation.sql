@@ -136,9 +136,15 @@ where question_id = :id_from_update and choice_id = :choice_id_from_update;
 --display all current sim records
 SELECT * FROM Simulators
 
---add a new Record
+--add a new Record (where user_id is not NULL)
 Insert into Simulators (user_id, grading, play_date, scenario_name)
 Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
+
+--add a new Record (where user_id is NULL)
+--in the event user decides not to run a simulator use this query
+--:IDInput is set to NULL
+Insert into Simulators (user_id, grading, play_date, scenario_name)
+Values (NULL, :gradeInput, :dateInput, :sceneInput);
 
 --Filter Simulator record by scenario name
 Select * from Simulators
@@ -161,7 +167,7 @@ SET user_id = NULL, grading = :updateGrade, play_date = :updateplay, scenario_na
 
 --Delete the Searched sims by id
 --where :sim_delete_input is the result_id of the row you want deleted
-Delete * from Simulators
+Delete from Simulators
 where result_id = :sim_delete_input;
 
 
@@ -172,16 +178,22 @@ where result_id = :sim_delete_input;
 --display all current quiz records
 SELECT * FROM QuizRecords
 
---add a new Record
+--add a new Record (where user_id s not NULL)
 Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
 Values (:useInput, :quizInput, :stateInput, :scoreInput);
+
+--add a new Record (where user_id is NULL)
+--in the event user decides not to do a quiz use this query
+--:useInput is set to NULL
+Insert into QuizRecords (user_id, quiz_date, quiz_state, quiz_score)
+Values (NULL, :quizInput, :stateInput, :scoreInput);
 
 --Filter all Quiz records by state
 Select * from QuizRecords where quiz_state = :State_input;
 
 --Display a form to update quiz record
 --The form displays info on the row to be updated, where the row quiz_id (Primary Key) equals :updateQuiz
-SELECT user_id, quiz_date, quiz_state, quiz_score FROM QuizRecords WHERE quiz_id = :updateQuiz
+SELECT user_id, quiz_date, quiz_state, quiz_score FROM QuizRecords WHERE quiz_id = :updateQuiz;
 
 --Update QuizRecord record
 --:updateQuiz is the same input used in line 178
@@ -196,6 +208,6 @@ SET user_id = NULL, quiz_date = :update_quiz_date, quiz_state = :updatestate, qu
 
 --Delete the Searched records by id
 --where :quiz_delete_input is the quiz_id of the row you want deleted
-Delete * from QuizRecords
+Delete from QuizRecords
 where quiz_id = :quiz_delete_input;
 
