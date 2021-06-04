@@ -34,7 +34,7 @@
 	<p>Initial User ID: {{record[0]}}</p>
     <label>User ID</label>	
     <select name="user_id_to_update">
-	    <option value=NULL>None</option>
+	    <option value=''>None</option>
 	  {% for id in id_list %}
 	    {% if id[0] == record[0] %}
 	    	<option value="{{id[0]}}" SELECTED >{{id[0]}} ({{id[1]}}'s ID)</option>
