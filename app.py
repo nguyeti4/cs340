@@ -245,6 +245,8 @@ def sim_update(id):
         return render_template('simulators_update.html', id_list = id_list, record = result, user_id = id)
     elif request.method == 'POST':
         print('The POST request')
+        discard = request.form['Discard Changes']
+        print(discard)
         user_id = request.form['user_id_to_update']
         grade = request.form['grading_to_update']
         date = request.form['play_date_to_update']
