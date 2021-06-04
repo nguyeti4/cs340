@@ -24,7 +24,7 @@
     <div class="form-group">
 	 <label>User ID</label>	    
 	   	 <select name="quiz_user_id" action="/quiz_records">
-			    <option value=NULL>None</option>
+			    <option value=''>None</option>
 			{% for id in id_list %}
 			    <option value="{{id[0]}}" SELECTED>{{id[0]}} ({{id[1]}}'s ID)</option>
 			{% endfor %}
