@@ -197,18 +197,18 @@ def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        input_id = request.form['user_id']
-        print(input_id)
-        query = 'Select * from Users where user_id= %s'
-        user = execute_query(db_connection, query, (input_id,)).fetchone()
-        print(user)
+        #input_id = request.form['user_id']
+        #print(input_id)
+        #query = 'Select * from Users where user_id= %s'
+        #user = execute_query(db_connection, query, (input_id,)).fetchone()
+        #print(user)
         #if input_id == '':
         #    flash("Please enter user id!")
         #    return redirect(url_for("simulators_page"))
-        if user == None:
-            #print('This user does not exist!')
-            flash("This user id does not exist!")
-            return redirect(url_for("simulators_page"))
+        #if user == None:
+        #    #print('This user does not exist!')
+        #    flash("This user id does not exist!")
+        #    return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -294,18 +294,18 @@ def quiz_user():
         db_connection = connect_to_database()
         print("Add new Quiz record!")
         
-        input_id = request.form['quiz_user_id']
-        print(input_id)
-        query = 'Select * from Users where user_id=%s'
-        user = execute_query(db_connection, query, (input_id,)).fetchone()
-        print(user)
+        #input_id = request.form['quiz_user_id']
+        #print(input_id)
+        #query = 'Select * from Users where user_id=%s'
+        #user = execute_query(db_connection, query, (input_id,)).fetchone()
+        #print(user)
         #if input_id == '':
         #    flash("Please enter a user id!")
         #    return redirect(url_for("quiz_records_page"))
-        if user is None:
+        #if user is None:
             #print('This user does not exist!')
-            flash("This user id does not exist!")
-            return redirect(url_for("quiz_records_page"))
+        #    flash("This user id does not exist!")
+        #    return redirect(url_for("quiz_records_page"))
         
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
