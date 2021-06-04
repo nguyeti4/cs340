@@ -348,7 +348,7 @@ def quiz_update(id):
         date = request.form['quiz_date_to_update']
         state = request.form['quiz_state_to_update']
         score = request.form['quiz_score_to_update']
-        query = "UPDATE Simulators SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
+        query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
         data = (user_id,date,state,score,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
