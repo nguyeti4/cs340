@@ -55,17 +55,18 @@ $(function() {
                 } else {
                     $users.append(Mustache.render(userTemplate, res));
                     $("#error-message").text(" ");
+                    $('#user_name').val("");
+                    $('#user_password').val("");
+                    $('#user_email').val("");
+                    $('#regis_date').val(new Date());
+                    // $('#active')[0].selectedIndex = 0;
                 }; 
             },
             error: function() {
                 alert("error loading new users")
             }
         });
-        $('#user_name').val("");
-        $('#user_password').val("");
-        $('#user_email').val("");
-        $('#regis_date').val(new Date());
-        // $('#active')[0].selectedIndex = 0;
+        
         e.preventDefault();
     });
 

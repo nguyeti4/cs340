@@ -25,26 +25,27 @@ $(function() {
     $("#add-question").on("click", function(e) {
         console.log('add-question clicked')
         
-        var right_answer
+        var rightAnswer
         if ($('#right-answer').val()=="choice1") {
-            right_answer = $('#choice-1').val();
+            rightAnswer = $('#choice-1').val();
         };
         if ($('#right-answer').val()=="choice2") {
-            right_answer = $('#choice-2').val();
+            rightAnswer = $('#choice-2').val();
         };
         if ($('#right-answer').val()=="choice3") {
-            right_answer = $('#choice-3').val();
+            rightAnswer = $('#choice-3').val();
         };
         
 
         var questionInfo = {
             state: $('#state').val(),
             question_desc: $('#question-desc').val(),
-            right_answer: right_answer,
+            right_answer: rightAnswer,
             choice_1: $('#choice-1').val(),
             choice_2: $('#choice-2').val(),
             choice_3:$('#choice-3').val()
         };
+        console.log(questionInfo)
         $.ajax( {
             type: "POST",
             url: "/api/questions",
@@ -57,18 +58,20 @@ $(function() {
                 } else {
                     $questions.append(Mustache.render(questionTemplate, res));
                     $("#error-message").text("");
+                    $('#question-desc').val("");
+                    $('#choice-1').val("");
+                    $('#choice-2').val("");
+                    $('#choice-3').val("");
+                    $('#state')[0].selectedIndex = 0;
+                    $('#right-answer')[0].selectedIndex = 0;
+
                 };
             },
             error: function() {
                 alert("error loading new question")
             }
         });
-        $('#question-desc').val("");
-        $('#choice-1').val("");
-        $('#choice-2').val("");
-        $('#choice-3').val("");
-        $('#state')[0].selectedIndex = 0;
-        $('#right-answer')[0].selectedIndex = 0;
+        
         e.preventDefault();
     });
 

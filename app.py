@@ -38,21 +38,21 @@ def users():
         # validate user name
         user_name = request.form['user_name']
         print(user_name)
-        if user_name is None: # Not Null
+        if len(user_name) == 0: 
             return jsonify({
                 'error': 'User Name is empty!',
             })
         
         # validate user password
         user_password = request.form['user_password']
-        if user_password is None:
+        if len(user_password) == 0:
             return jsonify({
                 'error': 'User Password is empty!',
             })
 
         # validate regis date
         regis_date = request.form['regis_date']
-        if regis_date is None: # Not Null
+        if len(regis_date) == 0: # Not Null
             return jsonify({
                 'error': 'Register Date is empty!',
             })
@@ -66,8 +66,13 @@ def users():
             request.form['regis_date'],
             request.form['active']
         )
+        
         query = 'Insert into Users (user_name, user_password, user_email, regis_date, active) Values (%s,%s,%s,%s,%s)'
         cur = execute_query(db_connection, query, user_details)
+
+        print(user_details[4])
+        print(type(user_details[4]))
+        
 
         return jsonify({
             'user_id': cur.lastrowid,
@@ -75,7 +80,7 @@ def users():
             'user_password': user_details[1],
             'user_email': user_details[2],
             'regis_date': str(user_details[3]),
-            'active': user_details[4],
+            'active': 'True' if user_details[4] == str(1) else 'False',
         })
 
     if request.method == 'GET':
@@ -89,7 +94,7 @@ def users():
                 'user_password': row[2],
                 'user_email': row[3],
                 'regis_date': str(row[4]),
-                'active': row[5],
+                'active': 'True' if row[5]== 1 else 'False',
             })
         res = make_response(jsonify(users))
         return res
@@ -133,7 +138,7 @@ def change_account(id):
             'user_password': row[2],
             'user_email': row[3],
             'regis_date': str(row[4]),
-            'active': row[5],
+            'active': 'True' if row[5]== 1 else 'False',
         })
 
 @app.route('/api/users/search')
@@ -197,18 +202,18 @@ def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        input_id = request.form['user_id']
-        print(input_id)
-        query = 'Select * from Users where user_id= %s'
-        user = execute_query(db_connection, query, (input_id,)).fetchone()
-        print(user)
-        if input_id == '':
-            flash("Please enter user id!")
-            return redirect(url_for("simulators_page"))
-        if user == None:
-            #print('This user does not exist!')
-            flash("This user id does not exist!")
-            return redirect(url_for("simulators_page"))
+        # input_id = request.form['user_id']
+        # print(input_id)
+        # query = 'Select * from Users where user_id= %s'
+        # user = execute_query(db_connection, query, (input_id,)).fetchone()
+        # print(user)
+        # if input_id == '':
+        #     flash("Please enter user id!")
+        #     return redirect(url_for("simulators_page"))
+        # if user == None:
+        #     #print('This user does not exist!')
+        #     flash("This user id does not exist!")
+        #     return redirect(url_for("simulators_page"))
        
         user_id = request.form['user_id']
         grade = request.form['grade']
@@ -502,6 +507,33 @@ def questions():
 
     # add a new question into a database
     if request.method == 'POST':
+        print(request.form)
+        # data validation
+        question_des = request.form['question_desc']
+        if len(question_des) == 0:
+            return jsonify({
+                'error': 'The description of question can not be empty!'
+            })
+        
+        choices =[]
+        if len(request.form['choice_1']) != 0:
+            choices.append(request.form['choice_1'])
+        if len(request.form['choice_2']) != 0:
+            choices.append(request.form['choice_2'])
+        if len(request.form['choice_3']) != 0:
+            choices.append(request.form['choice_3'])
+        print(choices)
+        if len(choices) < 2:
+            return jsonify( {
+                'error': 'please add at least two choices.',
+            })
+    
+    
+        if 'right_answer' not in request.form:
+            return jsonify( {
+                'error': 'please select one choice as the right answer.',
+            })
+        
         # insert a new row to the Questions table
         print('Add a row to the Questions table')
         question_details = (
@@ -513,15 +545,6 @@ def questions():
         cur = execute_query(db_connection, query, question_details)
         question_id = cur.lastrowid
         print(question_id)
-
-        choices =[]
-        if len(request.form['choice_1']) != 0:
-            choices.append(request.form['choice_1'])
-        if len(request.form['choice_2']) != 0:
-            choices.append(request.form['choice_2'])
-        if len(request.form['choice_3']) != 0:
-            choices.append(request.form['choice_3'])
-        print(choices)
         
         for choice in choices:
             query = 'Insert into QuestionChoices (question_id, choice_desc) Values (%s,%s)'
@@ -560,7 +583,7 @@ def questions():
             f'group by q.question_id',
         )
         result_1 = execute_query(db_connection, query_1[0]).fetchall()
-        print(result_1)
+        # print(result_1)
         questions = []
         for row in result_1:
             questions.append({
@@ -572,7 +595,7 @@ def questions():
                 'choice_2':row[5],
                 'choice_3': row[6],
             })
-        print(questions)
+        # print(questions)
 
         res = make_response(jsonify(questions))
         return res
