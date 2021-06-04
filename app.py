@@ -239,7 +239,7 @@ def sim_update(id):
         query1 = "Select user_id,user_name From Users"
         id_list = execute_query(db_connection,query1).fetchall()
         
-        query2 = 'SELECT * from Simulators WHERE result_id = %s' 
+        query2 = 'SELECT user_id,grading,play_date,scenario_name from Simulators WHERE result_id = %s' 
         result = execute_query(db_connection, query2, (id,)).fetchone()
         print('Returning')
         return render_template('simulators_update.html', id_list = id_list, record = result, user_id = id)
