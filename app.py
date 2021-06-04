@@ -202,9 +202,9 @@ def sim_user():
         query = 'Select * from Users where user_id= %s'
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
-        if input_id == '':
-            flash("Please enter user id!")
-            return redirect(url_for("simulators_page"))
+        #if input_id == '':
+        #    flash("Please enter user id!")
+        #    return redirect(url_for("simulators_page"))
         if user == None:
             #print('This user does not exist!')
             flash("This user id does not exist!")
@@ -299,9 +299,9 @@ def quiz_user():
         query = 'Select * from Users where user_id=%s'
         user = execute_query(db_connection, query, (input_id,)).fetchone()
         print(user)
-        if input_id == '':
-            flash("Please enter a user id!")
-            return redirect(url_for("quiz_records_page"))
+        #if input_id == '':
+        #    flash("Please enter a user id!")
+        #    return redirect(url_for("quiz_records_page"))
         if user is None:
             #print('This user does not exist!')
             flash("This user id does not exist!")
