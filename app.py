@@ -249,11 +249,20 @@ def sim_update(id):
         grade = request.form['grading_to_update']
         date = request.form['play_date_to_update']
         scenario = request.form['scenario_to_update']
+        
+        if date == '' or scenario == '':
+            flash("Error: Failed to update a simulator record")
+            if date == '':
+                flash("Please remember to add play date!")
+            if scenario == '':
+                flash("Please remember to add a scenario!")
+            return redirect(url_for("sim_update"))
+        
         query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
         data = (user_id,grade,date,scenario,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
-        flash(f"Updated row w/ id {id}")
+        flash(f"Updated row w/ result id {id}")
         return redirect(url_for("simulators_page"))
 
 @app.route("/api/simulators/delete/<int:id>")
@@ -348,11 +357,22 @@ def quiz_update(id):
         date = request.form['quiz_date_to_update']
         state = request.form['quiz_state_to_update']
         score = request.form['quiz_score_to_update']
+        
+        if date == '' or score == '' or int(score) < 0 or int(score) > 100:
+            flash("Error: Failed to update a quiz record")   
+            if date == '':
+                flash("Please remember to enter a date!")
+            if score == '':
+                flash("Please remember to enter a score!")
+            elif int(score) < 0 or int(score) > 100:
+                flash("The score must be btwn 1 and 100 (inclusive)")             
+            return redirect(url_for("quiz_update"))
+        
         query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
         data = (user_id,date,state,score,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
-        flash(f"Updated row w/ id {id}")
+        flash(f"Updated row w/ quiz id {id}")
         return redirect(url_for("quiz_records_page"))
 
 @app.route("/api/quiz_records/delete/<int:id>")
