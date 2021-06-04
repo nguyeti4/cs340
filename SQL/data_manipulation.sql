@@ -142,7 +142,7 @@ Values (:IDInput, :gradeInput, :dateInput, :sceneInput);
 
 --Filter Simulator record by scenario name
 Select * from Simulators
-where Scenario = :scenInput;
+where scenario_name = :scenInput;
 
 --Display a form to update simulator record
 --The form displays info on the row to be updated, where the row result_id (Primary Key) equals :updateResult
