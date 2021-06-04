@@ -202,20 +202,8 @@ def sim_user():
     if request.method == 'POST':
         db_connection = connect_to_database()
         print("Add new simulator record!")
-        #input_id = request.form['user_id']
-        #print(input_id)
-        #query = 'Select * from Users where user_id= %s'
-        #user = execute_query(db_connection, query, (input_id,)).fetchone()
-        #print(user)
-        #if input_id == '':
-        #    flash("Please enter user id!")
-        #    return redirect(url_for("simulators_page"))
-        #if user == None:
-        #    #print('This user does not exist!')
-        #    flash("This user id does not exist!")
-        #    return redirect(url_for("simulators_page"))
        
-        user_id = request.form['user_id']
+        user_id = request.form['user_id']                     
         grade = request.form['grade']
         date = request.form['play_date']
         scenario = request.form['scenario']
@@ -226,12 +214,18 @@ def sim_user():
             #scenario = request.form['scenario']
             if scenario == '':
                 flash("Please remember to add a scenario!")
-            return redirect(url_for("simulators_page")) 
+            return redirect(url_for("simulators_page"))
+        #if the admin decides to add a record w/ user_id = NULL, run the below query (218-224)
+        if user_id == '':
+            query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (NULL,%s,%s,%s)'
+            data = (grade, date, scenario)
+            execute_query(db_connection, query, data)
+            flash("Simulator record added!") 
+            return redirect(url_for("simulators_page"))
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
         flash("Simulator record added!")
-
         return redirect(url_for("simulators_page"))
         
 @app.route("/api/simulators/update/<int:id>",methods=["POST","GET"])
@@ -261,9 +255,16 @@ def sim_update(id):
             if scenario == '':
                 flash("Please remember to add a scenario!")
             return redirect(url_for("sim_update", id = id))
-
-        query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
-        data = (user_id,grade,date,scenario,id)
+        #if user decides to update the user_to be be NULL, run the below query (259-265)
+        if user_id == '':
+            query = "UPDATE Simulators SET user_id = NULL, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
+            data = (grade,date,scenario,id)
+            result = execute_query(db_connection, query, data)
+            print(str(result.rowcount) + " row(s) updated")
+            flash(f"Updated row w/ result id {id}")
+            return redirect(url_for("simulators_page"))
+        query = "UPDATE Simulators SET user_id = NULL, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
+        data = (grade,date,scenario,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
         flash(f"Updated row w/ result id {id}")
@@ -307,19 +308,6 @@ def quiz_user():
         db_connection = connect_to_database()
         print("Add new Quiz record!")
         
-        #input_id = request.form['quiz_user_id']
-        #print(input_id)
-        #query = 'Select * from Users where user_id=%s'
-        #user = execute_query(db_connection, query, (input_id,)).fetchone()
-        #print(user)
-        #if input_id == '':
-        #    flash("Please enter a user id!")
-        #    return redirect(url_for("quiz_records_page"))
-        #if user is None:
-            #print('This user does not exist!')
-        #    flash("This user id does not exist!")
-        #    return redirect(url_for("quiz_records_page"))
-        
         quiz_user_id = request.form['quiz_user_id']
         quiz_date = request.form['quiz_date']
         quiz_state = request.form['quiz_state']
@@ -334,12 +322,17 @@ def quiz_user():
             elif int(quiz_score) < 0 or int(quiz_score) > 100:
                 flash("The score must be btwn 1 and 100 (inclusive)")             
             return redirect(url_for("quiz_records_page"))
-            
+        #if the admin decides to add a record w/ user_id = NULL, run the below query (325-331)
+        if quiz_user_id == '':
+            query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (NULL,%s,%s,%s)'
+            data = (quiz_date, quiz_state, quiz_score)
+            execute_query(db_connection, query, data)
+            flash('Quiz record added!')   
+            return redirect(url_for("quiz_records_page"))
         query = 'INSERT INTO QuizRecords (user_id, quiz_date, quiz_state, quiz_score) VALUES (%s,%s,%s,%s)'
         data = (quiz_user_id, quiz_date, quiz_state, quiz_score)
         execute_query(db_connection, query, data)
-        flash('Quiz record added!')
-    
+        flash('Quiz record added!')   
         return redirect(url_for("quiz_records_page"))
    
 @app.route("/api/quiz_records/update/<int:id>",methods=["POST","GET"])
@@ -371,7 +364,14 @@ def quiz_update(id):
             elif int(score) < 0 or int(score) > 100:
                 flash("The score must be btwn 1 and 100 (inclusive)")             
             return redirect(url_for("quiz_update", id = id))
-        
+        #if user decides to update the user_to be be NULL, run the below query (259-265)
+        if user_id == '':
+            query = "UPDATE QuizRecords SET user_id = NULL, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
+            data = (date,state,score,id)
+            result = execute_query(db_connection, query, data)
+            print(str(result.rowcount) + " row(s) updated")
+            flash(f"Updated row w/ quiz id {id}")
+            return redirect(url_for("quiz_records_page"))
         query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
         data = (user_id,date,state,score,id)
         result = execute_query(db_connection, query, data)
