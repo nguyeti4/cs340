@@ -330,7 +330,7 @@ def quiz_user():
         return redirect(url_for("quiz_records_page"))
    
 @app.route("/api/quiz_records/update/<int:id>",methods=["POST","GET"])
-def sim_update(id):
+def quiz_update(id):
     db_connection = connect_to_database()
     if request.method == 'GET':
         print('The GET request')
