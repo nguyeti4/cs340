@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}QuizRecords{% endblock %}
+
+{% block content %} 
+<div>
+<form class="container" action="/api/quizRecords/update/{{user_id}}" method="POST" style="margin-left: 0;">
+    <h4>Update quiz record</h4>
+	
+    <div class="form-group">
+	<p>Initial User ID: {{record[0]}}</p>
+    <label>User ID</label>	
+    <select name="quiz_user_to_update">
+	    <option value=''>None</option>
+	  {% for id in id_list %}
+	    {% if id[0] == record[0] %}
+	    	<option value="{{id[0]}}" SELECTED >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% else %}
+	    	<option value="{{id[0]}}" >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% endif %}
+    	  {% endfor %}
+    </select>
+    </div>	    
+<br>	
+	
+    <div class="form-group">
+	    <p>Initial Quiz Date: {{record[1]}}</p>
+        <label>Quiz date</label> 
+        <input class="form-control" type="date" name="quiz_date_to_update" value={{record[1]}}>
+    </div>
+<br>  
+  
+
+    <div class="form-group">
+	    <p>Initial Quiz State: {{record[2]}}</p>
+        <label>Quiz State</label>
+            <select name="quiz_state_to_update">
+		{% if record[1] == 'California' %}
+                	<option value="California" SELECTED>California</option>
+			            <option value="Oregon">Oregon</option>
+		{% else %}
+                	<option value="Oregon" SELECTED>Oregon</option>		
+	               	<option value="California">Oregon</option>
+		{% endif %}
+            </select> 
+    </div>
+<br>
+	
+    <div class="form-group">
+	    <p>Initial Score: {{record[3]}}</p>
+        <label>Quiz Score</label> 
+        <input class="form-control" type="number" name="quiz_score_to_update" value={{record[3]}}>
+    </div>
+<br>
+    <input class="btn btn-primary" type="submit" value="Save Changes">	
+</form>
+<br>	
+    <div class="container-fluid"><input class="btn btn-primary" type="submit" value="Discard Changes" onclick="window.location = '/quizRecords'"></div>
+</div>	
+
+
+{% endblock %}
