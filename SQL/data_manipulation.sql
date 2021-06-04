@@ -153,6 +153,12 @@ SELECT user_id, grading, play_date, scenario_name FROM Simulators WHERE result_i
 UPDATE Simulators 
 SET user_id = :updateID, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario WHERE result_id = :updateResult;
 
+--Update Simulator Record (where user_id is NULL)
+--:updateResult is the same input used in line 149
+--if doesn't play the simulator, set user_id to NULL
+UPDATE Simulators 
+SET user_id = NULL, grading = :updateGrade, play_date = :updateplay, scenario_name = :updatescenario WHERE result_id = :updateResult;
+
 --Delete the Searched sims by id
 --where :sim_delete_input is the result_id of the row you want deleted
 Delete * from Simulators
@@ -181,6 +187,12 @@ SELECT user_id, quiz_date, quiz_state, quiz_score FROM QuizRecords WHERE quiz_id
 --:updateQuiz is the same input used in line 178
 UPDATE QuizRecords
 SET user_id = :updateID, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene WHERE quiz_id = :updateQuiz;
+
+--Update QuizRecord record (where user_id is NULL)
+--:updateQuiz is the same input used in line 178
+--if doesn't do the Quiz, set user_id to NULL
+UPDATE QuizRecords
+SET user_id = NULL, quiz_date = :update_quiz_date, quiz_state = :updatestate, quiz_score = :updatescene WHERE quiz_id = :updateQuiz;
 
 --Delete the Searched records by id
 --where :quiz_delete_input is the quiz_id of the row you want deleted
