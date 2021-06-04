@@ -253,6 +253,7 @@ def sim_update(id):
         data = (user_id,grade,date,scenario,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
+        flash(f"Updated row w/ id {id}")
         return redirect(url_for("simulators_page"))
 
 @app.route("/api/simulators/delete/<int:id>")
