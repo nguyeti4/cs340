@@ -226,8 +226,7 @@ def sim_user():
             #scenario = request.form['scenario']
             if scenario == '':
                 flash("Please remember to add a scenario!")
-            return redirect(url_for("simulators_page"))
-            
+            return redirect(url_for("simulators_page")) 
         query = 'INSERT INTO Simulators (user_id, grading, play_date, scenario_name) VALUES (%s,%s,%s,%s)'
         data = (user_id, grade, date, scenario)
         execute_query(db_connection, query, data)
@@ -262,7 +261,7 @@ def sim_update(id):
             if scenario == '':
                 flash("Please remember to add a scenario!")
             return redirect(url_for("sim_update", id = id))
-        
+
         query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
         data = (user_id,grade,date,scenario,id)
         result = execute_query(db_connection, query, data)
