@@ -7,37 +7,49 @@
     <h4>Update simulator record</h4>
 	
     <div class="form-group">
-	<p>Initial ID: {{record[0]}}</p>
+	<p>Initial User ID: {{record[0]}}</p>
     <label>User ID</label>	
     <select name="user_id_to_update">
 	    <option value=''>None</option>
 	  {% for id in id_list %}
-	    <option value="{{id[0]}}" >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% if id[0] = record[0] %}
+	    	<option value="{{id[0]}}" SELECTED >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% else %}
+	    	<option value="{{id[0]}}" >{{id[0]}} ({{id[1]}}'s ID)</option>
+	    {% endif %}
     	  {% endfor %}
     </select>
     </div>	    
+<br>	
 	
     <div class="form-group">
 	    <p>Initial Grade: {{record[1]}}</p>
         <label>Grade</label>
             <select name="grading_to_update">
-                <option value="1">Pass</option>
-                <option value="0">Fail</option>
+		{% if record[1] == 1 %}
+                	<option value="1" SELECTED>Pass</option>
+			 <option value="0">Fail</option>
+		{% elif record[1] == 0 %}
+                	<option value="0" SELECTED>Fail</option>		
+	               	<option value="1">Pass</option>
+		{% endif %}
             </select> 
     </div>
+<br>
 	
     <div class="form-group">
 	    <p>Initial Play Date: {{record[2]}}</p>
         <label>Play date</label> 
-        <input class="form-control" type="date" name="play_date_to_update">
+        <input class="form-control" type="date" name="play_date_to_update" value={{record[2]}}>
     </div>
+<br>
 	
     <div class="form-group">
 	    <p>Initial Scenario: {{record[3]}}</p>
         <label>Scenario</label> 
-        <input class="form-control" type="text" name="scenario_to_update">
+        <input class="form-control" type="text" name="scenario_to_update" value={{record[3]}}>
     </div>
-	
+<br>
     <input class="btn btn-primary" type="submit" value="Save Changes">	
 </form>
 <br>	
