@@ -251,12 +251,12 @@ def sim_update(id):
         scenario = request.form['scenario_to_update']
         
         if date == '' or scenario == '':
-            flash("Error: Failed to update a simulator record")
+            flash(f"Error: Failed to update simulator record w/ result id {id}")
             if date == '':
                 flash("Please remember to add play date!")
             if scenario == '':
                 flash("Please remember to add a scenario!")
-            return redirect(url_for("sim_update"))
+            return redirect(url_for("sim_update(id)"))
         
         query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
         data = (user_id,grade,date,scenario,id)
@@ -359,14 +359,14 @@ def quiz_update(id):
         score = request.form['quiz_score_to_update']
         
         if date == '' or score == '' or int(score) < 0 or int(score) > 100:
-            flash("Error: Failed to update a quiz record")   
+            flash(f"Error: Failed to update a quiz record w/ quiz id {id}")   
             if date == '':
                 flash("Please remember to enter a date!")
             if score == '':
                 flash("Please remember to enter a score!")
             elif int(score) < 0 or int(score) > 100:
                 flash("The score must be btwn 1 and 100 (inclusive)")             
-            return redirect(url_for("quiz_update"))
+            return redirect(url_for("quiz_update(id)"))
         
         query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
         data = (user_id,date,state,score,id)
