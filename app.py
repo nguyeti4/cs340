@@ -329,15 +329,31 @@ def quiz_user():
     
         return redirect(url_for("quiz_records_page"))
    
-#@app.route("/api/quiz_records/update")
-#def quiz_update():
-#    db_connection = connect_to_database()
-#    state = request.args.get('select_state')
-#    if state == 'Default':
-#        return redirect(url_for("quiz_records_page"))
-#    query3 = 'Select * from QuizRecords where quiz_state = %s;'          
-#    result2 = execute_query(db_connection, query3, (state,)).fetchall()     
-#    return render_template('quizRecords.html',results=result2)
+@app.route("/api/quiz_records/update/<int:id>",methods=["POST","GET"])
+def sim_update(id):
+    db_connection = connect_to_database()
+    if request.method == 'GET':
+        print('The GET request')
+        
+        query1 = "Select user_id,user_name From Users"
+        id_list = execute_query(db_connection,query1).fetchall()
+        
+        query2 = 'SELECT user_id,quiz_date,quiz_state,quiz_score from QuizRecords WHERE quiz_id = %s' 
+        result = execute_query(db_connection, query2, (id,)).fetchone()
+        print('Returning')
+        return render_template('quizRecords_update.html', id_list = id_list, record = result, user_id = id)
+    elif request.method == 'POST':
+        print('The POST request')
+        user_id = request.form['quiz_user_id_to_update']
+        date = request.form['quiz_date_to_update']
+        state = request.form['quiz_state_to_update']
+        score = request.form['quiz_score_to_update']
+        query = "UPDATE Simulators SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
+        data = (user_id,date,state,score,id)
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated")
+        flash(f"Updated row w/ id {id}")
+        return redirect(url_for("quiz_records_page"))
 
 @app.route("/api/quiz_records/delete/<int:id>")
 def quiz_delete(id):
