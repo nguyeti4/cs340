@@ -239,7 +239,7 @@ def sim_update(id):
         query1 = "Select user_id,user_name From Users"
         id_list = execute_query(db_connection,query1).fetchall()
         
-        query2 = 'SELECT * from Simulators WHERE user_id = %s' 
+        query2 = 'SELECT * from Simulators WHERE result_id = %s' 
         result = execute_query(db_connection, query2, (id,)).fetchone()
         print('Returning')
         return render_template('simulators_update.html', id_list = id_list, record = result, user_id = id)
@@ -249,7 +249,7 @@ def sim_update(id):
         grade = request.form['grading_to_update']
         date = request.form['play_date_to_update']
         scenario = request.form['scenario_to_update']
-        query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE user_id = %s"
+        query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
         data = (user_id,grade,date,scenario,id)
         result = execute_query(db_connection, query, data)
         print(str(result.rowcount) + " row(s) updated")
