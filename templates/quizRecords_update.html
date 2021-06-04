@@ -19,10 +19,10 @@
 <div>
 <form class="container" action="/api/quiz_records/update/{{user_id}}" method="POST" style="margin-left: 0;">
     <h4>Update quiz record</h4>
-<br>
 	
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
+	<br>
 		{% for msg in messages %}
 			<h5 class="container-fluid" id="flash">{{msg}}</h5>
 		{% endfor %}
