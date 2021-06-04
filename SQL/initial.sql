@@ -238,7 +238,7 @@ SHOW CREATE TABLE Simulators;
 
 ALTER TABLE Simulators DROP FOREIGN KEY Simulators_ibfk_1;
 --ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE cascade;
-ALTER TABLE Simulator MODIFY user_id INT;
+ALTER TABLE Simulators MODIFY user_id INT;
 --ALTER TABLE Simulators DROP FOREIGN KEY FK_UserSim;
 ALTER TABLE Simulators ADD CONSTRAINT FK_UserSim FOREIGN KEY (user_id) REFERENCES Users (user_id) ON DELETE SET NULL;
 
