@@ -10,7 +10,7 @@
 	<p>Initial ID: {{record[0]}}</p>
     <label>User ID</label>	
     <select name="user_id_to_update">
-	    <option value=None>None</option>
+	    <option value=''>None</option>
 	  {% for id in id_list %}
 	    <option value="{{id[0]}}" >{{id[0]}} ({{id[1]}}'s ID)</option>
     	  {% endfor %}
