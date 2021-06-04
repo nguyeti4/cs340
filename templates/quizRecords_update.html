@@ -3,9 +3,23 @@
 
 {% block content %} 
 
+<div class="container" style="margin-left: 0;">
+  <h3><a href="/quiz_records">QuizRecords</a></h3>
+  <p>
+      This page is used to as a form to update info on a record in the QuizRecords table.
+	<ul>  
+	  <li>Normally, the information of this table should come from the customer facing website, but admins can manually insert user play info. </li>
+	  <li>Each time a user plays the simulator, information on that simulator playthrough will be inserted into this table.</li>
+      <li>On this page, the admin staff can insert playthrough info into the table, they can search for the result of a particular 
+	  simulator playthrough, and they can remove a record of the playthrough.</li>
+	</ul>
+  </p>   
+</div>
+
 <div>
 <form class="container" action="/api/quiz_records/update/{{user_id}}" method="POST" style="margin-left: 0;">
     <h4>Update quiz record</h4>
+<br>
 	
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
