@@ -256,7 +256,7 @@ def sim_update(id):
                 flash("Please remember to add play date!")
             if scenario == '':
                 flash("Please remember to add a scenario!")
-            return redirect(url_for("sim_update(id)"))
+            return redirect(url_for("sim_update", id = id))
         
         query = "UPDATE Simulators SET user_id = %s, grading = %s, play_date = %s, scenario_name = %s WHERE result_id = %s"
         data = (user_id,grade,date,scenario,id)
@@ -366,7 +366,7 @@ def quiz_update(id):
                 flash("Please remember to enter a score!")
             elif int(score) < 0 or int(score) > 100:
                 flash("The score must be btwn 1 and 100 (inclusive)")             
-            return redirect(url_for("quiz_update(id)"))
+            return redirect(url_for("quiz_update", id = id))
         
         query = "UPDATE QuizRecords SET user_id = %s, quiz_date = %s, quiz_state = %s, quiz_score = %s WHERE quiz_id = %s"
         data = (user_id,date,state,score,id)
