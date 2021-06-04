@@ -2,9 +2,19 @@
 {% block title %}QuizRecords{% endblock %}
 
 {% block content %} 
+
 <div>
 <form class="container" action="/api/quiz_records/update/{{user_id}}" method="POST" style="margin-left: 0;">
     <h4>Update quiz record</h4>
+	
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for msg in messages %}
+			<h5 class="container-fluid" id="flash">{{msg}}</h5>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <br>	
     <div class="form-group">
 	<p>Initial User ID: {{record[0]}}</p>
