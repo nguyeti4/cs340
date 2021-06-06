@@ -108,9 +108,28 @@
 <template id="question-template">
     <tr>
         <th scope="row">{{question_id}}</th>
-        <td><span class="noedit state">{{state}}</span><input class="edit state" ></td>
+        <td>
+          <span class="noedit state">{{state}}</span>
+          <!-- <input class="edit state" > -->
+          <select class="edit state" id="edit-state">
+            <option disabled="true" value="{{state}}" selected>{{state}}</option>
+            <option value="Universal">Universal</option>
+            <option value="California">California</option>
+            <option value="Oregon">Oregon</option>
+          </select>
+
+        </td>
         <td><span class="noedit question_desc">{{question_desc}}</span><input class="edit question_desc" ></td>
-        <td><span class="noedit right_answer">{{right_answer}}</span><input class="edit right_answer" ></td>
+        <td>
+          <span class="noedit right_answer">{{right_answer}}</span>
+          <!-- <input class="edit right_answer" > -->
+          <select class="edit right_answer" id="edit-right-answer">
+            <option disabled="true" value="{{right_answer}}" selected>{{right_answer}}</option>
+            <option value="choice1">choice1</option>
+            <option value="choice2">choice2</option>
+            <option value="choice3">Choice3</option>
+          </select>
+        </td>
         <td><span class="noedit choice_1">{{choice_1}}</span><input type="text" class="edit choice_1" ></td>
         <td><span class="noedit choice_2">{{choice_2}}</span><input type="text" class="edit choice_2" ></td>
         <td><span class="noedit choice_3">{{choice_3}}</span><input type="text" class="edit choice_3" ></td>

@@ -96,9 +96,7 @@ $(function() {
         e.preventDefault();
         var $editRow = $(this).closest("tr");
         console.log($editRow.find("span.name").html());
-        $editRow.find("input.state").val($editRow.find("span.state").html());
         $editRow.find("input.question_desc").val($editRow.find("span.question_desc").html());
-        $editRow.find("input.right_answer").val($editRow.find("span.right_answer").html());
         $editRow.find("input.choice_1").val($editRow.find("span.choice_1").html());
         $editRow.find("input.choice_2").val($editRow.find("span.choice_2").html());
         $editRow.find("input.choice_3").val($editRow.find("span.choice_3").html());
@@ -118,14 +116,30 @@ $(function() {
         console.log($(this).attr("question_id"));
         var $updateRow = $(this).closest("tr");
         e.preventDefault();
+        console.log($updateRow.find("#edit-right-answer").children("option:selected").val())
+
+        var new_right_answer = $updateRow.find("#edit-right-answer").children("option:selected").val();
+        if (new_right_answer=="choice1") {
+            new_right_answer = $updateRow.find("input.choice_1").val();
+        };
+        if (new_right_answer=="choice2") {
+            new_right_answer = $updateRow.find("input.choice_2").val();
+        };
+        if (new_right_answer=="choice3") {
+            new_right_answer = $updateRow.find("input.choice_3").val();
+        };
+
+        console.log($updateRow.find("#edit-state").children("option:selected").val());
+        
         var quesInfo = {
-            state: $updateRow.find("input.state").val(),
+            state: $updateRow.find("#edit-state").children("option:selected").val(),
             question_desc: $updateRow.find("input.question_desc").val(),
-            right_answer: $updateRow.find("input.right_answer").val(),
+            right_answer: new_right_answer,
             choice_1: $updateRow.find("input.choice_1").val(),
             choice_2: $updateRow.find("input.choice_2").val(),
             choice_3: $updateRow.find("input.choice_3").val()
         };
+        console.log(quesInfo)
 
         $.ajax( {
             type: "PUT",
@@ -134,6 +148,8 @@ $(function() {
             success: function(res, status, xhr) {
                 console.log(res);
                 $updateRow.find("span.state").text(res.state);
+                // $updateRow.find("#edit-right-answer").children("option:selectedIndex = 0").val(new_right_answer)
+                // $updateRow.find("#edit-right-answer").children("option:selectedIndex = 0").text(new_right_answer)
                 $updateRow.find("span.question_desc").text(res.question_desc);
                 $updateRow.find("span.right_answer").text(res.right_answer);
                 $updateRow.find("span.choice_1").text(res.choice_1);

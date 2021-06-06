@@ -409,18 +409,18 @@ def quiz_questions():
     db_connection = connect_to_database()
     # add the result of a question in a quiz
     if request.method == 'POST':
-        # check whether quiz_id exist
-        quiz_id = request.form['quiz_id']
-        quiz_query = 'Select * from QuizRecords WHERE quiz_id=%s'
-        quiz_result = execute_query(db_connection, quiz_query, (quiz_id,)).fetchall()
-        if quiz_result is None:
-            return 'No such quiz_id exist!'
-        # check whether question_id exist
-        question_id = request.form['question_id']
-        question_query = 'Select * from Questions WHERE question_id=%s'
-        question_result = execute_query(db_connection, question_query, (question_id,)).fetchall()
-        if question_result is None:
-            return 'No such question_id exist!'
+        # # check whether quiz_id exist
+        # quiz_id = request.form['quiz_id']
+        # quiz_query = 'Select * from QuizRecords WHERE quiz_id=%s'
+        # quiz_result = execute_query(db_connection, quiz_query, (quiz_id,)).fetchall()
+        # if quiz_result is None:
+        #     return 'No such quiz_id exist!'
+        # # check whether question_id exist
+        # question_id = request.form['question_id']
+        # question_query = 'Select * from Questions WHERE question_id=%s'
+        # question_result = execute_query(db_connection, question_query, (question_id,)).fetchall()
+        # if question_result is None:
+        #     return 'No such question_id exist!'
         # insert a new row to the QuizQuestions table
         print('Add a row to the QuizQuestions table')
         quiz_id = request.form['quiz_id']
@@ -444,7 +444,7 @@ def quiz_questions():
             'id': cur.lastrowid,
             'quiz_id': quizQues_details[0],
             'question_id': quizQues_details[1],
-            'result': "Correct" if quizQues_details[2] == 1 else "Wrong",
+            'result': "Correct" if quizQues_details[2] == str(1) else "Wrong",
         })
     if request.method == "GET":
         query = "select * from QuizQuestions;"
@@ -663,7 +663,7 @@ def change_questions(id):
         print (str(result.rowcount) + "row deleted")
         return jsonify("delete ok")
  
-    # update account
+    # update question
     elif request.method == 'PUT':
         print("Update a question!")
         question_id = id
@@ -696,12 +696,10 @@ def change_questions(id):
         rows = execute_query(db_connection, query, (question_id,)).fetchall()
         
         # execute SQL update
-        i = 0
-        for row in rows:
+        for i in range(2):
             query = 'UPDATE QuestionChoices SET choice_desc = %s WHERE choice_id = %s'
-            data =(update_choices[i],row[0])
+            data =(update_choices[i],rows[i][0])
             execute_query(db_connection, query, data)
-            i += 1
 
         # special case: add a new choice
         if len(update_choices) > len(rows):
@@ -710,8 +708,8 @@ def change_questions(id):
             execute_query(db_connection, query, data)
         # special case: delete a choice
         if len(update_choices) < len(rows):
-            query = 'Delete * from QuestionChoices where choice_id = %s '
-            data = (rows[2][0])
+            query = 'Delete from QuestionChoices where choice_id = %s '
+            data = (rows[2][0],)
             execute_query(db_connection, query, data)
 
         return jsonify({
@@ -720,7 +718,7 @@ def change_questions(id):
             'right_answer': update_question[2],
             'choice_1': update_choices[0],
             'choice_2': update_choices[1],
-            'choice_3': update_choices[2],
+            'choice_3': update_choices[2] if len(update_choices)==3 else None,
         })
 
 
